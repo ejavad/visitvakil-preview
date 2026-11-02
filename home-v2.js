@@ -5,13 +5,13 @@ const names={text:"مشاوره متنی",phone:"مشاوره تلفنی",free:"
 const topics=["ملکی و ثبتی","خانواده","کیفری","چک و مطالبات","قراردادها","شرکت و کسب‌وکار"];
 function node(tag,className,value){const n=document.createElement(tag);if(className)n.className=className;n.textContent=value;return n}
 function setService(value){if(!names[value])return;state.service=value;for(const b of document.querySelectorAll("[data-service]")){b.classList.toggle("selected",b.dataset.service===value);b.setAttribute("aria-pressed",String(b.dataset.service===value))}}
-for(const b of document.querySelectorAll("[data-service]"))b.onclick=()=>setService(b.dataset.service);
+
 function openWizard(topic){if(topic&&topics.includes(topic))state.topic=topic;state.step=topic?1:0;draw();$("wizard").showModal()}
 function closeWizard(){$("wizard").close()}
 $("start-wizard").onclick=()=>openWizard();
-$("all-topics").onclick=()=>openWizard();
-$("banner-start").onclick=()=>openWizard();
-for(const b of document.querySelectorAll("[data-topic]"))b.onclick=()=>openWizard(b.dataset.topic);
+
+
+
 $("close-wizard").onclick=closeWizard;
 $("wizard").addEventListener("click",e=>{if(e.target===$("wizard"))closeWizard()});
 $("wizard-back").onclick=()=>{state.step=Math.max(0,state.step-1);draw()};
