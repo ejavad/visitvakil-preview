@@ -1,0 +1,25 @@
+name: Administrator messenger smoke
+on:
+  push:
+    paths:
+      - 'admin.html'
+      - 'admin.css'
+      - 'admin.js'
+      - 'tests/admin-smoke.mjs'
+      - '.github/workflows/admin-smoke.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save playwright
+      - run: npx playwright install chromium --with-deps
+      - run: python3 -m http.server 8765 --bind 127.0.0.1 &
+      - run: node tests/admin-smoke.mjs
