@@ -1,0 +1,25 @@
+name: Homepage mobile browser smoke
+on:
+  push:
+    paths:
+      - 'home-v2.html'
+      - 'home-v2.css'
+      - 'home-v2.js'
+      - 'tests/home-v2-smoke.mjs'
+      - '.github/workflows/home-v2-smoke.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save playwright
+      - run: npx playwright install chromium --with-deps
+      - run: python3 -m http.server 8765 --bind 127.0.0.1 &
+      - run: node tests/home-v2-smoke.mjs
