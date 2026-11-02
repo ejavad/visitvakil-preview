@@ -52,7 +52,7 @@ async function loadLawyerSupport(){
  const rows=lawyerPreview?previewSupport:await api("/support/tickets");
  const list=q("support-list");list.replaceChildren();
  if(!rows.length){const e=document.createElement("div");e.className="empty";e.textContent="هنوز درخواست پشتیبانی ندارید.";list.append(e)}
- for(const t of rows)entry(list,t.subject+" — "+(t.status==="closed"?"بسته‌شده":"باز")+"\n"+(t.lastMessage||""),()=>openLawyerSupport(t));
+ for(const t of rows){const b=document.createElement("button");b.type="button";b.className="thread support-thread"+(supportTicket?.ticketId===t.ticketId?" selected":"");const title=document.createElement("strong");title.textContent=t.subject;const subtitle=document.createElement("span");subtitle.textContent=(t.status==="closed"?"پایان‌یافته":"پشتیبانی فعال")+" · "+(t.lastMessage||"درخواست پشتیبانی");b.append(title,subtitle);b.onclick=()=>openLawyerSupport(t);list.append(b)}
 }
 
 q("support-cancel").onclick=()=>{q("support-panel").open=false};
@@ -70,7 +70,7 @@ q("support-form").onsubmit=async e=>{
 async function openLawyerSupport(t){
  supportTicket=t;supportCursor=0;active=null;selectionVersion++;
  lawyerTab="support";renderLawyerTab(true);
- q("header").textContent=t.subject;q("messages").replaceChildren();
+ q("header").textContent=t.subject;q("messages").replaceChildren();q("support-panel").open=false;
  q("send").hidden=t.status==="closed";q("complete-consultation").hidden=t.status==="closed";q("complete-consultation").textContent="بستن درخواست";
  await syncLawyerSupport();
 }
