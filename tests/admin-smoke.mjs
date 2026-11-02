@@ -1,0 +1,36 @@
+import {chromium} from "playwright";
+const browser=await chromium.launch({headless:true});
+const page=await browser.newPage({viewport:{width:390,height:844}});
+const errors=[];page.on("pageerror",e=>errors.push(e.message));
+const assert=(v,m)=>{if(!v)throw Error(m)};
+try{
+ await page.goto("http://127.0.0.1:8765/admin.html",{waitUntil:"load"});
+ await page.locator('[data-tab="home"]').click();
+ assert(await page.locator("#admin-home").isVisible(),"HOME_NOT_VISIBLE");
+ assert(await page.locator(".admin-stat-grid button").count()===4,"DASHBOARD_CARDS");
+ await page.locator('[data-nav="support"]').click();
+ assert(await page.locator("#admin-list .admin-item").count()===3,"SUPPORT_LIST");
+ await page.locator("#admin-list .admin-item").first().click();
+ assert(await page.locator("#admin-compose").isVisible(),"REPLY_NOT_VISIBLE");
+ await page.locator("#admin-message").fill("پاسخ نمونه مدیر");
+ await page.locator('#admin-compose button').click();
+ assert(await page.getByText("پاسخ نمونه مدیر",{exact:true}).count()===1,"REPLY_NOT_SENT");
+ await page.locator("#admin-back").click();
+ await page.locator("#admin-list .admin-item").first().click();
+ assert(await page.getByText("پاسخ نمونه مدیر",{exact:true}).count()===1,"REPLY_NOT_REOPENED");
+ await page.reload();
+ await page.locator('[data-tab="support"]').click();
+ await page.locator("#admin-list .admin-item").first().click();
+ assert(await page.getByText("پاسخ نمونه مدیر",{exact:true}).count()===1,"REPLY_NOT_PERSISTED");
+ await page.locator('[data-tab="conversations"]').click();
+ await page.locator("#admin-list .admin-item").first().click();
+ assert(await page.locator("#admin-compose").isHidden(),"CONVERSATION_SHOULD_READ_ONLY");
+ await page.locator('[data-tab="requests"]').click();
+ assert(await page.locator("#admin-list .admin-item").count()===3,"REQUESTS_MISSING");
+ await page.locator('[data-tab="accounts"]').click();
+ assert(await page.locator("#admin-list .admin-item").count()===4,"ACCOUNTS_MISSING");
+ await page.getByRole("button",{name:"وکلا"}).click();
+ assert(await page.locator("#admin-list .admin-item").count()===3,"LAWYERS_FILTER");
+ assert(errors.length===0,"JS_ERRORS "+errors.join("; "));
+ console.log("PASS admin dashboard, support reply persistence, monitor, requests, account filters");
+}finally{await browser.close()}
