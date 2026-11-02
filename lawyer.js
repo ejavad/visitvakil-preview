@@ -23,8 +23,14 @@ function renderLawyerTab(chatOpen=false){
  q("cases").hidden=lawyerTab==="activity"||lawyerTab==="support"||lawyerTab==="account";
  q("cases-heading").hidden=q("cases").hidden;
  q("ready-control").hidden=lawyerTab==="chats"||lawyerTab==="support"||lawyerTab==="account";
- q("lawyer-list-title").textContent=lawyerTab==="chats"?"گفتگوهای من":lawyerTab==="support"?"پشتیبانی":lawyerTab==="account"?"حساب وکیل":"درخواست‌های جدید";
- if(lawyerTab==="activity"||lawyerTab==="home")q("lawyer-list-title").append(q("offer-count"));
+ const heading=q("lawyer-list-title");
+ const headingText=lawyerTab==="chats"?"گفتگوهای من":lawyerTab==="support"?"پشتیبانی":lawyerTab==="account"?"حساب وکیل":"درخواست‌های جدید";
+ // Preserve the nested #offer-count element: replacing heading.textContent destroys it
+ // and throws during preview initialization, preventing all footer handlers from working.
+ if(heading.firstChild?.nodeType===3)heading.firstChild.nodeValue=headingText+" ";
+ else heading.prepend(document.createTextNode(headingText+" "));
+ const offerBadge=q("offer-count");
+ if(offerBadge)offerBadge.hidden=!(lawyerTab==="activity"||lawyerTab==="home")||offerBadge.textContent==="0";
  q("refresh").hidden=lawyerTab==="account";
  q("support-list").hidden=lawyerTab!=="support";q("support-panel").hidden=lawyerTab!=="support";
  q("lawyer-back").hidden=!chatOpen;
