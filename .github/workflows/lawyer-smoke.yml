@@ -8,6 +8,7 @@ on:
       - 'tests/lawyer-smoke.mjs'
       - 'tests/lawyer-chats-smoke.mjs'
       - 'tests/lawyer-dashboard-smoke.mjs'
+      - 'tests/lawyer-profile-smoke.mjs'
       - '.github/workflows/lawyer-smoke.yml'
   workflow_dispatch:
 permissions:
@@ -27,3 +28,4 @@ jobs:
       - run: node tests/lawyer-smoke.mjs
       - run: node tests/lawyer-chats-smoke.mjs
       - run: node tests/lawyer-dashboard-smoke.mjs
+      - run: node tests/lawyer-profile-smoke.mjs
