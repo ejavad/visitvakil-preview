@@ -52,6 +52,26 @@ try{
  assert((await page.locator("#admin-detail-badge").innerText()).includes("ردشده"),"REJECT_DECISION_NOT_SET");
  await page.locator('[data-tab="home"]').click();
  assert((await page.locator("#stat-review").innerText()).trim()==="۰","REVIEW_QUEUE_COUNT_INCORRECT");
+ await page.locator('[data-tab="home"]').click();
+ await page.locator('[data-nav="finance"]').click();
+ assert(await page.locator("#admin-list .admin-item").count()===3,"FINANCE_LIST_MISSING");
+ await page.locator("#admin-list .admin-item").filter({hasText:"خانواده"}).click();
+ assert(await page.locator(".admin-finance-summary").isVisible(),"FINANCE_SUMMARY_MISSING");
+ assert((await page.locator(".admin-finance-summary").innerText()).includes("۵۵۰٬۰۰۰"),"FINANCIAL_TOTALS_INCORRECT");
+ assert(await page.locator("#admin-settlement-reference").isVisible(),"PENDING_SETTLEMENT_FORM_MISSING");
+ await page.getByRole("button",{name:"ثبت تسویه آزمایشی"}).click();
+ assert((await page.locator("#admin-settlement-note").innerText()).includes("حداقل چهار"),"EMPTY_RECEIPT_ALLOWED");
+ await page.locator("#admin-settlement-reference").fill("TEST-PAYOUT-2026");
+ await page.getByRole("button",{name:"ثبت تسویه آزمایشی"}).click();
+ assert((await page.locator("#admin-detail-badge").innerText()).includes("تسویه‌شده"),"SETTLEMENT_NOT_RECORDED");
+ assert((await page.locator("#admin-detail-body").innerText()).includes("TEST-PAYOUT-2026"),"SETTLEMENT_RECEIPT_MISSING");
+ await page.reload();
+ await page.locator('[data-nav="finance"]').click();
+ await page.locator("#admin-list .admin-item").filter({hasText:"خانواده"}).click();
+ assert((await page.locator("#admin-detail-badge").innerText()).includes("تسویه‌شده"),"SETTLEMENT_NOT_PERSISTED");
+ await page.locator("#admin-back").click();
+ await page.locator("#admin-list .admin-item").filter({hasText:"کیفری"}).click();
+ assert(await page.locator("#admin-settlement-reference").count()===0,"FAILED_PAYMENT_SETTLEMENT_ALLOWED");
  assert(errors.length===0,"JS_ERRORS "+errors.join("; "));
  console.log("PASS admin dashboard, support reply persistence, monitor, requests, account filters");
 }finally{await browser.close()}
