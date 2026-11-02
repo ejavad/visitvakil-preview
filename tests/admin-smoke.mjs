@@ -31,6 +31,27 @@ try{
  assert(await page.locator("#admin-list .admin-item").count()===4,"ACCOUNTS_MISSING");
  await page.getByRole("button",{name:"وکلا"}).click();
  assert(await page.locator("#admin-list .admin-item").count()===3,"LAWYERS_FILTER");
+ await page.getByRole("button",{name:"همه",exact:true}).click();
+ await page.locator("#admin-list .admin-item").filter({hasText:"وکیل نمونه ۱"}).click();
+ assert(await page.locator(".admin-review-card").isVisible(),"LAWYER_REVIEW_MISSING");
+ assert(await page.locator(".admin-review-actions button").count()===4,"REVIEW_ACTIONS_MISSING");
+ await page.locator("#admin-review-reason").fill("مدارک نمونه بررسی شد");
+ await page.getByRole("button",{name:"تأیید آزمایشی"}).click();
+ assert((await page.locator("#admin-detail-badge").innerText()).includes("تأیید"),"REVIEW_DECISION_NOT_SET");
+ assert(await page.locator(".admin-review-history").getByText("مدارک نمونه بررسی شد").count()===1,"AUDIT_HISTORY_MISSING");
+ await page.reload();
+ await page.locator('[data-tab="accounts"]').click();
+ await page.locator("#admin-list .admin-item").filter({hasText:"وکیل نمونه ۱"}).click();
+ assert((await page.locator("#admin-detail-badge").innerText()).includes("تأیید"),"REVIEW_NOT_PERSISTED");
+ await page.locator(".admin-review-history").getByText("مدارک نمونه بررسی شد").waitFor();
+ await page.locator("#admin-back").click();
+ await page.locator("#admin-list .admin-item").filter({hasText:"وکیل نمونه ۳"}).click();
+ assert(await page.getByRole("button",{name:"تأیید آزمایشی"}).isDisabled(),"APPROVE_WITHOUT_DOCUMENT_ALLOWED");
+ await page.locator("#admin-review-reason").fill("مدرک کافی ارائه نشده");
+ await page.getByRole("button",{name:"رد درخواست"}).click();
+ assert((await page.locator("#admin-detail-badge").innerText()).includes("ردشده"),"REJECT_DECISION_NOT_SET");
+ await page.locator('[data-tab="home"]').click();
+ assert((await page.locator("#stat-review").innerText()).trim()==="۰","REVIEW_QUEUE_COUNT_INCORRECT");
  assert(errors.length===0,"JS_ERRORS "+errors.join("; "));
  console.log("PASS admin dashboard, support reply persistence, monitor, requests, account filters");
 }finally{await browser.close()}
