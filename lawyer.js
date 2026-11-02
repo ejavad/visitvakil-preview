@@ -54,7 +54,7 @@ async function loadLawyerSupport(){
  if(!rows.length){const e=document.createElement("div");e.className="empty";e.textContent="هنوز درخواست پشتیبانی ندارید.";list.append(e)}
  for(const t of rows)entry(list,t.subject+" — "+(t.status==="closed"?"بسته‌شده":"باز")+"\n"+(t.lastMessage||""),()=>openLawyerSupport(t));
 }
-q("support-new").onclick=()=>q("support-dialog").showModal();
+q("support-new").onclick=()=>{const dialog=q("support-dialog");if(!dialog.open)dialog.showModal()};
 q("support-cancel").onclick=()=>q("support-dialog").close();
 q("support-form").onsubmit=async e=>{
  e.preventDefault();
@@ -77,6 +77,6 @@ async function openLawyerSupport(t){
 async function syncLawyerSupport(){
  if(!supportTicket)return;
  const rows=lawyerPreview?(supportTicket.previewMessages||[]).map((m,i)=>({id:i+1,body:m.body,mine:m.mine})):await api("/support/tickets/"+supportTicket.ticketId+"/messages?after="+supportCursor);
- for(const m of rows){if(m.id<=supportCursor)continue;supportCursor=m.id;const d=document.createElement("div");d.className="bubble"+(m.senderId===account?" mine":"");d.textContent=m.body;q("messages").append(d)}
+ for(const m of rows){if(m.id<=supportCursor)continue;supportCursor=m.id;const d=document.createElement("div");d.className="bubble"+((lawyerPreview?m.mine:m.senderId===account)?" mine":"");d.textContent=m.body;q("messages").append(d)}
  q("messages").scrollTop=q("messages").scrollHeight;
 }
