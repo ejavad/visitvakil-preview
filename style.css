@@ -385,3 +385,35 @@ body:has(.lawyer-nav) #offers,body:has(.lawyer-nav) #cases{flex:1;min-height:0;o
 #support-panel #support-form{display:flex;flex-direction:column;gap:10px}
 #support-panel #support-form input,#support-panel #support-form textarea{width:100%;box-sizing:border-box;padding:12px;border:1px solid #ddd;border-radius:12px;font:inherit}
 #support-panel #support-form .row{display:flex;gap:10px}
+
+/* Lawyer consultation cards: accepted requests appear as real messenger threads. */
+#workspace[data-lawyer-tab="chats"] .consultation-thread{
+  position:relative;
+  border:1px solid #f0e7c7!important;
+  border-radius:16px!important;
+  background:#fffbef!important;
+  margin:0 0 10px!important;
+  padding:16px 16px 16px 44px!important;
+  text-align:right;
+  min-height:75px;
+}
+#workspace[data-lawyer-tab="chats"] .consultation-thread::before{
+  content:"";position:absolute;left:15px;top:calc(50% - 5px);
+  width:9px;height:9px;border-radius:50%;background:#d5b754;
+}
+#workspace[data-lawyer-tab="chats"] .consultation-thread strong{
+  font-weight:800;font-size:15px;
+}
+#workspace[data-lawyer-tab="chats"] .consultation-thread span{
+  color:#737373;font-size:12px;line-height:1.7;margin-top:6px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+#workspace[data-lawyer-tab="activity"] .lawyer-offer-thread{
+  border:1px solid #ebebe8!important;
+  border-radius:15px!important;
+  background:#fff!important;
+  margin:0 0 10px!important;
+  padding:16px!important;
+}
+#workspace[data-lawyer-tab="activity"] .lawyer-offer-thread strong{font-size:15px;font-weight:800}
+#workspace[data-lawyer-tab="activity"] .lawyer-offer-thread span{color:#777;font-size:12px;line-height:1.7}
