@@ -47,3 +47,12 @@ $("wizard-next").onclick=()=>{
  $("wizard-next").hidden=true;$("wizard-back").hidden=true;
 };
 $("wizard").addEventListener("close",()=>{$("wizard-next").hidden=false;$("wizard-back").hidden=false;state.step=0});
+
+/* Minimal homepage navigation: does not touch consultation backend. */
+const menuButton=document.getElementById("site-menu");
+const menuLinks=document.getElementById("site-links");
+if(menuButton&&menuLinks){
+ menuButton.addEventListener("click",()=>{const open=menuLinks.hidden;menuLinks.hidden=!open;menuButton.setAttribute("aria-expanded",String(open))});
+ document.addEventListener("click",event=>{if(!menuLinks.hidden&&!menuLinks.contains(event.target)&&!menuButton.contains(event.target)){menuLinks.hidden=true;menuButton.setAttribute("aria-expanded","false")}});
+ menuLinks.querySelectorAll("a").forEach(link=>link.addEventListener("click",()=>{menuLinks.hidden=true;menuButton.setAttribute("aria-expanded","false")}));
+}
