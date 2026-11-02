@@ -1,0 +1,373 @@
+@font-face{font-family:"Yekan Bakh";src:url("fonts-not-published.woff2") format("woff2");font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:"Yekan Bakh";src:url("fonts-not-published.woff2") format("woff2");font-style:normal;font-weight:500;font-display:swap}
+@font-face{font-family:"Yekan Bakh";src:url("fonts-not-published.woff2") format("woff2");font-style:normal;font-weight:700;font-display:swap}
+@font-face{font-family:"Yekan Bakh";src:url("fonts-not-published.woff2") format("woff2");font-style:normal;font-weight:800;font-display:swap}
+:root{color-scheme:light;--ink:#18191b;--muted:#7a7c82;--border:#e9e9e9;--yellow:#fff3bc;--surface:#fff;--bg:#fafafa;--green:#59856e;font-family:"Yekan Bakh",Tahoma,"Arial",sans-serif;font-synthesis:none}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-size:15px}button,input,textarea,select{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.4}.shell{max-width:1150px;margin:auto;min-height:100dvh}.top{height:75px;display:flex;align-items:center;justify-content:space-between;padding:0 25px;border-bottom:1px solid var(--border);background:white}.logo{display:flex;align-items:center;gap:11px;font-weight:900;font-size:20px;line-height:1.2}.logo small{display:block;font-weight:400;font-size:11px;color:var(--muted);margin-top:5px}.mark{display:grid;place-items:center;width:43px;height:43px;border-radius:13px;background:var(--green);color:white;font:900 27px Arial}.top-note{font-size:12px;color:var(--muted)}.card{background:white;border:1px solid var(--border);border-radius:18px}.auth{width:min(430px,calc(100% - 32px));margin:8vh auto;padding:28px}.auth h1{font-size:22px}.auth p{color:var(--muted);line-height:2}form label{display:block;margin:16px 0 7px;font-weight:700}input,textarea,select{width:100%;border:1px solid #dedede;border-radius:12px;padding:13px;background:white;outline:none;color:var(--ink)}input:focus,textarea:focus,select:focus{border-color:#bba444;box-shadow:0 0 0 3px #f9efc9}.primary{border:0;border-radius:12px;background:var(--ink);color:white;padding:12px 18px;font-weight:700;width:100%;margin-top:12px}.primary:hover{background:#343434}.plain{background:none;border:0;padding:13px}.feedback{min-height:25px;color:#ad501e;font-size:12px}.layout{display:grid;grid-template-columns:325px minmax(0,1fr);gap:15px;padding:20px;height:calc(100dvh - 151px);min-height:510px}.sidebar,.conversation{min-height:0;overflow:hidden}.sidebar{padding:14px;display:flex;flex-direction:column}.panelhead,.dialoghead{display:flex;align-items:center;justify-content:space-between}.panelhead h1,.dialoghead h2{font-size:19px;margin:7px}.iconbtn{border:0;background:#f5f5f5;border-radius:10px;width:37px;height:37px;font-size:21px}.inbox{overflow:auto;padding-top:12px;flex:1}.thread{display:block;width:100%;text-align:right;background:white;border:0;border-bottom:1px solid #eee;padding:15px 8px;border-radius:9px}.thread.selected{background:var(--yellow)}.thread strong{display:block;font-size:14px}.thread span{display:block;color:var(--muted);font-size:12px;margin-top:6px}.conversation{display:flex;flex-direction:column}.chathead{padding:17px 19px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}.chathead strong{display:block}.chathead small{display:block;color:var(--muted);margin-top:6px}.connection{font-size:11px;color:var(--green)}.messages{flex:1;overflow:auto;padding:20px;display:flex;flex-direction:column;gap:12px;background:#fdfdfd}.bubble{max-width:78%;border:1px solid #eee;border-radius:14px 14px 5px 14px;background:white;padding:10px 13px;line-height:1.9;white-space:pre-wrap;overflow-wrap:anywhere;align-self:flex-start}.bubble.mine{background:var(--yellow);border-color:#f8e9aa;align-self:flex-end;border-radius:14px 14px 14px 5px}.bubble time{display:block;text-align:left;color:var(--muted);font-size:10px}.empty{color:var(--muted);margin:auto;text-align:center;line-height:2}.composer{display:flex;gap:10px;padding:12px;border-top:1px solid var(--border)}.composer input{flex:1}.send{width:50px;border:none;border-radius:11px;background:var(--ink);color:white;font-size:23px}.pending{padding:14px;background:var(--yellow);font-size:12px;text-align:center}.bottom{height:76px;display:flex;justify-content:center;gap:30px;align-items:center;background:white;border-top:1px solid var(--border)}.bottom button{border:0;background:transparent;padding:11px;color:var(--muted);font-size:13px}.bottom button.selected{color:var(--ink);font-weight:900}dialog{width:min(500px,calc(100% - 25px));border:1px solid var(--border);border-radius:18px;padding:22px}dialog::backdrop{background:#0006}.muted{font-size:12px;color:var(--muted);line-height:1.8}[hidden]{display:none!important}@media(max-width:680px){.top{height:66px;padding:0 14px}.layout{display:flex;flex-direction:column;padding:8px;height:calc(100dvh - 132px);gap:7px}.sidebar{max-height:215px;min-height:160px;flex-shrink:0}.conversation{flex:1;min-height:0}.bottom{height:66px;gap:0;justify-content:space-around;position:sticky;bottom:0}.bottom button{font-size:11px;padding:8px}.messages{padding:12px}.bubble{max-width:88%}.auth{margin:5vh auto}}
+/* Messenger-first mobile workspaces: keep the composer visible and avoid cramped columns. */
+.workspace-nav{display:flex;align-items:center;justify-content:space-around;gap:8px;position:sticky;bottom:0;background:#fff;border-top:1px solid var(--border);min-height:66px;padding:8px max(10px,env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left));z-index:3}
+.workspace-nav a,.workspace-nav button{display:flex;align-items:center;justify-content:center;min-height:42px;flex:1;text-decoration:none;color:var(--muted);font-size:12px;font-weight:700;background:none;border:0;border-radius:11px}
+.workspace-nav .active{color:var(--ink);background:var(--yellow)}
+.workspace-shell{display:flex;flex-direction:column;height:100dvh;min-height:0}
+.workspace-shell>.layout{flex:1;min-height:0;height:auto}
+.workspace-shell .sidebar{overflow-y:auto}
+.workspace-shell .sidebar h1{font-size:18px}
+.workspace-shell .sidebar h2{font-size:15px;margin:18px 0 6px}
+.workspace-shell .sidebar input[type=checkbox]{width:auto;accent-color:#18191b}
+.workspace-shell .sidebar label{display:flex;align-items:center;gap:8px;margin:10px 0}
+.workspace-shell .sidebar #offers,.workspace-shell .sidebar #cases{min-height:20px}
+.workspace-shell .conversation{min-height:0}
+.workspace-shell .composer{flex-shrink:0}
+@media(max-width:680px){.workspace-shell>.layout{height:auto;min-height:0}.workspace-shell .sidebar{max-height:38dvh;min-height:145px}.workspace-shell .top{flex-shrink:0}.workspace-shell .messages{min-height:80px}}
+
+/* Consultation wizard: visual language aligned with VisitVakil's existing site. */
+.consult-dialog{width:min(650px,calc(100% - 20px));max-height:min(900px,calc(100dvh - 30px));padding:0;overflow:hidden;border:0;border-radius:25px;box-shadow:0 24px 75px #0003}
+.consult-dialog form{height:min(820px,calc(100dvh - 30px));display:flex;flex-direction:column;min-height:0}
+.consult-dialog::backdrop{background:#0006;backdrop-filter:blur(5px)}
+.wizard-header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:18px 22px;border-bottom:1px solid var(--border)}
+.wizard-brand{display:flex;align-items:center;gap:10px;font-size:23px;font-weight:900;line-height:1.1}.wizard-brand .mark{width:56px;height:56px}.wizard-brand small{display:block;font-size:12px;font-weight:500;margin-top:5px}
+.wizard-close,.wizard-back{border:0;background:#f5f5f2;border-radius:99px;padding:9px 15px;min-width:43px;min-height:43px}.wizard-close{font-size:24px}.wizard-progress{display:flex;gap:10px;padding:16px 24px 8px;direction:rtl}.wizard-progress span{height:3px;flex:1;background:#e7e7e7;border-radius:9px}.wizard-progress span.done{background:#252525}
+.wizard-meta{display:flex;justify-content:space-between;padding:6px 24px 12px;font-size:13px}.wizard-meta small{color:var(--muted)}
+.wizard-body{padding:12px 24px 28px;flex:1;overflow-y:auto;min-height:0}.wizard-step h2{font-size:22px;line-height:1.5;margin:14px 0 8px}.wizard-lead{color:var(--muted);margin:0 0 23px}
+.wizard-options{display:grid;gap:12px}.wizard-option{display:flex;align-items:center;gap:14px;border:1px solid #dedede;border-radius:19px;padding:21px 17px;margin:0;cursor:pointer;box-shadow:0 2px 7px #00000006}.wizard-option input,.wizard-categories input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.wizard-option:has(input:checked),.wizard-categories label:has(input:checked){border:2px solid #262626;padding:20px 16px}.wizard-option:has(input:disabled){opacity:.48;cursor:not-allowed}
+.wizard-symbol{font-size:25px;width:44px;height:44px;border-radius:12px;background:#f6f5f1;display:grid;place-items:center}.wizard-option-text{display:grid;gap:7px;flex:1}.wizard-option-text strong{font-size:18px}.wizard-option-text small{color:var(--muted);font-size:13px}.wizard-option-text b{font-size:15px}.wizard-check{height:24px;width:24px;border:2px solid #ddd;border-radius:50%}.wizard-option input:checked~.wizard-check{background:#262626;border-color:#262626}.wizard-option input:checked~.wizard-check:after{content:"✓";color:white;display:block;text-align:center;line-height:20px}
+.wizard-categories{display:grid;grid-template-columns:1fr 1fr;gap:12px}.wizard-categories label{margin:0;min-height:145px;border:1px solid #ddd;border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:9px;cursor:pointer}.category-icon{font-size:25px;line-height:1}.wizard-categories strong{font-size:16px}.wizard-categories small{font-size:12px;color:var(--muted);line-height:1.6}
+.wizard-summary{border:1px solid #ddd;border-radius:18px;padding:10px 18px;margin:20px 0}.wizard-summary>div{display:flex;align-items:center;gap:10px;padding:18px 0;border-bottom:1px solid #eee}.wizard-summary>div:last-child{border:0}.wizard-summary span{color:var(--muted);min-width:60px}.wizard-summary strong{flex:1}.wizard-summary button{border:0;background:none;color:var(--muted);cursor:pointer}.wizard-price{background:var(--yellow);padding:8px 10px;border-radius:10px;flex:initial!important}
+.wizard-footer{border-top:1px solid var(--border);padding:12px 22px 8px;background:white}.wizard-footer .primary{margin:0;border-radius:999px;min-height:56px;font-size:18px}.wizard-footer .feedback{min-height:0;margin:5px 0;color:#a34121}
+@media(max-width:680px){.consult-dialog{width:calc(100% - 20px);max-height:calc(100dvh - 28px);border-radius:25px}.consult-dialog form{height:calc(100dvh - 28px)}.wizard-header{padding:14px 18px}.wizard-brand{font-size:20px}.wizard-brand .mark{width:48px;height:48px}.wizard-body{padding:10px 18px 20px}.wizard-meta{padding:6px 18px 10px}.wizard-categories{gap:9px}.wizard-categories label{padding:13px;min-height:133px}.wizard-categories label:has(input:checked){padding:12px}.wizard-categories strong{font-size:14px}.wizard-categories small{font-size:11px}.wizard-footer{padding:11px 16px 8px}}
+
+.guest-landing{min-height:calc(100dvh - 155px);display:grid;place-items:center;padding:28px 18px;background:#fff}.guest-hero{width:min(540px,100%);text-align:center}.guest-hero h1{font-size:clamp(28px,7vw,46px);font-weight:900;line-height:1.5;margin:0 0 16px}.guest-hero p{color:var(--muted);font-size:19px;margin:0 0 36px}.guest-hero .primary{background:#f7efd4;color:#252525;border:1px solid #eee1b8;min-height:85px;font-size:25px;border-radius:20px;box-shadow:0 10px 35px #0000000b}.guest-hero small{display:block;margin:25px auto;color:var(--muted);line-height:2}.guest-landing[hidden]{display:none}
+
+/* Unified VisitVakil typography: client, lawyer, admin and consultation flow. */
+:root{font-family:"Yekan Bakh","YekanBakh",Tahoma,Arial,sans-serif}
+html,body,button,input,textarea,select,dialog,a,nav,header,main,aside,section,article{font-family:"Yekan Bakh","YekanBakh",Tahoma,Arial,sans-serif}
+body{font-weight:400}
+h1,h2,h3,.logo,.wizard-meta strong,.wizard-option-text strong,.wizard-categories strong,.chathead strong,.panelhead h1{font-weight:800}
+button,.primary,.wizard-option-text b{font-weight:700}
+
+
+/* Consultation experience v2 — mobile-first bottom sheet */
+.consult-dialog{position:fixed;inset:auto 0 0 0;margin:auto auto 0;width:min(600px,100%);max-width:100%;max-height:min(92dvh,900px);border-radius:30px 30px 0 0;border:1px solid #eeeae2;background:linear-gradient(156deg,#fffdf5 0%,#faf9f6 34%,#f6f6f6 100%);box-shadow:0 -16px 65px #0002}
+.consult-dialog form{height:min(830px,92dvh);background:transparent}
+.consult-dialog::backdrop{background:#15151585;backdrop-filter:blur(8px)}
+.wizard-header{padding:19px 25px 9px;border:0;min-height:70px}
+.wizard-brand{font-size:15px;gap:8px;letter-spacing:-.25px}
+.wizard-brand .mark{width:33px;height:33px;border-radius:11px;font-size:21px}
+.wizard-brand small{font-size:10px;color:#818181}
+.wizard-close,.wizard-back{background:#ffffffd9;border:1px solid #eae7df;box-shadow:0 2px 8px #0000000a;border-radius:50%;min-width:42px;min-height:42px;padding:6px 10px}
+.wizard-progress{padding:10px 25px 8px;gap:7px;justify-content:flex-start;direction:rtl}
+.wizard-progress span{flex:0 0 7px;width:7px;height:7px;background:#d4d2cb;border-radius:99px;transition:width .2s,background .2s}
+.wizard-progress span.done{background:#222;width:27px;flex-basis:27px}
+.wizard-meta{padding:7px 25px 6px;align-items:center}
+.wizard-meta strong{font-size:12px;color:#777;font-weight:600}
+.wizard-meta small{font-size:11px;color:#8c8c8c}
+.wizard-body{padding:9px 25px 28px;scrollbar-width:thin}
+.wizard-step h2{font-size:clamp(23px,5vw,30px);font-weight:800;line-height:1.55;letter-spacing:-.4px;margin:9px 0 5px}
+.wizard-lead{font-size:13px;line-height:2;color:#858585;margin:0 0 23px}
+.wizard-options{gap:12px}
+.wizard-option{background:#fff;border:1.5px solid #ebe9e4;border-radius:20px;min-height:120px;padding:20px 18px;box-shadow:0 5px 22px #1e1e1e08;transition:border-color .15s,box-shadow .15s,transform .15s}
+.wizard-option:has(input:checked){border:2px solid #232323;padding:19.5px 17.5px;box-shadow:0 8px 22px #0000000b}
+.wizard-option:focus-within,.wizard-categories label:focus-within{outline:3px solid #eadc9c;outline-offset:2px}
+.wizard-symbol{width:53px;height:53px;border-radius:16px;background:#fbf5e5;font-size:26px;color:#3a352a}
+.wizard-option-text{gap:7px}
+.wizard-option-text strong{font-size:18px;font-weight:800}
+.wizard-option-text small{font-size:12px;line-height:1.8}
+.wizard-option-text b{font-size:12px;font-weight:700;color:#69635a}
+.wizard-check{flex-shrink:0}
+.wizard-categories{grid-template-columns:1fr;gap:10px}
+.wizard-categories label{position:relative;display:grid;grid-template-columns:43px 1fr;grid-template-rows:auto auto;column-gap:14px;align-items:center;min-height:88px;padding:15px 17px;border:1.5px solid #ebe9e4;border-radius:18px;background:#fff;box-shadow:0 4px 18px #00000006}
+.wizard-categories label:has(input:checked){border:2px solid #252525;padding:14.5px 16.5px}
+.wizard-categories .category-icon{grid-row:1/3;display:grid;place-items:center;width:43px;height:43px;border-radius:13px;background:#faf7ef;font-size:22px}
+.wizard-categories strong{font-size:15px;font-weight:800}
+.wizard-categories small{font-size:12px;line-height:1.7}
+.wizard-summary{background:#fff;border:1px solid #eae8e2;border-radius:19px;box-shadow:0 5px 22px #00000007}
+.wizard-footer{background:linear-gradient(180deg,#faf9f7f0,#fff 60%);border-top:1px solid #ece9e2;padding:14px 25px max(18px,env(safe-area-inset-bottom));box-shadow:0 -8px 22px #00000004}
+.wizard-footer .primary{border-radius:999px;min-height:59px;font-size:16px;font-weight:800}
+.wizard-footer .primary:disabled{opacity:.38}
+.wizard-body textarea{background:#fff;border-radius:16px;line-height:1.9}
+@media(max-width:680px){
+.consult-dialog{width:100%;max-height:94dvh;border-radius:29px 29px 0 0}
+.consult-dialog form{height:94dvh}
+.wizard-header{padding:16px 19px 8px}
+.wizard-progress{padding:8px 20px}
+.wizard-meta{padding:7px 20px 5px}
+.wizard-body{padding:8px 20px 25px}
+.wizard-step h2{font-size:25px}
+.wizard-categories{grid-template-columns:1fr;gap:10px}
+.wizard-categories label{min-height:85px;padding:13px 15px}
+.wizard-categories label:has(input:checked){padding:12.5px 14.5px}
+.wizard-categories strong{font-size:15px}
+.wizard-categories small{font-size:12px}
+.wizard-footer{padding:13px 19px max(18px,env(safe-area-inset-bottom))}
+}
+
+
+/* VisitVakil consultation sheet — mobile-first visual refresh */
+.consult-dialog{width:min(570px,100%);max-width:100%;max-height:min(820px,94dvh);margin:auto auto 0;border:1px solid #eceae5;border-bottom:0;border-radius:30px 30px 0 0;background:linear-gradient(155deg,#fff8e8 0%,#fafaf8 27%,#fff 65%);box-shadow:0 -20px 75px #1112;overscroll-behavior:contain}
+.consult-dialog::backdrop{background:rgba(20,21,22,.47);backdrop-filter:blur(7px)}
+.consult-dialog form{height:min(790px,94dvh);max-height:94dvh}
+.wizard-header{border:0;padding:18px 25px 5px;min-height:64px}
+.wizard-brand{font-size:16px;gap:8px}.wizard-brand .mark{height:34px;width:34px;font-size:21px;border-radius:11px}.wizard-brand small{font-size:10px;margin-top:3px}
+.wizard-close,.wizard-back{height:38px;min-height:38px;min-width:38px;padding:5px 12px;background:#fff;border:1px solid #e9e7e2;box-shadow:0 2px 7px #00000008;color:#333}
+.wizard-progress{direction:rtl;gap:6px;padding:16px 25px 11px}.wizard-progress span{height:5px;flex:0 0 8px;background:#dadbd8;border-radius:30px;transition:width .2s ease,background .2s ease}.wizard-progress span.done{background:#242424;flex-basis:29px}
+.wizard-meta{padding:4px 25px 0;align-items:center}.wizard-meta strong{font-size:12px;color:#65676b;font-weight:600}.wizard-meta small{font-size:11px;color:#8a8c8e}
+.wizard-body{padding:8px 25px 24px;scrollbar-width:thin}
+.wizard-step h2{font-size:clamp(23px,5vw,29px);font-weight:800;line-height:1.65;letter-spacing:-.3px;margin:9px 0 5px}.wizard-lead{font-size:13px;line-height:2;color:#7a7b7f;margin-bottom:21px}
+.wizard-options{gap:11px}.wizard-option{background:#fff;border:1px solid #e9e9e7;border-radius:19px;padding:20px 17px;box-shadow:0 5px 17px #00000008;transition:border-color .16s ease,box-shadow .16s ease}
+.wizard-option:has(input:checked){border:2px solid #242424;padding:19px 16px;box-shadow:0 7px 19px #0000000c}
+.wizard-symbol{height:50px;width:50px;flex:none;background:#f9f6ec;color:#242424;border-radius:15px;font-size:25px}
+.wizard-option-text strong{font-size:17px;font-weight:800}.wizard-option-text small{font-size:12px;line-height:1.9}.wizard-option-text b{font-size:12px;color:#4d6e5b;font-weight:700}
+.wizard-check{height:21px;width:21px;flex:none}
+.wizard-categories{grid-template-columns:1fr;gap:10px}
+.wizard-categories label{background:#fff;display:grid;grid-template-columns:44px minmax(0,1fr);grid-template-rows:auto auto;align-content:center;column-gap:12px;row-gap:3px;min-height:88px;border:1px solid #e9e9e7;border-radius:18px;padding:16px 18px;box-shadow:0 4px 15px #00000007}
+.wizard-categories label:has(input:checked){border:2px solid #242424;padding:15px 17px}
+.wizard-categories .category-icon{grid-row:1/3;grid-column:1;display:grid;place-items:center;width:44px;height:44px;border-radius:13px;background:#f9f6ec;font-size:23px}
+.wizard-categories strong{font-size:15px;grid-column:2;line-height:1.6;font-weight:800}.wizard-categories small{font-size:12px;grid-column:2;line-height:1.8}
+.wizard-summary{background:#fff;border-color:#eae8e4;box-shadow:0 5px 20px #00000009}
+.wizard-footer{flex:none;padding:15px 25px max(17px,env(safe-area-inset-bottom));background:rgba(255,255,255,.96);border-top:1px solid #f0efec;box-shadow:0 -8px 25px #00000006}
+.wizard-footer .primary{min-height:58px;border-radius:999px;font-size:16px;font-weight:800;background:#202124}
+.wizard-option:focus-within,.wizard-categories label:focus-within{outline:3px solid #e6d9a6;outline-offset:2px}
+@media(max-width:680px){.consult-dialog{width:100%;max-width:100%;max-height:94dvh;border-radius:30px 30px 0 0;margin:auto auto 0}.consult-dialog form{height:94dvh}.wizard-header{padding:15px 20px 3px}.wizard-progress{padding:13px 20px 9px}.wizard-meta{padding:4px 20px 0}.wizard-body{padding:8px 20px 18px}.wizard-categories label{min-height:86px;padding:14px 15px}.wizard-categories label:has(input:checked){padding:13px 14px}.wizard-categories strong{font-size:15px}.wizard-categories small{font-size:12px}.wizard-footer{padding:12px 20px max(16px,env(safe-area-inset-bottom))}}
+@media(prefers-reduced-motion:reduce){.wizard-progress span,.wizard-option{transition:none}}
+
+/* VisitVakil consultation sheet — mobile-first visual refinement */
+.consult-dialog{background:linear-gradient(158deg,#fffdf5 0%,#fafaf7 42%,#fff 100%);border:1px solid #ffffffc9;border-radius:30px;box-shadow:0 26px 90px #16161630;max-width:590px}
+.consult-dialog::backdrop{background:#15151573;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.consult-dialog form{background:transparent}
+.wizard-header{border-bottom:0;padding:18px 26px 5px}
+.wizard-brand{font-size:16px;font-weight:800;gap:8px}
+.wizard-brand .mark{width:34px;height:34px;border-radius:11px;font-size:20px}
+.wizard-brand small{font-size:10px;color:#777;font-weight:400}
+.wizard-close,.wizard-back{background:#ffffffd9;border:1px solid #eae9e4;width:40px;height:40px;min-width:40px;min-height:40px;padding:0;display:grid;place-items:center;box-shadow:0 3px 10px #0000000a}
+.wizard-progress{direction:rtl;justify-content:flex-start;gap:6px;padding:19px 28px 4px}
+.wizard-progress span{height:5px;flex:0 0 8px;border-radius:50%;background:#d5d4ce;transition:all .2s ease}
+.wizard-progress span.done{background:#202020;width:27px;flex-basis:27px;border-radius:10px}
+.wizard-meta{padding:8px 28px 0;font-size:12px;color:#777}
+.wizard-meta strong{font-size:12px;font-weight:600}
+.wizard-body{padding:6px 28px 30px;scrollbar-width:thin}
+.wizard-step h2{font-size:clamp(23px,4.6vw,30px);font-weight:800;letter-spacing:-.4px;line-height:1.55;margin:18px 0 7px}
+.wizard-lead{font-size:13px;line-height:1.9;color:#858585;margin-bottom:24px}
+.wizard-options{gap:13px}
+.wizard-option{position:relative;background:#fff;border:1px solid #e9e8e4;border-radius:21px;padding:19px;min-height:112px;box-shadow:0 6px 23px #2525250a;transition:border-color .15s,box-shadow .15s,transform .15s}
+.wizard-option:hover{box-shadow:0 9px 28px #25252512}
+.wizard-option:has(input:checked){border:2px solid #232323;padding:18px;box-shadow:0 8px 27px #25252513}
+.wizard-option-text strong{font-size:17px;font-weight:800}
+.wizard-option-text small{font-size:12px;line-height:1.8}
+.wizard-option-text b{font-size:12px;font-weight:700;color:#444}
+.wizard-symbol{background:#f7f5ed;color:#262626;width:49px;height:49px;border-radius:15px}
+.wizard-check{width:21px;height:21px;flex-shrink:0}
+.wizard-categories{grid-template-columns:1fr;gap:10px}
+.wizard-categories label{position:relative;background:#fff;border:1px solid #e8e7e2;border-radius:18px;min-height:83px;padding:14px 17px 14px 65px;display:grid;grid-template-columns:42px 1fr;grid-template-rows:auto auto;column-gap:13px;row-gap:4px;align-content:center;box-shadow:0 5px 20px #00000008}
+.wizard-categories label:has(input:checked){border:2px solid #252525;padding:13px 16px 13px 64px}
+.wizard-categories .category-icon{grid-column:1;grid-row:1/3;display:grid;place-items:center;border-radius:12px;background:#f8f6ef;font-size:23px}
+.wizard-categories strong{grid-column:2;grid-row:1;font-size:15px;font-weight:800}
+.wizard-categories small{grid-column:2;grid-row:2;font-size:12px;line-height:1.7}
+.wizard-summary{background:#fff;border:1px solid #e8e8e5;box-shadow:0 8px 25px #00000009;border-radius:21px}
+.wizard-footer{background:#ffffffed;border-top:1px solid #eeede8;box-shadow:0 -7px 24px #ffffffb8;padding:15px 28px max(16px,env(safe-area-inset-bottom))}
+.wizard-footer .primary{min-height:57px;background:#1d1d1d;font-weight:800;font-size:16px;box-shadow:0 6px 14px #00000013}
+.wizard-footer .primary:disabled{background:#e5e5e3;color:#969696;opacity:1;box-shadow:none}
+@media(max-width:680px){
+.consult-dialog{position:fixed;inset:auto 0 0 0;margin:0;width:100%;max-width:100%;max-height:calc(100dvh - 24px);border-radius:30px 30px 0 0;border-bottom:0}
+.consult-dialog form{height:min(780px,calc(100dvh - 24px));max-height:calc(100dvh - 24px)}
+.wizard-header{padding:17px 20px 2px}
+.wizard-progress{padding:17px 22px 2px}
+.wizard-meta{padding:9px 22px 0}
+.wizard-body{padding:6px 22px 24px}
+.wizard-step h2{font-size:25px}
+.wizard-categories{gap:9px}
+.wizard-categories label{min-height:78px;padding:13px 14px;grid-template-columns:40px 1fr}
+.wizard-categories label:has(input:checked){padding:12px 13px}
+.wizard-categories strong{font-size:15px}
+.wizard-categories small{font-size:12px}
+.wizard-footer{padding:12px 20px max(15px,env(safe-area-inset-bottom))}
+}
+@media(prefers-reduced-motion:reduce){.wizard-progress span,.wizard-option{transition:none}}
+
+/* Pure-white consultation surface: no tinted bands or gradients. */
+.consult-dialog,.consult-dialog form,.consult-dialog .wizard-header,.consult-dialog .wizard-body,.consult-dialog .wizard-meta,.consult-dialog .wizard-progress,.consult-dialog .wizard-footer{background:#fff}
+.consult-dialog{border-color:#fff}
+.consult-dialog .wizard-footer{box-shadow:none;border-top:1px solid #f1f1f1}
+.consult-dialog .wizard-option,.consult-dialog .wizard-categories label,.consult-dialog .wizard-summary{background:#fff;box-shadow:none;border-color:#eaeaea}
+.consult-dialog .wizard-option:hover{box-shadow:0 3px 14px #00000008}
+.consult-dialog .wizard-option:has(input:checked){box-shadow:none;border-color:#242424}
+.consult-dialog .wizard-symbol,.consult-dialog .wizard-categories .category-icon{background:#f7f7f7}
+.consult-dialog .wizard-close,.consult-dialog .wizard-back{background:#fff;box-shadow:none}
+
+/* Consultation touch states: neutral black outline, pale-yellow selection. */
+.consult-dialog,.consult-dialog *{-webkit-tap-highlight-color:transparent}
+.consult-dialog input,.consult-dialog textarea,.consult-dialog button,.consult-dialog label{accent-color:#252525}
+.consult-dialog textarea:focus,.consult-dialog input:focus,.consult-dialog select:focus{outline:0;border-color:#242424;box-shadow:0 0 0 1px #242424}
+.consult-dialog textarea:focus-visible{outline:0;border-color:#242424;box-shadow:0 0 0 1px #242424}
+.consult-dialog .wizard-option:has(input:checked),.consult-dialog .wizard-categories label:has(input:checked){background:#fff7dc;border:1.5px solid #242424;box-shadow:none}
+.consult-dialog .wizard-option:has(input:checked) .wizard-symbol,.consult-dialog .wizard-categories label:has(input:checked) .category-icon{background:#ffefbc}
+.consult-dialog .wizard-option:focus-within,.consult-dialog .wizard-categories label:focus-within{outline:none}
+.consult-dialog .wizard-option input:focus-visible~.wizard-check{outline:2px solid #242424;outline-offset:3px}
+@media(max-width:680px){
+.consult-dialog .wizard-categories{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.consult-dialog .wizard-categories label{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:5px;min-height:112px;padding:12px 13px;border-radius:16px}
+.consult-dialog .wizard-categories label:has(input:checked){padding:12px 13px;border-width:1.5px}
+.consult-dialog .wizard-categories .category-icon{width:32px;height:32px;font-size:19px;flex:none}
+.consult-dialog .wizard-categories strong{font-size:14px;line-height:1.5}
+.consult-dialog .wizard-categories small{font-size:11px;line-height:1.5}
+.consult-dialog .wizard-step:has(.wizard-categories) h2{font-size:21px;margin:12px 0 4px}
+.consult-dialog .wizard-step:has(.wizard-categories) .wizard-lead{margin-bottom:13px}
+}
+@media(max-width:370px){.consult-dialog .wizard-categories{gap:7px}.consult-dialog .wizard-categories label{padding:10px;min-height:105px}.consult-dialog .wizard-categories strong{font-size:13px}.consult-dialog .wizard-categories small{font-size:10px}}
+
+
+/* Client messenger visual system v2 — presentation only, no business logic changes. */
+body:has(#workspace:not([hidden])) .shell{background:#f7f7f6}
+body:has(#workspace:not([hidden])) .top{height:76px;box-shadow:0 1px 0 #00000004}
+body:has(#workspace:not([hidden])) .top-note{border:1px solid #e9e9e6;border-radius:99px;background:#f8f8f6;padding:8px 13px;font-weight:700}
+body:has(#workspace:not([hidden])) .layout{gap:16px;padding:20px}
+body:has(#workspace:not([hidden])) .sidebar,body:has(#workspace:not([hidden])) .conversation{border:1px solid #eaeae7;border-radius:22px;box-shadow:0 10px 35px #22222207}
+body:has(#workspace:not([hidden])) .sidebar{padding:18px}
+body:has(#workspace:not([hidden])) .panelhead{padding:2px 2px 13px}
+body:has(#workspace:not([hidden])) .panelhead h1{font-size:21px;letter-spacing:-.3px;font-weight:800}
+body:has(#workspace:not([hidden])) #new-request{min-height:49px;border-radius:15px;background:#202124;font-weight:800}
+body:has(#workspace:not([hidden])) .inbox{padding-top:14px}
+body:has(#workspace:not([hidden])) .thread{position:relative;border:1px solid #f0f0ed;border-radius:16px;margin:0 0 9px;padding:16px 15px;transition:background .16s,border-color .16s}
+body:has(#workspace:not([hidden])) .thread:hover{background:#fafaf7}
+body:has(#workspace:not([hidden])) .thread.selected{background:#fff9df;border-color:#eee1a6}
+body:has(#workspace:not([hidden])) .thread strong{font-weight:800;font-size:14px}
+body:has(#workspace:not([hidden])) .thread span{font-size:11px}
+body:has(#workspace:not([hidden])) .chathead{min-height:80px;background:#fff;padding:15px 20px;gap:12px}
+body:has(#workspace:not([hidden])) .chathead strong{font-size:16px;font-weight:800}
+body:has(#workspace:not([hidden])) .chathead small{font-size:11px}
+body:has(#workspace:not([hidden])) .connection{display:inline-block;border-radius:30px;padding:5px 9px;background:#f6f6f3;color:#555;font-size:10px}
+body:has(#workspace:not([hidden])) .messages{background:#fafaf8;gap:13px;padding:23px}
+body:has(#workspace:not([hidden])) .bubble{box-shadow:0 2px 12px #00000005;border-color:#ecece8;border-radius:17px 17px 5px 17px;padding:12px 16px;line-height:2}
+body:has(#workspace:not([hidden])) .bubble.mine{background:#fff3c5;border-color:#f1e6b5;border-radius:17px 17px 17px 5px}
+body:has(#workspace:not([hidden])) .composer{background:white;align-items:center;padding:12px 16px;gap:9px}
+body:has(#workspace:not([hidden])) .composer input{border-radius:16px;background:#fafaf9;border-color:#ededeb;min-height:48px}
+body:has(#workspace:not([hidden])) .send{height:48px;width:48px;flex:none;border-radius:15px}
+body:has(#workspace:not([hidden])) .pending{background:#fff8df;border-top:1px solid #f5ebca;padding:13px 18px;line-height:1.8}
+body:has(#workspace:not([hidden])) .bottom{box-shadow:0 -4px 22px #00000005;gap:10px}
+body:has(#workspace:not([hidden])) .bottom button{min-width:76px;border-radius:13px;font-weight:700}
+body:has(#workspace:not([hidden])) .bottom button.selected{background:#fff3c5}
+body:has(#workspace:not([hidden])) .plain{font-weight:700;border-radius:10px}
+body:has(#workspace:not([hidden])) button:focus-visible{outline:3px solid #e6ce71;outline-offset:2px}
+@media(max-width:680px){
+ body:has(#workspace:not([hidden])) .shell{height:100dvh;display:flex;flex-direction:column;overflow:hidden}
+ body:has(#workspace:not([hidden])) .top{height:65px;min-height:65px;padding:0 16px}
+ body:has(#workspace:not([hidden])) .logo{font-size:17px}
+ body:has(#workspace:not([hidden])) .logo .mark{height:39px;width:39px;border-radius:12px}
+ body:has(#workspace:not([hidden])) .top-note{font-size:10px;padding:7px 10px}
+ body:has(#workspace:not([hidden])) main{min-height:0;flex:1;display:flex;flex-direction:column}
+ body:has(#workspace:not([hidden])) #workspace{flex:1;min-height:0}
+ body:has(#workspace:not([hidden])) .layout{height:100%;min-height:0;padding:10px 10px 8px;gap:10px}
+ body:has(#workspace:not([hidden])) .sidebar{padding:12px;min-height:0;max-height:33%;border-radius:19px;flex-shrink:0}
+ body:has(#workspace:not([hidden])) .panelhead{padding-bottom:4px}
+ body:has(#workspace:not([hidden])) .panelhead h1{font-size:17px;margin:4px}
+ body:has(#workspace:not([hidden])) #new-request{margin-top:5px;min-height:42px}
+ body:has(#workspace:not([hidden])) .inbox{padding-top:8px}
+ body:has(#workspace:not([hidden])) .thread{padding:10px 12px;margin-bottom:6px}
+ body:has(#workspace:not([hidden])) .thread span{margin-top:3px}
+ body:has(#workspace:not([hidden])) .conversation{min-height:0;flex:1;border-radius:19px}
+ body:has(#workspace:not([hidden])) .chathead{min-height:65px;padding:10px 13px}
+ body:has(#workspace:not([hidden])) .chathead strong{font-size:14px}
+ body:has(#workspace:not([hidden])) .messages{padding:13px;gap:10px}
+ body:has(#workspace:not([hidden])) .bubble{max-width:89%;padding:9px 12px;font-size:13px}
+ body:has(#workspace:not([hidden])) .composer{padding:9px;gap:7px}
+ body:has(#workspace:not([hidden])) .composer input{min-height:44px}
+ body:has(#workspace:not([hidden])) .send{width:44px;height:44px}
+ body:has(#workspace:not([hidden])) .bottom{height:calc(61px + env(safe-area-inset-bottom));min-height:calc(61px + env(safe-area-inset-bottom));padding:5px 5px env(safe-area-inset-bottom);position:relative;flex-shrink:0;gap:2px}
+ body:has(#workspace:not([hidden])) .bottom button{min-width:0;flex:1;font-size:11px;padding:10px 3px}
+}
+@media(prefers-reduced-motion:reduce){body:has(#workspace:not([hidden])) .thread{transition:none}}
+
+/* Messenger tab bar: compact Telegram-style outline iconography, no duplicate CTA. */
+body:has(#workspace:not([hidden])) #new-request{display:none!important}
+body:has(#workspace:not([hidden])) .bottom{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:stretch;gap:0;height:76px;padding:6px 12px;background:#fff;border-top:1px solid #eaeae7}
+body:has(#workspace:not([hidden])) .bottom button{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px;width:100%;min-width:0;min-height:54px;padding:6px 2px;border-radius:13px;color:#777a80;font-size:11px;font-weight:600;line-height:1.4;transition:color .15s,background .15s}
+body:has(#workspace:not([hidden])) .bottom button svg{display:block;flex:none;width:23px;height:23px}
+body:has(#workspace:not([hidden])) .bottom button.selected{background:#fff8df;color:#202124;font-weight:800}
+body:has(#workspace:not([hidden])) .bottom button:disabled{opacity:.42}
+body:has(#workspace:not([hidden])) .sidebar{padding-top:15px}
+body:has(#workspace:not([hidden])) .inbox{padding-top:5px}
+@media(max-width:680px){
+ body:has(#workspace:not([hidden])) .bottom{height:calc(67px + env(safe-area-inset-bottom));min-height:calc(67px + env(safe-area-inset-bottom));padding:5px 5px calc(4px + env(safe-area-inset-bottom));position:relative;box-shadow:0 -5px 24px #00000008}
+ body:has(#workspace:not([hidden])) .bottom button{gap:3px;min-height:52px;padding:5px 0;font-size:10px}
+ body:has(#workspace:not([hidden])) .bottom button svg{width:22px;height:22px}
+ body:has(#workspace:not([hidden])) .sidebar{max-height:28%;padding:10px 12px}
+ body:has(#workspace:not([hidden])) .panelhead{padding:0 2px 5px}
+}
+@media(prefers-reduced-motion:reduce){body:has(#workspace:not([hidden])) .bottom button{transition:none}}
+
+/* Full-screen messenger navigation on phones. Desktop keeps split view. */
+.chat-back{display:none;align-items:center;justify-content:center;width:40px;height:40px;flex:none;background:#f7f7f5;border:0;border-radius:12px;color:#242424}
+@media(max-width:680px){
+ body:has(#workspace:not([hidden])) #workspace .layout{display:block;position:relative;height:100%;padding:0;overflow:hidden;background:#fff}
+ body:has(#workspace:not([hidden])) #workspace .sidebar{display:flex;width:100%;height:100%;max-height:none;min-height:0;border:0;border-radius:0;box-shadow:none;padding:13px 14px;background:#fff}
+ body:has(#workspace:not([hidden])) #workspace .panelhead{padding:7px 5px 13px}
+ body:has(#workspace:not([hidden])) #workspace .panelhead h1{font-size:23px}
+ body:has(#workspace:not([hidden])) #workspace .inbox{padding:4px 0 16px;overflow-y:auto}
+ body:has(#workspace:not([hidden])) #workspace .thread{border:0;border-bottom:1px solid #f1f1ef;border-radius:0;margin:0;min-height:75px;padding:16px 15px 15px 65px;background:#fff}
+ body:has(#workspace:not([hidden])) #workspace .thread.selected{background:#fffaf0}
+ body:has(#workspace:not([hidden])) #workspace .thread strong{font-size:15px}
+ body:has(#workspace:not([hidden])) #workspace .thread span{font-size:12px;margin-top:6px}
+ body:has(#workspace:not([hidden])) #workspace .conversation{display:none;width:100%;height:100%;min-height:0;border:0;border-radius:0;box-shadow:none;background:#fff}
+ body:has(#workspace:not([hidden])) #workspace.chat-open .sidebar{display:none}
+ body:has(#workspace:not([hidden])) #workspace.chat-open .conversation{display:flex}
+ body:has(#workspace:not([hidden])) #workspace.chat-open .chat-back{display:flex}
+ body:has(#workspace:not([hidden])) #workspace .chathead{min-height:68px;gap:10px;padding:10px 12px}
+ body:has(#workspace:not([hidden])) #workspace .chathead>div:first-of-type{min-width:0;flex:1}
+ body:has(#workspace:not([hidden])) #workspace .chathead strong{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ body:has(#workspace:not([hidden])) #workspace .messages{flex:1;min-height:0;overflow-y:auto;padding:15px}
+ body:has(#workspace:not([hidden])) #workspace .composer{flex:none;padding:10px 12px calc(10px + env(safe-area-inset-bottom)/3)}
+ body:has(#workspace:not([hidden])) #workspace.chat-open~*{min-height:0}
+}
+
+/* Pinned support conversation in the same inbox and chat visual language. */
+body:has(#workspace:not([hidden])) .support-thread{border:1px solid #f0e7c7!important;background:#fffbef!important;margin-bottom:12px!important;position:relative}
+body:has(#workspace:not([hidden])) .support-thread strong{font-weight:800}
+body:has(#workspace:not([hidden])) .support-thread::before{content:"";display:block;position:absolute;left:14px;top:calc(50% - 5px);width:9px;height:9px;border-radius:50%;background:#d5b754}
+@media(max-width:680px){body:has(#workspace:not([hidden])) #workspace .support-thread{border-radius:16px!important;margin:0 0 9px!important;padding:17px 16px 17px 45px!important}}
+
+/* Support inbox entry and ticket creation */
+#support-new:not([hidden]){display:block;width:calc(100% - 24px);margin:12px auto 16px;flex-shrink:0;border-radius:14px;min-height:46px}
+#support-dialog{border:1px solid #e9e9e7;border-radius:20px;max-width:min(440px,94vw);width:100%;padding:24px;background:#fff;color:#181818}
+#support-dialog::backdrop{background:rgba(0,0,0,.45)}
+#support-form{display:flex;flex-direction:column;gap:12px}
+#support-form h2{font-size:19px;margin:0 0 8px}
+#support-form input,#support-form textarea{width:100%;box-sizing:border-box;min-height:44px;border:1px solid #ddd;border-radius:12px;padding:12px;font:inherit}
+#support-form textarea{resize:vertical}
+#support-form .row{display:flex;gap:10px}
+#support-close:not([hidden]){display:block;align-self:flex-end;margin:8px 12px;padding:8px 12px;border-radius:10px;background:#f6f3ec}
+@media(max-width:680px){body:has(#workspace:not([hidden])) #workspace .sidebar{flex-direction:column}body:has(#workspace:not([hidden])) #workspace .inbox{flex:1;min-height:0}#support-new:not([hidden]){order:initial;margin:12px auto 16px}}
+
+/* Lawyer messenger */
+.lawyer-count:not([hidden]){display:inline-grid;place-items:center;min-width:19px;height:19px;padding:0 5px;border-radius:20px;background:#222;color:#fff;font-size:11px}
+.lawyer-nav button{position:relative;display:flex;flex-direction:column;gap:3px}
+@media(max-width:680px){.workspace-shell:not(.lawyer-chat-open)>.layout .sidebar{max-height:none;flex:1}.workspace-shell:not(.lawyer-chat-open)>.layout .conversation{display:none}.workspace-shell.lawyer-chat-open>.layout .sidebar{display:none}.workspace-shell.lawyer-chat-open>.layout .conversation{display:flex;flex:1}}
+
+/* Lawyer-only visual alignment with client messenger */
+.workspace-shell .lawyer-nav{border-top:1px solid #e9e9e9;background:#fff}
+.workspace-shell .lawyer-nav button{border:0;background:transparent;color:#777;font-weight:700;min-height:45px;border-radius:12px}
+.workspace-shell .lawyer-nav button.active{background:#fff3bc;color:#18191b}
+.workspace-shell .sidebar .thread{border-radius:13px;padding:17px 14px;text-align:right;font-weight:700}
+.workspace-shell .sidebar .thread:hover{background:#fff9e4}
+.workspace-shell .sidebar #ready-control{padding:10px 12px;border:1px solid #eee;border-radius:14px;background:#fafafa}
+.workspace-shell .sidebar #ready-control:has(input:checked){background:#fff9e4}
+.workspace-shell .sidebar #offers,.workspace-shell .sidebar #cases{overflow-y:auto}
+@media(max-width:680px){.workspace-shell .lawyer-nav{position:sticky;bottom:0;z-index:5}.workspace-shell .lawyer-nav button{font-size:11px;padding:5px 2px}.workspace-shell:not(.lawyer-chat-open)>.layout .sidebar{max-height:none;min-height:0;flex:1}.workspace-shell:not(.lawyer-chat-open)>.layout .conversation{display:none}.workspace-shell.lawyer-chat-open>.layout .sidebar{display:none}.workspace-shell.lawyer-chat-open>.layout .conversation{display:flex;flex:1;min-height:0}}
+
+/* Lawyer: use the same client messenger shell and footer geometry */
+body:has(.lawyer-nav) .shell{height:100dvh;display:flex;flex-direction:column;min-height:0}
+body:has(.lawyer-nav) .shell>main{flex:1;min-height:0;display:flex;flex-direction:column}
+body:has(.lawyer-nav) #workspace{flex:1;min-height:0}
+body:has(.lawyer-nav) #workspace>.layout{height:100%;min-height:0}
+body:has(.lawyer-nav) .lawyer-nav{flex-shrink:0}
+body:has(.lawyer-nav) .lawyer-nav button{position:relative}
+body:has(.lawyer-nav) .lawyer-nav button.selected{color:#18191b;font-weight:800}
+body:has(.lawyer-nav) #ready-control{display:flex;gap:10px;align-items:center;padding:12px 8px}
+body:has(.lawyer-nav) #ready-control input{width:20px;accent-color:#222}
+body:has(.lawyer-nav) #offers,body:has(.lawyer-nav) #cases{flex:1;min-height:0;overflow:auto}
+@media(max-width:680px){body:has(.lawyer-nav) #workspace{overflow:hidden}body:has(.lawyer-nav) #workspace .sidebar{flex-direction:column}body:has(.lawyer-nav) #workspace.chat-open .conversation{display:flex}body:has(.lawyer-nav) #workspace.chat-open .sidebar{display:none}}
+
+/* Lawyer support: in-page request form, no modal dependency */
+#workspace[data-lawyer-tab="support"] .sidebar{max-height:none;overflow-y:auto;min-height:0}
+#support-inline:not([hidden]){display:block;margin:12px;padding:16px;border:1px solid #e9e9e7;border-radius:16px;background:#fff}
+#support-inline-form{display:flex;flex-direction:column;gap:12px}
+#support-inline-form h2{font-size:18px;margin:0}
+#support-inline-form input,#support-inline-form textarea{box-sizing:border-box;width:100%;padding:12px;border:1px solid #ddd;border-radius:12px;font:inherit}
