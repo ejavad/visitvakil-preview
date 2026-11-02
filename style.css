@@ -371,3 +371,7 @@ body:has(.lawyer-nav) #offers,body:has(.lawyer-nav) #cases{flex:1;min-height:0;o
 #support-inline-form{display:flex;flex-direction:column;gap:12px}
 #support-inline-form h2{font-size:18px;margin:0}
 #support-inline-form input,#support-inline-form textarea{box-sizing:border-box;width:100%;padding:12px;border:1px solid #ddd;border-radius:12px;font:inherit}
+
+/* Explicit native dialog visibility in lawyer preview */
+#support-dialog:not([open]){display:none!important}
+#support-dialog[open]{display:block!important;position:fixed;inset:0;margin:auto;z-index:10000;max-height:90dvh;overflow:auto}
