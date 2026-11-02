@@ -417,3 +417,173 @@ body:has(.lawyer-nav) #offers,body:has(.lawyer-nav) #cases{flex:1;min-height:0;o
 }
 #workspace[data-lawyer-tab="activity"] .lawyer-offer-thread strong{font-size:15px;font-weight:800}
 #workspace[data-lawyer-tab="activity"] .lawyer-offer-thread span{color:#777;font-size:12px;line-height:1.7}
+
+/* Lawyer home desk: compact, touch-friendly, no invented financial amounts */
+#workspace>.layout[hidden],#lawyer-dashboard[hidden],
+#lawyer-dashboard .desk-view[hidden],#chat-filter-bar[hidden]{display:none!important}
+body:has(.lawyer-nav) #workspace .lawyer-dashboard{
+  width:100%;height:100%;min-height:0;overflow:hidden;
+  background:#fff;color:#202124;direction:rtl;
+}
+#lawyer-dashboard .desk-view{
+  display:flex;flex-direction:column;gap:0;
+  box-sizing:border-box;width:min(100%,790px);height:100%;margin:0 auto;
+  padding:18px 18px 20px;overflow-y:auto;overscroll-behavior:contain;
+}
+#lawyer-dashboard button{font:inherit;color:inherit;cursor:pointer}
+#lawyer-dashboard button:focus-visible,#chat-filter-bar button:focus-visible{
+ outline:2px solid #ae901e;outline-offset:2px
+}
+#lawyer-dashboard .desk-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+#lawyer-dashboard .desk-heading h1,#lawyer-dashboard .desk-detail-head h1{
+ margin:0;font-size:23px;line-height:1.4;font-weight:900;letter-spacing:-.5px
+}
+#lawyer-dashboard .desk-heading p,#lawyer-dashboard .desk-detail-head p{
+ margin:2px 0 0;color:#858585;font-size:12px
+}
+#lawyer-dashboard .desk-sample{
+ display:inline-flex;align-items:center;white-space:nowrap;
+ font-size:10px;color:#777;border:1px solid #ececec;
+ border-radius:999px;padding:5px 9px;background:#fafafa
+}
+#lawyer-dashboard .desk-availability{
+ display:flex;align-items:center;gap:9px;width:100%;height:49px;flex-shrink:0;
+ margin:14px 0 8px;padding:0 13px;border:1px solid #e7e7e7;
+ border-radius:14px;background:#fdfdfd;text-align:right
+}
+#lawyer-dashboard .desk-status-dot{
+ width:9px;height:9px;flex:none;background:#6c987d;border-radius:50%;
+ box-shadow:0 0 0 4px #e9f3ec
+}
+#lawyer-dashboard .desk-availability.offline .desk-status-dot{
+ background:#a4a4a4;box-shadow:0 0 0 4px #eee
+}
+#lawyer-dashboard .desk-availability strong{font-size:13px;font-weight:800}
+#lawyer-dashboard .desk-availability small{margin-right:auto;color:#7c7c7c;font-size:11px}
+#lawyer-dashboard .desk-availability svg{width:16px;height:16px;color:#888}
+#lawyer-dashboard .desk-section-label{
+ display:flex;align-items:center;justify-content:space-between;
+ font-size:13px;font-weight:850;margin:9px 0 9px
+}
+#lawyer-dashboard .desk-grid{
+ display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px
+}
+#lawyer-dashboard .desk-tile{
+ border:1px solid #ecebea;border-radius:16px;background:#fff;
+ box-shadow:0 3px 14px #22222205;text-align:right;
+ display:flex;flex-direction:column;align-items:flex-start;gap:5px;
+ min-width:0;min-height:111px;padding:12px;
+ transition:background .12s,border-color .12s
+}
+#lawyer-dashboard .desk-tile:hover{background:#fffbef;border-color:#efe4bc}
+#lawyer-dashboard .desk-tile:active{background:#fff5cf}
+#lawyer-dashboard .desk-tile-icon{
+ width:30px;height:30px;display:grid;place-items:center;flex-shrink:0;
+ border-radius:10px;background:#f7f6f2;color:#242424
+}
+#lawyer-dashboard .desk-tile-icon svg{width:20px;height:20px}
+#lawyer-dashboard .desk-tile-label{
+ color:#555;font-size:12px;font-weight:700;line-height:1.4;min-height:17px;
+ max-width:100%;overflow-wrap:break-word
+}
+#lawyer-dashboard .desk-tile-value{font-size:19px;font-weight:900;line-height:1.1}
+#lawyer-dashboard [data-desk-action="finance"],
+#lawyer-dashboard [data-desk-action="reports"]{background:#fffdf6}
+#lawyer-dashboard [data-desk-action="finance"] .desk-tile-value,
+#lawyer-dashboard [data-desk-action="reports"] .desk-tile-value{
+ font-size:11px;color:#555;font-weight:800;line-height:1.4
+}
+#lawyer-dashboard .desk-latest{
+ display:flex;align-items:center;gap:11px;width:100%;
+ padding:11px 13px;min-height:68px;min-width:0;
+ border:1px solid #ebe6d6;background:#fffbef;border-radius:15px;text-align:right
+}
+#lawyer-dashboard .desk-latest:disabled{opacity:.65;cursor:default}
+#lawyer-dashboard .desk-latest-icon{
+ width:35px;height:35px;display:grid;place-items:center;flex-shrink:0;
+ border-radius:12px;background:#f6ecc9
+}
+#lawyer-dashboard .desk-latest-icon svg{width:20px;height:20px}
+#lawyer-dashboard .desk-latest-copy{
+ min-width:0;display:flex;flex:1;flex-direction:column;gap:3px;overflow:hidden
+}
+#lawyer-dashboard .desk-latest-copy strong{font-size:13px;font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#lawyer-dashboard .desk-latest-copy small{font-size:11px;color:#777;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#lawyer-dashboard .desk-latest>svg{width:17px;height:17px;flex-shrink:0;color:#777}
+#lawyer-dashboard .desk-detail{max-width:660px;gap:18px}
+#lawyer-dashboard .desk-detail-head{display:flex;align-items:center;gap:12px}
+#lawyer-dashboard .desk-back{
+ display:grid;place-items:center;flex-shrink:0;width:40px;height:40px;
+ background:#f6f5f3;border:0;border-radius:12px
+}
+#lawyer-dashboard .desk-back svg{width:22px;height:22px}
+#lawyer-dashboard .desk-finance-info{
+ display:flex;align-items:flex-start;gap:12px;padding:16px;border:1px solid #eee7cf;
+ background:#fffbef;border-radius:16px
+}
+#lawyer-dashboard .desk-finance-icon{
+ display:grid;place-items:center;flex-shrink:0;
+ width:39px;height:39px;background:#f5edce;border-radius:12px
+}
+#lawyer-dashboard .desk-finance-icon svg{width:21px;height:21px}
+#lawyer-dashboard .desk-finance-info strong{font-size:14px;font-weight:850}
+#lawyer-dashboard .desk-finance-info p{font-size:12px;color:#686868;line-height:1.9;margin:6px 0 0}
+#lawyer-dashboard .desk-finance-rows,#lawyer-dashboard .desk-report-rows{
+ display:flex;flex-direction:column;border:1px solid #ececec;border-radius:17px;
+ overflow:hidden;background:#fff
+}
+#lawyer-dashboard .desk-finance-rows>div,
+#lawyer-dashboard .desk-report-rows>div,
+#lawyer-dashboard .desk-report-rows>button{
+ display:flex;align-items:center;gap:9px;width:100%;min-height:55px;
+ padding:12px 16px;border:0;border-bottom:1px solid #f0f0f0;
+ background:#fff;text-align:right
+}
+#lawyer-dashboard .desk-finance-rows>div:last-child,
+#lawyer-dashboard .desk-report-rows>*:last-child{border-bottom:0}
+#lawyer-dashboard .desk-finance-rows span,
+#lawyer-dashboard .desk-report-rows span{font-size:13px;color:#606060;flex:1}
+#lawyer-dashboard .desk-finance-rows strong,
+#lawyer-dashboard .desk-report-rows strong{font-size:13px;font-weight:900;white-space:nowrap}
+#lawyer-dashboard .desk-report-rows button:hover{background:#fffaf0}
+#lawyer-dashboard .desk-report-rows svg{width:15px;height:15px;color:#888}
+#lawyer-dashboard .desk-footnote{font-size:12px;line-height:1.9;color:#8b8b8b;margin:0 2px}
+#chat-filter-bar.chat-filter-bar{
+ display:flex;flex-shrink:0;align-items:center;gap:6px;margin:3px 0 6px;
+ padding:3px;background:#f5f5f4;border-radius:12px
+}
+#chat-filter-bar button{
+ flex:1;min-height:34px;border:0;background:transparent;color:#6c6c6c;
+ border-radius:9px;font-size:12px;font-weight:750;cursor:pointer
+}
+#chat-filter-bar button.selected{background:#fff;color:#202124;box-shadow:0 1px 4px #0000000c}
+@media(max-width:680px){
+ #lawyer-dashboard .desk-view{padding:15px 14px 12px}
+ #lawyer-dashboard .desk-heading h1{font-size:21px}
+ #lawyer-dashboard .desk-grid{gap:8px}
+ #lawyer-dashboard .desk-tile{padding:10px;min-height:105px;border-radius:15px}
+ #lawyer-dashboard .desk-tile-label{font-size:11.5px}
+ #lawyer-dashboard .desk-section-label{margin:9px 0 8px}
+}
+@media(max-height:730px){
+ #lawyer-dashboard .desk-view{padding-top:10px;padding-bottom:8px}
+ #lawyer-dashboard .desk-availability{margin:8px 0 5px;height:43px}
+ #lawyer-dashboard .desk-grid{gap:7px}
+ #lawyer-dashboard .desk-tile{min-height:91px;padding:9px;gap:4px}
+ #lawyer-dashboard .desk-tile-icon{width:25px;height:25px;border-radius:8px}
+ #lawyer-dashboard .desk-tile-icon svg{width:18px;height:18px}
+ #lawyer-dashboard .desk-tile-value{font-size:17px}
+ #lawyer-dashboard .desk-section-label{margin:5px 0 6px}
+ #lawyer-dashboard .desk-latest{min-height:57px;padding:8px 11px}
+}
+@media(max-height:610px){
+ #lawyer-dashboard .desk-heading h1{font-size:18px}
+ #lawyer-dashboard .desk-heading p{font-size:11px}
+ #lawyer-dashboard .desk-tile{min-height:76px;padding:7px;gap:2px}
+ #lawyer-dashboard .desk-tile-icon{width:23px;height:23px}
+ #lawyer-dashboard .desk-tile-icon svg{width:16px;height:16px}
+ #lawyer-dashboard .desk-tile-label{font-size:10.5px}
+ #lawyer-dashboard .desk-tile-value{font-size:15px}
+ #lawyer-dashboard .desk-availability{height:38px}
+ #lawyer-dashboard .desk-latest{min-height:49px}
+}
