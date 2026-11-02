@@ -26,7 +26,7 @@ function renderLawyerTab(chatOpen=false){
  q("lawyer-list-title").textContent=lawyerTab==="chats"?"گفتگوهای من":lawyerTab==="support"?"پشتیبانی":lawyerTab==="account"?"حساب وکیل":"درخواست‌های جدید";
  if(lawyerTab==="activity"||lawyerTab==="home")q("lawyer-list-title").append(q("offer-count"));
  q("refresh").hidden=lawyerTab==="account";
- q("support-list").hidden=lawyerTab!=="support";q("support-new").hidden=lawyerTab!=="support";
+ q("support-list").hidden=lawyerTab!=="support";q("support-panel").hidden=lawyerTab!=="support";
  q("lawyer-back").hidden=!chatOpen;
  if(lawyerTab==="support")q("note").hidden=true;
  else if(lawyerTab==="account")q("note").textContent="اطلاعات حساب وکیل در مرحله بعد تکمیل می‌شود.";
@@ -54,8 +54,8 @@ async function loadLawyerSupport(){
  if(!rows.length){const e=document.createElement("div");e.className="empty";e.textContent="هنوز درخواست پشتیبانی ندارید.";list.append(e)}
  for(const t of rows)entry(list,t.subject+" — "+(t.status==="closed"?"بسته‌شده":"باز")+"\n"+(t.lastMessage||""),()=>openLawyerSupport(t));
 }
-q("support-new").onclick=()=>{const dialog=q("support-dialog");if(!dialog.open)dialog.showModal()};
-q("support-cancel").onclick=()=>q("support-dialog").close();
+
+q("support-cancel").onclick=()=>{q("support-panel").open=false};
 q("support-form").onsubmit=async e=>{
  e.preventDefault();
  const form=e.currentTarget,subject=q("support-subject").value.trim(),body=q("support-body").value.trim();
@@ -64,7 +64,7 @@ q("support-form").onsubmit=async e=>{
  try{
   const t=lawyerPreview?{ticketId:"sample-"+Date.now(),subject,status:"open",lastMessage:body,previewMessages:[{body,mine:true}]}:await api("/support/tickets","POST",{subject,body});
   if(lawyerPreview)previewSupport.unshift(t);
-  q("support-dialog").close();form.reset();await loadLawyerSupport();await openLawyerSupport(t);
+  q("support-panel").open=false;form.reset();await loadLawyerSupport();await openLawyerSupport(t);
  }catch(err){alert(err.message)}finally{button.disabled=false}
 };
 async function openLawyerSupport(t){
