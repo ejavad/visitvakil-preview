@@ -7,7 +7,13 @@ try{
  if(await page.locator(".service-options").count())throw Error("SERVICE_CARDS_SHOULD_NOT_APPEAR_ON_HOME");
  if(await page.locator(".topic-grid").count())throw Error("TOPIC_CARDS_SHOULD_NOT_APPEAR_ON_HOME");
  if(await page.locator("#wizard").evaluate(x=>x.open))throw Error("WIZARD_VISIBLE_BEFORE_CLICK");
- if(!(await page.locator("h1").innerText()).includes("مشاوره حقوقی"))throw Error("HERO_MISSING");
+ if(!(await page.locator("h1").innerText()).includes("آغاز یک تصمیم درست"))throw Error("HERO_MISSING");
+ if(await page.locator("#site-links").isVisible())throw Error("MENU_SHOULD_BE_CLOSED");
+ await page.locator("#site-menu").click();
+ if(!await page.locator("#site-links").isVisible())throw Error("MENU_NOT_OPEN");
+ await page.locator("#site-menu").click();
+ if(await page.locator("#site-links").isVisible())throw Error("MENU_NOT_CLOSED");
+ if(await page.locator(".avatar-line .avatar").count()!==7)throw Error("AVATARS_MISSING");
  await page.locator("#start-wizard").click();
  if(!await page.locator("#wizard").evaluate(x=>x.open))throw Error("WIZARD_NOT_OPEN");
  await page.locator("#wizard-body .wizard-choice").filter({hasText:"مشاوره تلفنی"}).click();
