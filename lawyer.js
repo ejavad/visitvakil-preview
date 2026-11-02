@@ -1,9 +1,9 @@
 const q=id=>document.getElementById(id);
 const lawyerPreview=true;
-let active=null, cursor=0, account=null, refreshing=false, syncing=false, refreshQueued=false, selectionVersion=0, lawyerTab="activity";
+let active=null, cursor=0, account=null, refreshing=false, syncing=false, refreshQueued=false, selectionVersion=0, lawyerTab="activity", lawyerChatFilter="all", lawyerDeskView="overview";
 async function api(p,m="GET",v){throw Error("نسخه نمایشی بدون سرور است");const r=await fetch(p,{method:m,credentials:"same-origin",headers:{"Content-Type":"application/json"},body:v?JSON.stringify(v):undefined});if(!r.ok)throw Error(r.status===401?"برای ادامه، وارد حساب وکیل شوید.":r.status===409?"این درخواست قبلاً توسط وکیل دیگری پذیرفته شده است.":r.status===429?"تعداد درخواست‌ها زیاد است؛ کمی بعد دوباره تلاش کنید.":r.status===503?"سرویس موقتاً در دسترس نیست.":"خطای ارتباط با سرور ("+r.status+")");return r.status===204?null:r.json()}
 function entry(parent,label,fn){let b=document.createElement("button");b.className="thread";b.textContent=label;b.onclick=()=>fn(b);parent.append(b)}
-async function refresh(){if(refreshing){refreshQueued=true;return}refreshing=true;try{account=(await api("/auth/me")).accountId;const offers=await api("/lawyers/me/offers"),cases=await api("/lawyers/me/consultations");const availability=await api("/lawyers/me/ready");q("ready").checked=availability.ready;for(const id of ["offer-count","nav-offer-count"]){q(id).textContent=offers.length>99?"99+":String(offers.length);q(id).hidden=!offers.length;}q("note").hidden=true;q("offers").replaceChildren();q("cases").replaceChildren();for(const o of offers)entry(q("offers"),o.category+" — پذیرش",async(button)=>{try{if(button)button.disabled=true;await api("/requests/"+o.id+"/accept","POST");queueMicrotask(refresh)}catch(err){alert("این درخواست ممکن است توسط وکیل دیگری پذیرفته شده باشد. "+err.message);queueMicrotask(refresh)}finally{if(button)button.disabled=false}});for(const c of cases)renderLawyerConsultationRow(q("cases"),c,()=>openCase(c));if(active){const latest=cases.find(c=>c.requestId===active.requestId);if(!latest){active=null;selectionVersion++;cursor=0;q("messages").replaceChildren();q("send").hidden=true;q("complete-consultation").hidden=true;q("header").textContent="گفتگویی انتخاب نشده است."}else{active={...active,...latest};const writable=latest.status==="assigned"||latest.status==="in_progress";q("send").hidden=!writable;q("complete-consultation").hidden=!writable}}}catch(e){q("note").hidden=false;q("note").textContent="با حساب وکیل وارد شوید: "+e.message}finally{refreshing=false;if(refreshQueued){refreshQueued=false;queueMicrotask(refresh)}}}
+async function refresh(){if(refreshing){refreshQueued=true;return}refreshing=true;try{account=(await api("/auth/me")).accountId;const offers=await api("/lawyers/me/offers"),cases=await api("/lawyers/me/consultations");const availability=await api("/lawyers/me/ready");q("ready").checked=availability.ready;for(const id of ["offer-count","nav-offer-count"]){q(id).textContent=offers.length>99?"99+":String(offers.length);q(id).hidden=!offers.length;}q("note").hidden=true;q("offers").replaceChildren();q("cases").replaceChildren();for(const o of offers)entry(q("offers"),o.category+" — پذیرش",async(button)=>{try{if(button)button.disabled=true;await api("/requests/"+o.id+"/accept","POST");queueMicrotask(refresh)}catch(err){alert("این درخواست ممکن است توسط وکیل دیگری پذیرفته شده باشد. "+err.message);queueMicrotask(refresh)}finally{if(button)button.disabled=false}});for(const c of cases.filter(lawyerMatchesChatFilter))renderLawyerConsultationRow(q("cases"),c,()=>openCase(c));if(active){const latest=cases.find(c=>c.requestId===active.requestId);if(!latest){active=null;selectionVersion++;cursor=0;q("messages").replaceChildren();q("send").hidden=true;q("complete-consultation").hidden=true;q("header").textContent="گفتگویی انتخاب نشده است."}else{active={...active,...latest};const writable=latest.status==="assigned"||latest.status==="in_progress";q("send").hidden=!writable;q("complete-consultation").hidden=!writable}}}catch(e){q("note").hidden=false;q("note").textContent="با حساب وکیل وارد شوید: "+e.message}finally{refreshing=false;if(refreshQueued){refreshQueued=false;queueMicrotask(refresh)}}}
 async function sync(){if(!active||syncing)return;syncing=true;const conversationId=active.conversationId,version=selectionVersion,after=cursor;try{for(const m of await api("/conversations/"+conversationId+"/messages?after="+after)){if(version!==selectionVersion||active?.conversationId!==conversationId)break;if(m.id<=cursor)continue;cursor=m.id;const d=document.createElement("div");d.className="bubble"+((lawyerPreview?m.mine:m.senderId===account)?" mine":"");d.textContent=m.body;q("messages").append(d)}q("messages").scrollTop=q("messages").scrollHeight}catch(e){if(version===selectionVersion)q("header").textContent=e.message}finally{syncing=false;if(active&&active.conversationId!==conversationId)queueMicrotask(sync)}}
 async function openCase(c){if(active?.conversationId===c.conversationId&&q("workspace").classList.contains("chat-open"))return;active=c;selectionVersion++;cursor=0;q("messages").replaceChildren();q("send").hidden=!(c.status==="assigned"||c.status==="in_progress");q("complete-consultation").hidden=q("send").hidden;q("header").textContent=c.category;lawyerTab="chats";renderLawyerTab(true);await sync()}
 q("refresh").onclick=()=>lawyerTab==="support"?loadLawyerSupport():lawyerPreview?renderLawyerPreview():refresh();
@@ -40,6 +40,16 @@ document.addEventListener('vv:workspace-changed',()=>refresh());document.dispatc
 function renderLawyerTab(chatOpen=false){
  const root=document.querySelector("#workspace");
  root.dataset.lawyerTab=lawyerTab;
+ const home=lawyerTab==="home";
+ q("lawyer-dashboard").hidden=!home;
+ root.querySelector(".layout").hidden=home;
+ q("chat-filter-bar").hidden=lawyerTab!=="chats";
+ for(const button of document.querySelectorAll("[data-chat-filter]")){
+  const selected=button.dataset.chatFilter===lawyerChatFilter;
+  button.classList.toggle("selected",selected);
+  button.setAttribute("aria-pressed",String(selected));
+ }
+ if(home)renderLawyerDesk();
  root.classList.toggle("chat-open",!!chatOpen);root.classList.toggle("lawyer-chat-open",!!chatOpen);
  for(const b of document.querySelectorAll("[data-lawyer-tab]")){b.classList.toggle("selected",b.dataset.lawyerTab===lawyerTab);b.setAttribute("aria-current",b.dataset.lawyerTab===lawyerTab?"page":"false")}
  q("offers").hidden=lawyerTab==="chats"||lawyerTab==="support"||lawyerTab==="account";
@@ -62,7 +72,44 @@ function renderLawyerTab(chatOpen=false){
  else if(account)q("note").hidden=true;
  if(lawyerTab==="account")q("note").hidden=false;
 }
-for(const b of document.querySelectorAll("[data-lawyer-tab]"))b.onclick=()=>{lawyerTab=b.dataset.lawyerTab;supportTicket=null;renderLawyerTab(false);if(lawyerTab==="support")loadLawyerSupport().catch(e=>{q("note").hidden=false;q("note").textContent=e.message})};
+function navigateLawyerTab(tab,chatFilter="all"){
+ lawyerTab=tab;supportTicket=null;
+ if(tab==="chats")lawyerChatFilter=chatFilter;
+ if(tab==="home")lawyerDeskView="overview";
+ if(lawyerPreview&&tab==="chats")renderPreviewCaseList();
+ renderLawyerTab(false);
+ if(tab==="support")loadLawyerSupport().catch(e=>{q("note").hidden=false;q("note").textContent=e.message});
+}
+for(const button of document.querySelectorAll("[data-lawyer-tab]")){
+ button.onclick=()=>navigateLawyerTab(button.dataset.lawyerTab);
+}
+for(const button of document.querySelectorAll("[data-chat-filter]")){
+ button.onclick=()=>{
+  lawyerChatFilter=button.dataset.chatFilter;
+  if(lawyerPreview)renderPreviewCaseList();
+  else refresh();
+  renderLawyerTab(false);
+ };
+}
+for(const button of document.querySelectorAll("[data-desk-action]")){
+ button.onclick=()=>{
+  const action=button.dataset.deskAction;
+  if(action==="requests")navigateLawyerTab("activity");
+  else if(action==="active")navigateLawyerTab("chats","active");
+  else if(action==="completed")navigateLawyerTab("chats","completed");
+  else if(action==="support")navigateLawyerTab("support");
+  else if(action==="finance"||action==="reports")showLawyerDeskPanel(action);
+ };
+}
+for(const button of document.querySelectorAll("[data-desk-back]")){
+ button.onclick=()=>showLawyerDeskPanel("overview");
+}
+q("desk-availability").onclick=()=>{
+ const input=q("ready");
+ if(input.disabled)return;
+ input.checked=!input.checked;
+ input.dispatchEvent(new Event("change",{bubbles:true}));
+};
 q("lawyer-back").onclick=()=>{supportTicket=null;document.querySelector("#workspace").classList.remove("lawyer-chat-open");renderLawyerTab(false);if(lawyerTab==="support")loadLawyerSupport()};
 renderLawyerTab(false);
 
@@ -97,6 +144,46 @@ function savePreviewLawyerState(){
 function appendPreviewEmpty(parent,message){
  const div=document.createElement("div");div.className="empty";div.textContent=message;parent.append(div);
 }
+function lawyerMatchesChatFilter(c){
+ if(lawyerChatFilter==="active")return c.status==="assigned"||c.status==="in_progress";
+ if(lawyerChatFilter==="completed")return c.status==="completed";
+ return true;
+}
+function faDeskCount(n){return typeof n==="number"?new Intl.NumberFormat("fa-IR").format(n):"—"}
+function showLawyerDeskPanel(panel){
+ lawyerDeskView=panel;
+ for(const name of ["overview","finance","reports"]){
+  q("desk-"+name).hidden=name!==panel;
+ }
+}
+function renderLawyerDesk(){
+ const offers=lawyerPreview?previewLawyerOffers:null;
+ const cases=lawyerPreview?previewLawyerCases:null;
+ const tickets=lawyerPreview?previewSupport:null;
+ const awaiting=offers?.length??null;
+ const activeCount=cases?cases.filter(c=>c.status==="in_progress"||c.status==="assigned").length:null;
+ const completedCount=cases?cases.filter(c=>c.status==="completed").length:null;
+ const openTickets=tickets?tickets.filter(t=>t.status!=="closed").length:null;
+ const values={
+  "desk-requests":awaiting,"desk-active":activeCount,
+  "desk-completed":completedCount,"desk-support":openTickets,
+  "desk-report-requests":awaiting,"desk-report-active":activeCount,
+  "desk-report-completed":completedCount,"desk-report-total":cases?.length??null
+ };
+ for(const [id,value] of Object.entries(values))q(id).textContent=faDeskCount(value);
+ const ready=q("ready").checked;
+ q("desk-availability").classList.toggle("offline",!ready);
+ q("desk-availability-label").textContent=ready?"آماده پذیرش درخواست":"فعلاً غیرفعال";
+ const latest=cases?.[0]||null;
+ const button=q("desk-latest");
+ button.disabled=!latest;
+ q("desk-latest-title").textContent=latest?.category||"گفتگویی ثبت نشده است";
+ q("desk-latest-subtitle").textContent=latest?(
+  (latest.status==="completed"?"پایان‌یافته":"فعال")+" · "+(latest.lastMessage||"گفتگوی مشاوره")
+ ):"پس از پذیرش درخواست، اینجا نمایش داده می‌شود.";
+ button.onclick=()=>{if(!latest)return;if(lawyerPreview)openLawyerPreviewCase(latest);else openCase(latest)};
+ showLawyerDeskPanel(lawyerDeskView);
+}
 function renderLawyerConsultationRow(parent,c,onOpen){
  const button=document.createElement("button");
  button.type="button";button.className="thread consultation-thread";
@@ -108,8 +195,9 @@ function renderLawyerConsultationRow(parent,c,onOpen){
 }
 function renderPreviewCaseList(){
  const list=q("cases");list.replaceChildren();
- if(!previewLawyerCases.length)appendPreviewEmpty(list,"هنوز درخواستی را نپذیرفته‌اید.");
- for(const c of previewLawyerCases)renderLawyerConsultationRow(list,c,()=>openLawyerPreviewCase(c));
+ const visible=previewLawyerCases.filter(lawyerMatchesChatFilter);
+ if(!visible.length)appendPreviewEmpty(list,previewLawyerCases.length?"در این بخش گفتگویی وجود ندارد.":"هنوز درخواستی را نپذیرفته‌اید.");
+ for(const c of visible)renderLawyerConsultationRow(list,c,()=>openLawyerPreviewCase(c));
 }
 function drawLawyerPreviewMessages(){
  const list=q("messages");list.replaceChildren();
