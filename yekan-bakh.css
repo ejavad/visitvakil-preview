@@ -1,0 +1,6 @@
+/* VisitVakil Yekan Bakh — licensed fonts are served from VisitVakil's existing website, not committed to GitHub. */
+@font-face{font-family:"Yekan Bakh";src:url("https://visitvakil.ir/wp-content/plugins/visitvakil-home-v2/assets/fonts/yekan-v2/Regular.woff2") format("woff2");font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:"Yekan Bakh";src:url("https://visitvakil.ir/wp-content/plugins/visitvakil-home-v2/assets/fonts/yekan-v2/Medium.woff2") format("woff2");font-style:normal;font-weight:500 600;font-display:swap}
+@font-face{font-family:"Yekan Bakh";src:url("https://visitvakil.ir/wp-content/plugins/visitvakil-home-v2/assets/fonts/yekan-v2/Bold.woff2") format("woff2");font-style:normal;font-weight:700;font-display:swap}
+@font-face{font-family:"Yekan Bakh";src:url("https://visitvakil.ir/wp-content/plugins/visitvakil-home-v2/assets/fonts/yekan-v2/ExtraBold.woff2") format("woff2");font-style:normal;font-weight:800 900;font-display:swap}
+html,body,button,input,textarea,select{font-family:"Yekan Bakh",Tahoma,Arial,sans-serif}
