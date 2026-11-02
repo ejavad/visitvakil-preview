@@ -33,7 +33,7 @@ function renderLawyerTab(chatOpen=false){
  else if(account)q("note").hidden=true;
  if(lawyerTab==="account")q("note").hidden=false;
 }
-for(const b of document.querySelectorAll("[data-lawyer-tab]"))b.onclick=()=>{lawyerTab=b.dataset.lawyerTab;supportTicket=null;if(lawyerPreview)renderLawyerPreview();renderLawyerTab(false);if(lawyerTab==="support")loadLawyerSupport().catch(e=>{q("note").hidden=false;q("note").textContent=e.message})};
+for(const b of document.querySelectorAll("[data-lawyer-tab]"))b.onclick=()=>{lawyerTab=b.dataset.lawyerTab;supportTicket=null;renderLawyerTab(false);if(lawyerTab==="support")loadLawyerSupport().catch(e=>{q("note").hidden=false;q("note").textContent=e.message})};
 q("lawyer-back").onclick=()=>{supportTicket=null;document.querySelector("#workspace").classList.remove("lawyer-chat-open");renderLawyerTab(false);if(lawyerTab==="support")loadLawyerSupport()};
 renderLawyerTab(false);
 
