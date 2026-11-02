@@ -14,14 +14,14 @@ try{
  assert(await page.locator("#admin-compose").isVisible(),"REPLY_NOT_VISIBLE");
  await page.locator("#admin-message").fill("پاسخ نمونه مدیر");
  await page.locator('#admin-compose button').click();
- assert(await page.getByText("پاسخ نمونه مدیر",{exact:true}).count()===1,"REPLY_NOT_SENT");
+ assert(await page.locator(".admin-message").filter({hasText:"پاسخ نمونه مدیر"}).count()===1,"REPLY_NOT_SENT");
  await page.locator("#admin-back").click();
  await page.locator("#admin-list .admin-item").first().click();
- assert(await page.getByText("پاسخ نمونه مدیر",{exact:true}).count()===1,"REPLY_NOT_REOPENED");
+ assert(await page.locator(".admin-message").filter({hasText:"پاسخ نمونه مدیر"}).count()===1,"REPLY_NOT_REOPENED");
  await page.reload();
  await page.locator('[data-tab="support"]').click();
  await page.locator("#admin-list .admin-item").first().click();
- assert(await page.getByText("پاسخ نمونه مدیر",{exact:true}).count()===1,"REPLY_NOT_PERSISTED");
+ assert(await page.locator(".admin-message").filter({hasText:"پاسخ نمونه مدیر"}).count()===1,"REPLY_NOT_PERSISTED");
  await page.locator('[data-tab="conversations"]').click();
  await page.locator("#admin-list .admin-item").first().click();
  assert(await page.locator("#admin-compose").isHidden(),"CONVERSATION_SHOULD_READ_ONLY");
