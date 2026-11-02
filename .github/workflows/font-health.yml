@@ -1,0 +1,40 @@
+name: Yekan Bakh font availability
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'yekan-bakh.css'
+      - 'showcase.html'
+      - 'index.html'
+      - 'lawyer.html'
+      - 'admin.html'
+      - '.github/workflows/font-health.yml'
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect licensed font source response and cross-origin policy
+        run: |
+          python3 - <<'PY'
+          import urllib.request
+          from pathlib import Path
+          base="https://visitvakil.ir/wp-content/plugins/visitvakil-home-v2/assets/fonts/yekan-v2"
+          css=Path("yekan-bakh.css").read_text()
+          for weight in ("Regular","Medium","Bold","ExtraBold"):
+              url=f"{base}/{weight}.woff2"
+              assert url in css,url
+              try:
+                  request=urllib.request.Request(url,headers={"Origin":"https://ejavad.github.io","User-Agent":"VisitVakil-Font-Health/1.0"})
+                  with urllib.request.urlopen(request,timeout=20) as response:
+                      mime=response.headers.get("content-type","")
+                      cors=response.headers.get("access-control-allow-origin","")
+                      head=response.read(4)
+                      print(weight, response.status, mime, "CORS:",cors or "(missing)", "header:",head)
+                      assert head==b"wOF2",f"{weight}: bad WOFF2 response"
+                      assert cors=="*" or "https://ejavad.github.io" in cors,f"{weight}: browser cross-origin font fetch likely blocked"
+              except Exception as exc:
+                  raise AssertionError(f"{weight} font unavailable from GitHub Pages: {exc}")
+          print("PASS: Yekan Bakh source and CORS")
+          PY
