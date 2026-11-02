@@ -41,8 +41,10 @@ function renderLawyerTab(chatOpen=false){
  const root=document.querySelector("#workspace");
  root.dataset.lawyerTab=lawyerTab;
  const home=lawyerTab==="home";
+ const profileView=lawyerTab==="account";
  q("lawyer-dashboard").hidden=!home;
- root.querySelector(".layout").hidden=home;
+ q("lawyer-profile").hidden=!profileView;
+ root.querySelector(".layout").hidden=home||profileView;
  q("chat-filter-bar").hidden=lawyerTab!=="chats";
  for(const button of document.querySelectorAll("[data-chat-filter]")){
   const selected=button.dataset.chatFilter===lawyerChatFilter;
@@ -77,6 +79,7 @@ function navigateLawyerTab(tab,chatFilter="all"){
  if(tab==="chats")lawyerChatFilter=chatFilter;
  if(tab==="home")lawyerDeskView="overview";
  if(lawyerPreview&&tab==="chats")renderPreviewCaseList();
+ if(tab==="account")populateLawyerProfileForm();
  renderLawyerTab(false);
  if(tab==="support")loadLawyerSupport().catch(e=>{q("note").hidden=false;q("note").textContent=e.message});
 }
@@ -309,3 +312,145 @@ async function syncLawyerSupport(){
  for(const m of rows){if(m.id<=supportCursor)continue;supportCursor=m.id;const d=document.createElement("div");d.className="bubble"+((lawyerPreview?m.mine:m.senderId===account)?" mine":"");d.textContent=m.body;q("messages").append(d)}
  q("messages").scrollTop=q("messages").scrollHeight;
 }
+
+
+// Lawyer profile preview. No server upload or lawyer identity verification happens here.
+const lawyerProfileStorageKey="visitvakil-preview-lawyer-profile-v1";
+const lawyerProfileFields=["firstName","lastName","professionalTitle","licenseNumber","licenseIssuer","province","city","bio"];
+function readLawyerProfile(){
+ try{
+  const saved=JSON.parse(localStorage.getItem(lawyerProfileStorageKey));
+  if(saved&&typeof saved==="object"&&!Array.isArray(saved)){
+   const clean={};
+   for(const name of lawyerProfileFields)clean[name]=typeof saved[name]==="string"?saved[name]:"";
+   clean.specialties=Array.isArray(saved.specialties)?saved.specialties.filter(x=>typeof x==="string"):[];
+   clean.avatar=typeof saved.avatar==="string"&&saved.avatar.startsWith("data:image/jpeg;base64,")?saved.avatar:"";
+   return clean;
+  }
+ }catch(err){console.warn("Could not read lawyer profile",err)}
+ return Object.fromEntries([...lawyerProfileFields.map(name=>[name,""]),["specialties",[]],["avatar",""]]);
+}
+let lawyerProfileState=readLawyerProfile();
+let lawyerProfileAvatarDraft=lawyerProfileState.avatar;
+function getLawyerProfileDraft(){
+ const form=q("lawyer-profile-form");
+ const data=new FormData(form);
+ const draft={};
+ for(const name of lawyerProfileFields)draft[name]=String(data.get(name)||"").trim();
+ draft.specialties=data.getAll("specialty").map(String);
+ draft.avatar=lawyerProfileAvatarDraft;
+ return draft;
+}
+function profileFaNumber(n){return new Intl.NumberFormat("fa-IR").format(n)}
+function updateLawyerProfilePreview(){
+ const form=q("lawyer-profile-form");
+ if(!form)return;
+ const draft=getLawyerProfileDraft();
+ const name=[draft.firstName,draft.lastName].filter(Boolean).join(" ")||"پروفایل شما";
+ q("profile-display-name").textContent=name;
+ q("profile-display-subtitle").textContent=[draft.professionalTitle,draft.city||draft.province].filter(Boolean).join(" · ")||"اطلاعات حرفه‌ای خود را تکمیل کنید";
+ const img=q("profile-avatar-image");
+ const fallback=q("profile-avatar-initial");
+ if(draft.avatar){
+  if(img.getAttribute("src")!==draft.avatar)img.setAttribute("src",draft.avatar);
+  img.hidden=false;fallback.hidden=true;
+ }else{
+  img.hidden=true;img.removeAttribute("src");fallback.hidden=false;
+  fallback.textContent=[draft.firstName.charAt(0),draft.lastName.charAt(0)].filter(Boolean).join("")||"و";
+ }
+ q("profile-avatar-remove").hidden=!draft.avatar;
+ const parts=[
+  !!draft.firstName,!!draft.lastName,!!draft.professionalTitle,
+  !!draft.licenseNumber,!!draft.licenseIssuer,
+  !!draft.province,!!draft.city,!!draft.specialties.length,
+  !!draft.bio,!!draft.avatar
+ ];
+ const percent=Math.round(parts.filter(Boolean).length/parts.length*100);
+ q("profile-progress-label").textContent=profileFaNumber(percent)+"٪";
+ q("profile-progress-bar").style.width=percent+"%";
+ q("profile-bio-count").textContent=profileFaNumber(draft.bio.length);
+}
+function populateLawyerProfileForm(){
+ const form=q("lawyer-profile-form");
+ for(const name of lawyerProfileFields){
+  const control=form.elements.namedItem(name);
+  if(control)control.value=lawyerProfileState[name]||"";
+ }
+ for(const checkbox of form.querySelectorAll('input[name="specialty"]')){
+  checkbox.checked=lawyerProfileState.specialties.includes(checkbox.value);
+ }
+ lawyerProfileAvatarDraft=lawyerProfileState.avatar;
+ q("profile-avatar-file").value="";
+ q("profile-mobile").value="";
+ q("profile-save-status").textContent="تغییرات فقط در همین مرورگر ذخیره می‌شوند.";
+ q("profile-save-status").dataset.result="";
+ updateLawyerProfilePreview();
+}
+function setLawyerProfileDirty(){
+ q("profile-save-status").textContent="تغییرات ذخیره نشده‌اند.";
+ q("profile-save-status").dataset.result="pending";
+ updateLawyerProfilePreview();
+}
+function resizeLawyerAvatar(file){
+ return new Promise((resolve,reject)=>{
+  const url=URL.createObjectURL(file);
+  const image=new Image();
+  image.onload=()=>{
+   try{
+    const size=288;
+    const canvas=document.createElement("canvas");canvas.width=size;canvas.height=size;
+    const ctx=canvas.getContext("2d");
+    if(!ctx)throw new Error("امکان پردازش تصویر وجود ندارد.");
+    const edge=Math.min(image.naturalWidth,image.naturalHeight);
+    if(!edge)throw new Error("ابعاد تصویر معتبر نیست.");
+    const sx=(image.naturalWidth-edge)/2,sy=(image.naturalHeight-edge)/2;
+    ctx.fillStyle="#ffffff";ctx.fillRect(0,0,size,size);
+    ctx.drawImage(image,sx,sy,edge,edge,0,0,size,size);
+    resolve(canvas.toDataURL("image/jpeg",0.82));
+   }catch(err){reject(err)}
+   finally{URL.revokeObjectURL(url)}
+  };
+  image.onerror=()=>{URL.revokeObjectURL(url);reject(new Error("خواندن تصویر ممکن نیست."))};
+  image.src=url;
+ });
+}
+q("profile-avatar-file").addEventListener("change",async e=>{
+ const file=e.target.files?.[0];
+ if(!file)return;
+ if(!["image/jpeg","image/png","image/webp"].includes(file.type)||file.size>4*1024*1024){
+  q("profile-save-status").textContent="فقط تصویر JPG، PNG یا WebP تا حجم ۴ مگابایت مجاز است.";
+  q("profile-save-status").dataset.result="error";
+  e.target.value="";return;
+ }
+ const save=q("profile-save-button");save.disabled=true;
+ q("profile-save-status").textContent="در حال آماده‌سازی عکس...";
+ try{
+  const avatar=await resizeLawyerAvatar(file);
+  if(avatar.length>450000)throw new Error("اندازه تصویر پردازش‌شده بیش از حد مجاز است.");
+  lawyerProfileAvatarDraft=avatar;
+  setLawyerProfileDirty();
+ }catch(err){
+  q("profile-save-status").textContent=err.message||"خواندن عکس ناموفق بود.";
+  q("profile-save-status").dataset.result="error";
+ }finally{save.disabled=false;e.target.value=""}
+});
+q("profile-avatar-remove").onclick=()=>{
+ lawyerProfileAvatarDraft="";
+ setLawyerProfileDirty();
+};
+q("lawyer-profile-form").addEventListener("input",setLawyerProfileDirty);
+q("lawyer-profile-form").addEventListener("change",setLawyerProfileDirty);
+q("lawyer-profile-form").addEventListener("submit",e=>{
+ e.preventDefault();
+ const draft=getLawyerProfileDraft();
+ try{
+  localStorage.setItem(lawyerProfileStorageKey,JSON.stringify(draft));
+  lawyerProfileState=draft;
+  q("profile-save-status").textContent="پروفایل با موفقیت در همین مرورگر ذخیره شد.";
+  q("profile-save-status").dataset.result="success";
+  updateLawyerProfilePreview();
+ }catch(err){
+  q("profile-save-status").textContent="ذخیره انجام نشد؛ فضای مرورگر را بررسی کنید.";
+  q("profile-save-status").dataset.result="error";
+ }
+});
