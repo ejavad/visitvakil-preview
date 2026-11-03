@@ -1,0 +1,32 @@
+/* Shared navigational drawer across non-homepage preview screens. */
+.vv-shared-host{position:relative;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.vv-shared-trigger{flex-shrink:0;border:0;display:grid;place-items:center;width:47px;height:47px;border-radius:50%;background:#f7f7f7;color:#171717;cursor:pointer;z-index:1}
+.vv-shared-host .menu-wrap[hidden]{display:none!important}
+.vv-shared-showcase{display:flex!important;align-items:center!important;justify-content:space-between!important;flex-wrap:wrap}
+.vv-shared-showcase .logo{margin-inline-end:auto}
+.vv-shared-scrim[hidden],.vv-shared-drawer[hidden]{display:none!important}
+.vv-shared-scrim{position:fixed;inset:0;z-index:10001;background:rgba(20,20,20,.34);backdrop-filter:blur(2px)}
+.vv-shared-drawer{direction:rtl;text-align:right;position:fixed;top:0;bottom:0;left:0;z-index:10002;width:min(390px,94vw);max-height:100dvh;display:flex;flex-direction:column;background:#fdfdfd;color:#181818;border-radius:0 20px 20px 0;overflow:hidden;box-shadow:18px 0 75px #0002;animation:vv-shared-slide .24s ease-out;font-family:"Yekan Bakh",Tahoma,Arial,sans-serif;font-size:14px}
+.vv-shared-drawer *{box-sizing:border-box}
+.vv-shared-drawer a{text-decoration:none;color:inherit}
+.vv-shared-drawer button{cursor:pointer}
+.vv-s-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:24px 20px 19px;background:#fff;border-bottom:1px solid #f0f0f0;flex-shrink:0}
+.vv-s-brand{display:flex;align-items:center;gap:11px}.vv-s-brand img{width:47px;height:47px;object-fit:contain;flex-shrink:0}
+.vv-s-brand strong{display:block;font-size:21px;font-weight:900;line-height:1.4}.vv-s-brand small{display:block;font-size:10px;font-weight:600;color:#6c6c6c;margin-top:1px}
+.vv-s-close{border:0;background:#f6f6f6;border-radius:50%;width:40px;height:40px;flex-shrink:0;font:300 31px/1 Arial;color:#252525}
+.vv-s-body{padding:17px 15px 25px;overflow-y:auto;overscroll-behavior:contain;flex:1;min-height:0}
+.vv-s-label{margin:1px 6px 14px;font-size:12px;color:#888;font-weight:750}.vv-s-label-gap{margin-top:24px}
+.vv-s-main{display:flex;align-items:center;gap:13px;padding:13px;min-height:78px;background:#ffdf80;border-radius:15px;margin-bottom:10px}
+.vv-s-secondary{background:#fff;border:1px solid #eaeaea}
+.vv-s-icon{display:grid;place-items:center;font-size:21px;width:42px;height:42px;flex-shrink:0;border-radius:13px;background:#ffffff92}
+.vv-s-main strong{display:block;font-size:16px;font-weight:900}.vv-s-main small{display:block;font-size:11px;margin-top:4px;color:#555}.vv-s-chevron{margin-inline-start:auto;font-size:25px}
+.vv-s-expand{border-bottom:1px solid #ededed}.vv-s-expand summary{display:flex;align-items:center;gap:12px;cursor:pointer;padding:11px 3px;font-size:14px;font-weight:800;list-style:none}.vv-s-expand summary::-webkit-details-marker{display:none}.vv-s-expand summary>span:last-child{margin-inline-start:auto}
+.vv-s-expand>div{padding:2px 49px 10px 0}.vv-s-expand a{display:block;padding:9px 0;font-size:12px;color:#555}
+.vv-s-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.vv-s-grid a{min-height:62px;display:flex;align-items:center;justify-content:center;text-align:center;background:#fff;border:1px solid #ededed;border-radius:15px;color:#2b2b2b;font-weight:800;font-size:13px;padding:8px}
+.vv-s-grid a[href$="contact-us.html"]{border-color:#f0d98b}
+.vv-s-bottom{padding:13px 15px 17px;border-top:1px solid #eee;background:#fff;flex-shrink:0}.vv-s-bottom>a{display:flex;justify-content:center;align-items:center;gap:10px;padding:13px 18px;background:#ffcd23;color:#161616;border-radius:14px;text-align:center;font-size:17px;font-weight:900}.vv-s-bottom small{display:block;color:#999;text-align:center;font-size:9px;margin-top:8px}
+body.vv-shared-open{overflow:hidden}
+.vv-shared-drawer :is(a,button,summary):focus-visible,.vv-shared-trigger:focus-visible{outline:3px solid #ffcc28;outline-offset:2px}
+@keyframes vv-shared-slide{from{transform:translateX(-100%)}to{transform:translateX(0)}}
+@media(max-width:390px){.vv-s-head{padding:19px 15px 15px}.vv-s-body{padding:12px}.vv-s-grid a{min-height:58px;font-size:12px}}
+@media(prefers-reduced-motion:reduce){.vv-shared-drawer{animation:none}}
