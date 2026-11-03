@@ -10,9 +10,21 @@ try{
  if(!(await page.locator("h1").innerText()).includes("آغاز یک تصمیم درست"))throw Error("HERO_MISSING");
  if(await page.locator("#site-links").isVisible())throw Error("MENU_SHOULD_BE_CLOSED");
  await page.locator("#site-menu").click();
- if(!await page.locator("#site-links").isVisible())throw Error("MENU_NOT_OPEN");
+ if(!await page.locator("#site-links").isVisible())throw Error("DRAWER_NOT_OPEN");
+ if(!await page.locator("#menu-scrim").isVisible())throw Error("DRAWER_BACKDROP_NOT_OPEN");
+ if(!await page.locator(".vv-drawer-brand img").evaluate(el=>el.complete&&el.naturalWidth>0))throw Error("DRAWER_BRAND_LOGO_FAILED");
+ await page.locator(".vv-nav-expand").first().locator("summary").click();
+ if(!await page.locator(".vv-nav-expand").first().evaluate(el=>el.open))throw Error("NAV_SUBMENU_NOT_OPEN");
+ await page.keyboard.press("Escape");
+ if(await page.locator("#site-links").isVisible())throw Error("DRAWER_ESC_FAILED");
  await page.locator("#site-menu").click();
- if(await page.locator("#site-links").isVisible())throw Error("MENU_NOT_CLOSED");
+ await page.locator("#menu-consult").click();
+ if(await page.locator("#site-links").isVisible())throw Error("DRAWER_STILL_OPEN_AFTER_CONSULT");
+ if(!await page.locator("#wizard").evaluate(el=>el.open))throw Error("DRAWER_CONSULT_WIZARD_NOT_OPEN");
+ await page.locator("#close-wizard").click();
+ await page.locator("#site-menu").click();
+ await page.locator("#menu-close").click();
+ if(await page.locator("#site-links").isVisible())throw Error("DRAWER_CLOSE_FAILED");
  for(const selector of [".approved-lawyers img",".approved-badges img"]){
    const image=page.locator(selector);
    if(!(await image.evaluate(el=>el.complete&&el.naturalWidth>0)))throw Error("IMAGE_MISSING:"+selector);
