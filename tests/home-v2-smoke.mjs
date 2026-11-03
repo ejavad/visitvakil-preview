@@ -48,7 +48,7 @@ try{
  await page.locator("#wizard-next").click();
  const durationCards=page.locator("#wizard-body .vv-duration-card");
  if(await durationCards.count()!==3)throw Error("PHONE_DURATION_CARDS_MISSING");
- const thirty=durationCards.filter({hasText:"۳۰ دقیقه"});
+ const thirty=page.locator("#wizard-body .vv-duration-card[data-duration=\"30\"]");
  if(!await thirty.isVisible())throw Error("RECOMMENDED_30_MIN_MISSING");
  for(const price of ["۳۴۹٬۰۰۰","۴۴۹٬۰۰۰","۵۹۹٬۰۰۰"]){
    if(!(await page.locator("#wizard-body").innerText()).includes(price))throw Error("PREVIEW_PRICE_MISSING:"+price);
