@@ -13,7 +13,13 @@ try{
  if(!await page.locator("#site-links").isVisible())throw Error("MENU_NOT_OPEN");
  await page.locator("#site-menu").click();
  if(await page.locator("#site-links").isVisible())throw Error("MENU_NOT_CLOSED");
- if(await page.locator(".avatar-line .avatar").count()!==7)throw Error("AVATARS_MISSING");
+ for(const selector of [".approved-lawyers img",".approved-badges img"]){
+   const image=page.locator(selector);
+   if(!(await image.evaluate(el=>el.complete&&el.naturalWidth>0)))throw Error("IMAGE_MISSING:"+selector);
+ }
+ if(!(await page.locator(".approved-cta").evaluate(el=>getComputedStyle(el).backgroundColor)))throw Error("CTA_MISSING");
+ if((await page.locator(".approved-logo").innerText())!=="V")throw Error("LOGO_MISSING");
+ if((await page.locator(".approved-cta").innerText()).includes("←"))throw Error("UNWANTED_ARROW");
  await page.locator("#start-wizard").click();
  if(!await page.locator("#wizard").evaluate(x=>x.open))throw Error("WIZARD_NOT_OPEN");
  await page.locator("#wizard-body .wizard-choice").filter({hasText:"مشاوره تلفنی"}).click();
