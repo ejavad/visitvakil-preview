@@ -1,6 +1,6 @@
 "use strict";
 const $=id=>document.getElementById(id);
-const state={step:0,service:"text",duration:null,topic:"",description:""};
+const state={step:0,service:"text",duration:null,topic:"",description:"",demoSignedIn:false,mobile:"",otp:"",paymentDone:false};
 const phoneDurations=[20,30,45];
 const names={text:"مشاوره آنلاین",phone:"مشاوره تلفنی"};
 const legalTopics=[
@@ -22,7 +22,12 @@ $("start-wizard").onclick=()=>openWizard();
 const previewStep=new URLSearchParams(location.search).get("show");
 if(previewStep==="consultation"){openWizard();}
 if(previewStep==="topics"){state.service="phone";state.duration=30;state.step=2;draw();$("wizard").showModal();}
-if(previewStep==="review"){state.service="phone";state.duration=30;state.topic="قراردادها و تعهدات";state.step=3;draw();$("wizard").showModal();}
+if(previewStep==="review"||previewStep==="login"||previewStep==="payment"){
+ state.service="phone";state.duration=30;state.topic="قراردادها و تعهدات";
+ state.demoSignedIn=previewStep==="payment";
+ state.step=previewStep==="login"?4:previewStep==="payment"?6:3;
+ draw();$("wizard").showModal();
+}
 if(previewStep==="review"){state.service="phone";state.duration=30;state.topic="قراردادها و تعهدات";state.step=3;draw();$("wizard").showModal();}
 
 
@@ -30,19 +35,36 @@ if(previewStep==="review"){state.service="phone";state.duration=30;state.topic="
 
 $("close-wizard").onclick=closeWizard;
 $("wizard").addEventListener("click",e=>{if(e.target===$("wizard"))closeWizard()});
-$("wizard-back").onclick=()=>{state.step=state.step===2&&state.service==="text"?0:Math.max(0,state.step-1);draw()};
+$("wizard-back").onclick=()=>{
+ if(state.step===4||state.step===6&&state.demoSignedIn)state.step=3;
+ else if(state.step===6)state.step=5;
+ else if(state.step===5)state.step=4;
+ else if(state.step===7)state.step=6;
+ else if(state.step===2&&state.service==="text")state.step=0;
+ else state.step=Math.max(0,state.step-1);
+ draw();
+};
 function choice(value,label,subtitle,selected,click){const b=node("button","wizard-choice"+(selected?" chosen":""),"");b.type="button";b.append(node("strong","",label));if(subtitle)b.append(node("small","",subtitle));b.setAttribute("aria-pressed",String(selected));b.onclick=click;return b}
 function draw(){
  const body=$("wizard-body");body.replaceChildren();$("wizard-error").textContent="";
  const heading=["مشاوره را چطور می‌خواهید بگیرید؟","مشاوره تلفنی چند دقیقه باشد؟","موضوع مشاوره را انتخاب کنید","خلاصه درخواست"];
  const lead=["روش ارتباط با وکیل را انتخاب کنید.","مدت زمان موردنظر خود را انتخاب کنید.","موضوع نزدیک‌تر به مسئله خود را انتخاب کنید.","خلاصه انتخاب‌ها را بررسی کنید."];
- $("wizard-title").textContent=heading[state.step];$("wizard-lead").textContent=lead[state.step];
+ const postTitles={4:"شماره موبایل خود را وارد کنید",5:"کد تأیید را وارد کنید",6:"بررسی و پرداخت",7:"مسنجر گفتگوها"};
+ const postLabels={4:"ورود با موبایل",5:"تأیید شماره موبایل",6:"پرداخت",7:"گفتگوهای من"};
+ $("wizard-title").textContent=heading[state.step]||postTitles[state.step];
+ $("wizard-lead").textContent=lead[state.step]||"";
  $("wizard").dataset.step=String(state.step);
- $("wizard-lead").hidden=state.step===0||state.step===2||state.step===3;
- $("wizard-step-label").textContent=["نوع مشاوره","مدت مشاوره","موضوع حقوقی","شرح درخواست"][state.step];
- document.querySelectorAll(".wizard-progress span").forEach((x,i)=>{const sequence=state.service==="phone"?state.step:state.step===0?0:state.step-1;x.hidden=i>=(state.service==="phone"?4:3);x.classList.toggle("on",i<=sequence)});
+ $("wizard-lead").hidden=state.step!==1;
+ $("wizard-step-label").textContent=["نوع مشاوره","مدت مشاوره","موضوع حقوقی","شرح درخواست"][state.step]||postLabels[state.step];
+ document.querySelectorAll(".wizard-progress span").forEach((x,i)=>{
+ const sequence=state.service==="phone"?state.step:state.step===0?0:state.step-1;
+ x.hidden=i>=(state.service==="phone"?4:3);
+ x.classList.toggle("on",i<=sequence);
+});
  $("wizard-back").disabled=state.step===0;
- $("wizard-next").lastChild.textContent=state.step===3?"تأیید و ادامه":state.step===2?"تأیید و ادامه":"←";
+ const nextText={2:"تأیید و ادامه",3:"تأیید و ادامه",4:"دریافت کد تأیید",5:"تأیید و ادامه",6:"پرداخت آزمایشی",7:"پایان نمایش"};
+ $("wizard-next").firstChild.textContent=nextText[state.step]||"ادامه ";
+ $("wizard-next").lastChild.textContent=state.step>=2?"":"←";
  if(state.step===0){
   const cards=[
    {id:"phone",name:"مشاوره تلفنی",desc:"گفتگوی مستقیم و خصوصی با وکیل",kind:"تماس تلفنی",symbol:'<path d="M9.1 5.8c-.7-.9-2.1-1.1-3-.3L4.3 7.1c-.8.7-1.1 1.8-.7 2.8 3.2 8.1 9.8 14.6 17.9 17.4 1 .3 2.1 0 2.7-.8l1.6-1.9c.8-.9.6-2.3-.3-3l-3.5-2.6c-.9-.7-2.1-.6-2.9.2l-1.8 1.8a20 20 0 0 1-7.2-7.2l1.8-1.8c.8-.8.9-2 .2-2.9L9.1 5.8Z" transform="translate(0 1) scale(.91)"/><path d="M19 5.4a7.6 7.6 0 0 1 7.6 7.6M19 9.3a3.7 3.7 0 0 1 3.7 3.7"/>'},
@@ -129,19 +151,74 @@ function draw(){
   field.append(textarea);body.append(field);
   body.append(node("p","vv-preview-disclaimer","پیش‌نمایش طراحی است؛ درخواست یا پرداختی ثبت نمی‌شود."));
  }
+ if(state.step===4){
+   const authBox=node("div","vv-auth-demo","");
+   authBox.append(node("small","vv-demo-caption","وضعیت ورود برای آزمایش طراحی"));
+   const toggle=node("div","vv-auth-toggle","");
+   for(const [mode,label] of [[false,"کاربر جدید"],[true,"قبلاً وارد شده"]]){
+     const button=node("button","vv-auth-option"+(state.demoSignedIn===mode?" selected":""),label);
+     button.type="button";button.setAttribute("aria-pressed",String(state.demoSignedIn===mode));
+     button.onclick=()=>{state.demoSignedIn=mode;if(mode){state.step=6;}draw();};
+     toggle.append(button);
+   }
+   authBox.append(toggle);
+   body.append(authBox);
+   const label=node("label","vv-auth-field","");
+   label.append(node("span","","شماره موبایل"));
+   const input=document.createElement("input");input.id="vv-mobile";input.type="tel";input.inputMode="numeric";
+   input.autocomplete="tel";input.dir="ltr";input.maxLength=11;input.placeholder="۰۹۱۲۳۴۵۶۷۸۹";
+   input.value=state.mobile;input.addEventListener("input",()=>state.mobile=input.value);
+   label.append(input);body.append(label);
+   body.append(node("p","vv-auth-hint","کد تأیید به همین شماره پیامک می‌شود. (در این پیش‌نمایش هیچ پیامکی ارسال نمی‌شود.)"));
+ }
+ if(state.step===5){
+   body.append(node("p","vv-auth-hint","کد شش‌رقمی ارسال‌شده به "+state.mobile+" را وارد کنید."));
+   const label=node("label","vv-auth-field","");
+   const input=document.createElement("input");input.id="vv-otp";input.type="text";input.inputMode="numeric";
+   input.dir="ltr";input.maxLength=6;input.autocomplete="one-time-code";input.placeholder="••••••";
+   input.value=state.otp;input.addEventListener("input",()=>state.otp=input.value);
+   label.append(input);body.append(label);
+   body.append(node("div","vv-demo-otp","کد نمایشی برای تست: ۱۲۳۴۵۶"));
+ }
+ if(state.step===6){
+   const summary=node("section","vv-payment-summary","");
+   summary.append(node("strong","","خلاصه مشاوره"));
+   summary.append(node("p","",names[state.service]+" · "+state.topic+(state.service==="phone"?" · "+new Intl.NumberFormat("fa-IR").format(state.duration)+" دقیقه":"")));
+   const previewPrices={20:349000,30:449000,45:599000};
+   const price=state.service==="phone"?new Intl.NumberFormat("fa-IR").format(previewPrices[state.duration]||0)+" تومان":"تعرفه در دست بررسی";
+   summary.append(node("div","vv-payment-price",price));
+   body.append(summary);
+   body.append(node("p","vv-auth-hint",state.demoSignedIn?"کاربر وارد شده است و مستقیم به این مرحله رسیده.":"شماره موبایل تأیید شد و اکنون مرحله پرداخت نمایش داده می‌شود."));
+   body.append(node("p","vv-demo-warning","پرداخت کاملاً نمایشی است؛ هیچ تراکنشی انجام نخواهد شد."));
+ }
+ if(state.step===7){
+   const messages=node("section","vv-messenger-mock","");
+   messages.append(node("div","vv-messenger-icon","✓"),node("strong","","پرداخت نمایشی موفق بود"),node("p","","گفتگوهای مشاوره در این بخش نمایش داده می‌شوند."));
+   messages.append(node("div","vv-messenger-row","مشاوره "+state.topic+" — در انتظار پذیرش وکیل"));
+   body.append(messages);
+   body.append(node("p","vv-auth-hint","این صفحه فقط نمایش روند است؛ درخواست یا گفتگوی واقعی ایجاد نشده است."));
+ }
 }
 $("wizard-next").onclick=()=>{
  if(state.step===0){state.step=state.service==="phone"?1:2;draw();return}
  if(state.step===1){if(!phoneDurations.includes(state.duration)){$("wizard-error").textContent="مدت تماس را انتخاب کنید.";return}state.step=2;draw();return}
  if(state.step===2){if(!state.topic){$("wizard-error").textContent="موضوع حقوقی را انتخاب کنید.";return}state.step=3;draw();return}
- const v=$("wizard-description")?.value.trim()||"";
- state.description=v;
- const body=$("wizard-body");body.replaceChildren();$("wizard-title").textContent="پیش‌نمایش تکمیل شد";$("wizard-lead").textContent="در نسخه نهایی این مرحله به ورود امن و ثبت درخواست متصل می‌شود.";
- const review=node("div","review","");
- for(const [label,val] of [["خدمت",names[state.service]],...(state.service==="phone"?[["مدت تماس",state.duration+" دقیقه"]]:[]),["موضوع",state.topic],["شرح",state.description||"توضیحی ثبت نشده"]]){const row=document.createElement("div");row.append(node("span","",label),node("b","",val));review.append(row)}body.append(review);
- body.append(node("div","preview-notice","این درخواست ثبت نشده و پیام یا پرداختی ارسال نشده است. برای دیدن محیط گفتگو، می‌توانید پیش‌نمایش مسنجر کاربر را باز کنید."));
- const link=node("a","cta","مشاهده مسنجر کاربر ←");link.href="./index.html";body.append(link);
- $("wizard-next").hidden=true;$("wizard-back").hidden=true;
+ if(state.step===3){
+   state.description=$("wizard-description")?.value.trim()||"";
+   state.step=state.demoSignedIn?6:4;draw();return;
+ }
+ if(state.step===4){
+   const clean=state.mobile.replace(/[۰-۹]/g,c=>String("۰۱۲۳۴۵۶۷۸۹".indexOf(c))).replace(/[٠-٩]/g,c=>String("٠١٢٣٤٥٦٧٨٩".indexOf(c)));
+   if(!/^09\\d{9}$/.test(clean)){$("wizard-error").textContent="شماره موبایل ۱۱ رقمی معتبر وارد کنید.";return;}
+   state.mobile=clean;state.step=5;draw();return;
+ }
+ if(state.step===5){
+   const clean=state.otp.replace(/[۰-۹]/g,c=>String("۰۱۲۳۴۵۶۷۸۹".indexOf(c))).replace(/[٠-٩]/g,c=>String("٠١٢٣٤٥٦٧٨٩".indexOf(c)));
+   if(clean!=="123456"){$("wizard-error").textContent="برای تست، کد نمایشی ۱۲۳۴۵۶ را وارد کنید.";return;}
+   state.demoSignedIn=true;state.step=6;draw();return;
+ }
+ if(state.step===6){state.paymentDone=true;state.step=7;draw();return;}
+ if(state.step===7){closeWizard();return;}
 };
 $("wizard").addEventListener("close",()=>{$("wizard-next").hidden=false;$("wizard-back").hidden=false;state.step=0});
 
