@@ -46,6 +46,18 @@ try{
  return {badgeWidth:badge.width,phoneWidth:phone.width,centerDelta:Math.abs(badge.x+badge.width/2-phone.x-phone.width/2),contentsFit:digits.right<=phone.right+0.5&&icon.left>=phone.left-0.5};
  });
  if(Math.abs(aligned.badgeWidth-aligned.phoneWidth)>1||aligned.centerDelta>1||!aligned.contentsFit)throw Error("FOOTER_PHONE_NOT_ALIGNED:"+JSON.stringify(aligned));
+ const more=page.locator("#about-toggle");
+ if(await more.evaluate(el=>el.open))throw Error("PLUS_SHOULD_START_CLOSED");
+ await more.locator("summary").click();
+ if(!await more.evaluate(el=>el.open))throw Error("PLUS_DID_NOT_OPEN");
+ const footerAfter=await page.evaluate(()=>{
+  const copy=document.querySelector(".approved-expanded-copy").getBoundingClientRect();
+  const footer=document.querySelector(".approved-footer").getBoundingClientRect();
+  return footer.top>=copy.bottom-1;
+ });
+ if(!footerAfter)throw Error("FOOTER_MUST_FOLLOW_EXPANDED_TEXT");
+ await more.locator("summary").click();
+ if(await more.evaluate(el=>el.open))throw Error("PLUS_DID_NOT_CLOSE");
  if(await page.locator(".approved-divider").count())throw Error("FOOTER_DIVIDER_NOT_REMOVED");
  const iconGap=await page.evaluate(()=>{const svg=document.querySelector(".approved-phone svg").getBoundingClientRect(),number=document.querySelector(".approved-phone span").getBoundingClientRect();return Math.min(Math.abs(svg.left-number.right),Math.abs(number.left-svg.right));});
  if(iconGap>3)throw Error("PHONE_ICON_TOO_FAR:"+iconGap);
