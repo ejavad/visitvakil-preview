@@ -85,3 +85,8 @@ body{color:var(--vv-black);font-family:"Yekan Bakh",Tahoma,Arial,sans-serif}
 /* Approved solid-yellow V emblem, independent vector image */
 .approved-logo{background:none!important;padding:0!important;border-radius:0!important;letter-spacing:normal!important;overflow:visible;line-height:0}
 .approved-logo img{display:block;width:100%;height:100%;object-fit:contain;border-radius:inherit}
+
+/* Footer phone: reduce number and handset another 20%, keeping the badges unchanged. */
+.approved-phone{font-size:20.8px}
+.approved-phone svg{width:17.6px;height:17.6px}
+@media(max-width:600px){.approved-phone{font-size:14.4px}.approved-phone svg{width:12.8px;height:12.8px}}
