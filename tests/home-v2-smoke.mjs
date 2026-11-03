@@ -50,6 +50,12 @@ try{
  if(await more.evaluate(el=>el.open))throw Error("PLUS_SHOULD_START_CLOSED");
  await more.locator("summary").click();
  if(!await more.evaluate(el=>el.open))throw Error("PLUS_DID_NOT_OPEN");
+ const guide=page.locator("#legal-guide");
+ if(!await guide.getByRole("heading",{name:"مشاوره وکیل؛ راهنمای مشاوره حقوقی آنلاین و تلفنی"}).isVisible())throw Error("LEGAL_GUIDE_HEADING_MISSING");
+ if(await guide.locator(".approved-unverified-copy").count())throw Error("OLD_PLACEHOLDER_COPY_PRESENT");
+ if(await guide.locator("h3").count()!==4)throw Error("LEGAL_GUIDE_SECTIONS_MISSING");
+ if(await guide.locator(".approved-guide-links a").count()!==3)throw Error("LEGAL_GUIDE_LINKS_MISSING");
+
  const footerAfter=await page.evaluate(()=>{
   const copy=document.querySelector(".approved-expanded-copy").getBoundingClientRect();
   const footer=document.querySelector(".approved-footer").getBoundingClientRect();
