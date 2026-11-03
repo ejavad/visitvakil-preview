@@ -17,6 +17,8 @@ try{
    const image=page.locator(selector);
    if(!(await image.evaluate(el=>el.complete&&el.naturalWidth>0)))throw Error("IMAGE_MISSING:"+selector);
  }
+ const portrait=await page.locator(".approved-lawyers img").evaluate(el=>({src:el.currentSrc,width:el.naturalWidth,height:el.naturalHeight}));
+ if(!portrait.src.includes("approved-lawyers-hq.webp")||portrait.width!==1180||portrait.height!==280)throw Error("HQ_WEBP_NOT_LOADED:"+JSON.stringify(portrait));
  if(!(await page.locator(".approved-cta").evaluate(el=>getComputedStyle(el).backgroundColor)))throw Error("CTA_MISSING");
  if((await page.locator(".approved-logo").innerText())!=="V")throw Error("LOGO_MISSING");
  if((await page.locator(".approved-cta").innerText()).includes("←"))throw Error("UNWANTED_ARROW");
