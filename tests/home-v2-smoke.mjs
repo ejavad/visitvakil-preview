@@ -35,6 +35,12 @@ try{
  const logo=await page.locator(".approved-logo img").evaluate(el=>({loaded:el.complete&&el.naturalWidth>0,src:el.currentSrc}));
  if(!logo.loaded||!logo.src.includes("visitvakil-logo-yellow.svg"))throw Error("NEW_LOGO_NOT_LOADED");
  if((await page.locator(".approved-cta").innerText()).includes("←"))throw Error("UNWANTED_ARROW");
+ const fontStatus=await page.evaluate(async()=>{
+   await document.fonts.ready;
+   const active=await document.fonts.load('900 20px "Yekan Bakh"',"مشاوره حقوقی");
+   return {loadedCount:active.length,chosen:getComputedStyle(document.body).fontFamily};
+ });
+ if(fontStatus.loadedCount===0||!fontStatus.chosen.includes("Yekan Bakh"))throw Error("YEKAN_FONT_MISSING:"+JSON.stringify(fontStatus));
  await page.locator("#start-wizard").click();
  if(!await page.locator("#wizard").evaluate(x=>x.open))throw Error("WIZARD_NOT_OPEN");
  const modalLogo=await page.locator("#wizard .brandmark img").evaluate(el=>({loaded:el.complete&&el.naturalWidth>0,src:el.currentSrc}));
