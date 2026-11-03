@@ -85,6 +85,9 @@ try{
  await page.locator("#vv-mobile").fill("09123456789");
  await page.locator("#wizard-next").click();
  if(!await page.getByText("کد تأیید را وارد کنید").isVisible())throw Error("OTP_SCREEN_MISSING");
+ if(await page.locator(".vv-otp-cell").count()!==6)throw Error("OTP_SIX_CELLS_MISSING");
+ if(!await page.locator(".vv-otp-edit").isVisible())throw Error("OTP_EDIT_PHONE_MISSING");
+ if(!await page.locator(".vv-otp-resend").isVisible())throw Error("OTP_RESEND_MISSING");
  await page.locator("#vv-otp").fill("123456");
  await page.locator("#wizard-next").click();
  if(!await page.getByText("بررسی و پرداخت").isVisible())throw Error("PAYMENT_SCREEN_MISSING");
