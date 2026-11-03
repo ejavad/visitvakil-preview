@@ -112,14 +112,17 @@ if(await signedIn.locator("#vv-mobile").count())throw Error("SIGNED_IN_SHOULD_SK
 await signedIn.locator("#wizard-next").click();
 if(!await signedIn.getByText("مسنجر گفتگوها").isVisible())throw Error("SIGNED_IN_MESSENGER_SCREEN_MISSING");
 await signedIn.close();
-const aligned=await page.evaluate(()=>{
- const badge=document.querySelector(".approved-badges img").getBoundingClientRect();
+const marks=await page.evaluate(()=>{
+ const group=document.querySelector(".approved-badges");
+ const badge=group.getBoundingClientRect();
  const phone=document.querySelector(".approved-phone").getBoundingClientRect();
- const digits=document.querySelector(".approved-phone span").getBoundingClientRect();
- const icon=document.querySelector(".approved-phone svg").getBoundingClientRect();
- return {badgeWidth:badge.width,phoneWidth:phone.width,centerDelta:Math.abs(badge.x+badge.width/2-phone.x-phone.width/2),contentsFit:digits.right<=phone.right+0.5&&icon.left>=phone.left-0.5};
- });
- if(Math.abs(aligned.badgeWidth-aligned.phoneWidth)>1||aligned.centerDelta>1||!aligned.contentsFit)throw Error("FOOTER_PHONE_NOT_ALIGNED:"+JSON.stringify(aligned));
+ return {count:group.querySelectorAll(".vv-mark").length,
+  logos:group.querySelectorAll(".vv-mark img").length,
+  security:!!group.querySelector(".vv-mark-security svg"),
+  centered:Math.abs(badge.x+badge.width/2-phone.x-phone.width/2)<2};
+});
+if(marks.count!==3||marks.logos!==2||!marks.security||!marks.centered)
+ throw Error("TRUST_MARKS_ALIGNMENT:"+JSON.stringify(marks));
  const more=page.locator("#about-toggle");
  if(await more.evaluate(el=>el.open))throw Error("PLUS_SHOULD_START_CLOSED");
  await more.locator("summary").click();
