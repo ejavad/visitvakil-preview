@@ -33,7 +33,7 @@
     <details class="vv-s-expand"><summary><span class="vv-s-icon">▤</span><strong>موضوعات حقوقی</strong><span>+</span></summary><div><a href="https://visitvakil.ir/legal-topics/">ملکی و ثبتی، خانواده، کیفری و سایر موضوعات</a></div></details>
     <p class="vv-s-label vv-s-label-gap">ویزیت وکیل</p>
     <div class="vv-s-grid">
-      <a href="./showcase.html">درباره ما</a>
+      <a href="./about-us.html">درباره ما</a>
       <a href="./contact-us.html">تماس با ما</a>
       <a href="https://visitvakil.ir/">همکاری وکلا</a>
       <a href="https://visitvakil.ir/">جستجوی وکلا</a>
