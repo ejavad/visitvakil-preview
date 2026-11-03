@@ -9,6 +9,7 @@ on:
       - 'lawyer.html'
       - 'admin.html'
       - '.github/workflows/font-health.yml'
+      - 'home-v2.html'
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -20,10 +21,10 @@ jobs:
           python3 - <<'PY'
           import urllib.request
           from pathlib import Path
-          base="https://visitvakil.ir/wp-content/plugins/visitvakil-home-v2/assets/fonts/yekan-v2"
+          base="https://cdn.jsdelivr.net/gh/AmirAbbasVafaee/persian-fonts-cdn@f60854f435e782b706b028246d10f6b1478fede6/fonts/yekan-bakh"
           css=Path("yekan-bakh.css").read_text()
-          for weight in ("Regular","Medium","Bold","ExtraBold"):
-              url=f"{base}/{weight}.woff2"
+          for weight in ("Regular","SemiBold","Bold","ExtraBold"):
+              url=f"{base}/YekanBakhFaNum-{weight}.woff2"
               assert url in css,url
               try:
                   request=urllib.request.Request(url,headers={"Origin":"https://ejavad.github.io","User-Agent":"VisitVakil-Font-Health/1.0"})
