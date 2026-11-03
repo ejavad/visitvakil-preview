@@ -163,3 +163,30 @@ body{color:var(--vv-black);font-family:"Yekan Bakh",Tahoma,Arial,sans-serif}
  .approved-guide-links{gap:9px 13px}
  .approved-guide-links a{font-size:12px}
 }
+
+
+/* Modern brand-consistent left sliding navigation. */
+.menu-scrim[hidden],.vv-drawer[hidden]{display:none!important}
+.menu-scrim{position:fixed;inset:0;background:rgba(18,20,20,.32);z-index:1001;backdrop-filter:blur(2px)}
+.vv-drawer{position:fixed;inset:0 auto 0 0;z-index:1002;width:min(380px,calc(100vw - 36px));height:100dvh;display:flex;flex-direction:column;direction:rtl;background:#fbfbf9;color:#1a1a1a;box-shadow:18px 0 60px #0002;border-radius:0 22px 22px 0;overflow:hidden;animation:vv-drawer-in .24s ease-out}
+@keyframes vv-drawer-in{from{transform:translateX(-100%)}to{transform:translateX(0)}}
+.vv-drawer-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:21px 19px 18px;background:#fff;border-bottom:1px solid #eee}
+.vv-drawer-brand{display:flex;align-items:center;gap:11px}.vv-drawer-brand img{width:48px;height:48px;flex-shrink:0}.vv-drawer-brand strong{display:block;font-size:21px;font-weight:900;line-height:1.3}.vv-drawer-brand small{display:block;color:#6f6f6f;font-size:11px;margin-top:2px}
+.vv-drawer-close{border:0;background:#f6f6f5;color:#222;width:39px;height:39px;border-radius:50%;font:400 30px/1 Arial;cursor:pointer}
+.vv-drawer-content{padding:10px 17px 20px;overflow-y:auto;min-height:0;flex:1;scrollbar-width:thin}
+.vv-drawer-caption{margin:10px 4px 13px;font-size:12px;font-weight:750;color:#898989}.vv-drawer-caption-small{margin-top:23px}
+.vv-nav-primary{width:100%;min-height:77px;display:flex;align-items:center;gap:12px;text-align:right;direction:rtl;background:#fff;border:1px solid #ececea;border-radius:18px;padding:14px 12px;margin:0 0 10px;color:#171717;font-family:inherit;text-decoration:none;box-shadow:0 3px 11px #00000004;cursor:pointer}
+.vv-nav-primary>span:nth-child(2){flex:1}.vv-nav-primary strong{display:block;font-size:16px;font-weight:900;line-height:1.5}.vv-nav-primary small{display:block;font-size:11px;color:#6e6e6e;line-height:1.8;margin-top:1px}
+.vv-nav-glyph{flex-shrink:0;display:grid;place-items:center;width:43px;height:43px;background:#fff4c9;border-radius:13px;color:#2b2b2b;font-size:24px;font-weight:700}
+.vv-nav-secondary .vv-nav-glyph{background:#f3f3f3}.vv-nav-chevron{font-size:26px;color:#969696;line-height:1}
+.vv-nav-expand{background:#fff;border:1px solid #ececea;border-radius:16px;margin-bottom:10px;overflow:hidden}
+.vv-nav-expand summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;min-height:66px;padding:10px 12px}.vv-nav-expand summary::-webkit-details-marker{display:none}.vv-nav-expand summary::marker{content:""}
+.vv-nav-expand strong{flex:1;font-size:15px;font-weight:850}.vv-nav-expand .vv-nav-glyph{background:#f5f5f3;width:39px;height:39px;font-size:20px}
+.vv-nav-expand-icon{font:400 24px/1 Arial;color:#737373;margin-left:4px}.vv-nav-expand[open] .vv-nav-expand-icon{transform:rotate(45deg)}
+.vv-nav-expand>div{display:grid;gap:1px;padding:1px 13px 11px 12px}.vv-nav-expand>div a{font-size:12px;line-height:1.9;padding:9px 12px;background:#fbfaf6;border-radius:9px;color:#3d3d3d;text-decoration:none}
+.vv-drawer-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.vv-drawer-grid a{display:grid;place-items:center;min-height:58px;text-decoration:none;color:#2b2b2b;font-size:13px;font-weight:800;text-align:center;background:#fff;border:1px solid #eaeaea;border-radius:14px;padding:9px}
+.vv-drawer-bottom{flex-shrink:0;background:#fff;padding:13px 19px max(12px,env(safe-area-inset-bottom));border-top:1px solid #eee;text-align:center}.vv-drawer-bottom>a{display:flex;align-items:center;justify-content:center;gap:12px;min-height:53px;border-radius:13px;background:#ffdf73;color:#171717;text-decoration:none;font-size:17px;font-weight:900}.vv-drawer-bottom small{display:block;font-size:10px;color:#999;margin-top:8px}
+.vv-drawer :is(a,button,summary):focus-visible{outline:3px solid #d6a600;outline-offset:2px}
+body.vv-menu-open{overflow:hidden}
+@media(max-width:390px){.vv-drawer-head{padding:15px 14px}.vv-drawer-content{padding:8px 13px 15px}.vv-nav-primary{min-height:67px;padding:10px}.vv-drawer-bottom{padding:9px 13px max(8px,env(safe-area-inset-bottom))}.vv-drawer-grid a{min-height:52px}}
+@media(prefers-reduced-motion:reduce){.vv-drawer{animation:none}}
