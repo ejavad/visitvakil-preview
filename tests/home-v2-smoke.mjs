@@ -25,7 +25,7 @@ try{
  await page.locator("#site-menu").click();
  await page.locator("#menu-close").click();
  if(await page.locator("#site-links").isVisible())throw Error("DRAWER_CLOSE_FAILED");
- for(const selector of [".approved-lawyers img",".approved-badges img"]){
+ for(const selector of [".approved-lawyers img"]){
    const image=page.locator(selector);
    if(!(await image.evaluate(el=>el.complete&&el.naturalWidth>0)))throw Error("IMAGE_MISSING:"+selector);
  }

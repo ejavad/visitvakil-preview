@@ -230,3 +230,11 @@ body.vv-menu-open{overflow:hidden}
 .vv-drawer-bottom small{display:block;color:#999;text-align:center;font-size:9px;margin-top:8px}
 @media(max-width:380px){.vv-drawer{width:min(360px,95vw)}.vv-drawer-head{padding:19px 15px 15px}.vv-drawer-brand strong{font-size:19px}.vv-nav-primary strong{font-size:14px}.vv-drawer-content{padding:12px}.vv-drawer-grid a{min-height:58px;font-size:12px}}
 @media(prefers-reduced-motion:reduce){.vv-nav-expand-icon{transition:none}}
+
+/* Crisp, consistent trust artwork; licensing icons are illustrative until verified domain-specific seal embeds are installed. */
+.approved-badges.vv-trust-marks{width:min(100%,280px);height:92px;display:grid;grid-template-columns:repeat(3,1fr);align-items:center;justify-items:center;gap:5px;margin:0 auto 8px;overflow:visible}
+.vv-trust-marks .vv-mark{width:82px;height:82px;display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:10px;background:#fff}
+.vv-trust-marks .vv-mark img{display:block;width:80px;height:80px;max-height:none;max-width:none;object-fit:contain;mix-blend-mode:normal;filter:grayscale(1) contrast(1.07);opacity:.82}
+.vv-trust-marks .vv-mark svg{display:block;width:60px;height:60px}
+.vv-trust-marks .vv-mark-union img{width:77px;height:77px}
+@media(max-width:600px){.approved-badges.vv-trust-marks{width:250px;height:81px;gap:4px}.vv-trust-marks .vv-mark{width:75px;height:75px}.vv-trust-marks .vv-mark img{width:73px;height:73px}.vv-trust-marks .vv-mark svg{width:57px;height:57px}.vv-trust-marks .vv-mark-union img{width:72px;height:72px}}
