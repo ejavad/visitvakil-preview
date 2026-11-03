@@ -1,0 +1,66 @@
+/* Approved mobile-first homepage: artwork faithfully reimplemented as accessible HTML. */
+:root{--vv-yellow:#ffe48a;--vv-black:#141414;--vv-muted:#66686c}
+html,body{margin:0;min-height:100%;background:#fff}
+body{color:var(--vv-black);font-family:"Yekan Bakh",Tahoma,Arial,sans-serif}
+.approved-page{width:100%;min-height:100dvh;display:flex;flex-direction:column;overflow-x:hidden;background:white}
+.approved-header{width:min(100%,1000px);height:97px;padding:22px 30px 0;margin:0 auto;display:flex;align-items:flex-start;justify-content:space-between;position:relative;flex-shrink:0}
+.approved-brand{display:flex;gap:13px;align-items:center;color:#111;text-decoration:none}
+.approved-logo{display:grid;place-items:center;width:73px;height:73px;background:#ffd019;border-radius:17px;color:#151515;font:900 54px/1 Arial,sans-serif;letter-spacing:-6px;padding-left:4px}
+.approved-brand-copy{display:flex;flex-direction:column;justify-content:center;text-align:right}
+.approved-brand-copy strong{font-size:39px;font-weight:900;line-height:1.18;letter-spacing:-.8px}
+.approved-brand-copy small{font-size:21px;line-height:1.45;color:#161616;font-weight:700}
+.approved-menu{width:71px;height:71px;border:0;border-radius:50%;background:#f7f7f7;display:grid;place-items:center;box-shadow:0 5px 18px #00000009}
+.approved-menu svg{width:35px;height:35px;stroke:#141414;stroke-width:2.3;fill:none;stroke-linecap:round}
+.approved-links{position:absolute;left:28px;top:90px;background:#fff;z-index:9;border:1px solid #eee;border-radius:12px;box-shadow:0 14px 35px #00000012;padding:9px;width:215px}
+.approved-links[hidden]{display:none}
+.approved-links a{display:block;padding:11px;font-size:13px;font-weight:700}
+.approved-links a:hover{background:#fff9e7;border-radius:8px}
+.approved-main{flex:1;display:flex;align-items:center;justify-content:center;width:100%;padding:28px 18px 0}
+.approved-hero{text-align:center;width:min(100%,925px);margin:0 auto;padding:35px 0 14px}
+.approved-title{margin:0 auto;min-height:89px;display:flex;align-items:center;justify-content:center;gap:11px;font-size:clamp(36px,5.3vw,64px);font-weight:900;letter-spacing:-1.2px;line-height:1.45;white-space:nowrap;direction:rtl}
+.approved-caret{height:70px;width:8px;flex:0 0 8px;border-radius:5px;background:#ffca10;order:2;animation:vv-caret 1s steps(1,end) infinite}
+@keyframes vv-caret{50%{opacity:0}}
+.approved-subtitle{color:#616166;font-size:clamp(19px,2.5vw,32px);font-weight:600;margin:12px 0 62px;line-height:1.8}
+.approved-cta{border:0;background:#ffe58b;border-radius:5px;width:50%;max-width:490px;min-width:220px;height:100px;color:#101010;display:block;margin:0 auto;font-size:clamp(24px,3.5vw,41px);font-weight:900;box-shadow:none;cursor:pointer}
+.approved-cta:hover{background:#ffdf72}
+.approved-cta:focus-visible,.approved-menu:focus-visible{outline:3px solid #a78110;outline-offset:4px}
+.approved-lawyers{margin:55px auto 0;width:min(100%,835px);line-height:0}
+.approved-lawyers img{display:block;max-width:100%;height:auto;width:100%;object-fit:contain;margin:auto}
+.approved-status{margin:29px auto 0;border:1px solid #e7e7e7;border-radius:100px;padding:10px 22px;display:inline-flex;align-items:center;justify-content:center;gap:9px;color:#242424;font-weight:750;font-size:19px}
+.approved-dot{width:13px;height:13px;border-radius:50%;background:#68c832;box-shadow:inset 0 0 2px #2d7b17}
+.approved-footer{width:min(100%,1000px);margin:0 auto;padding:37px 22px 33px;text-align:center;flex:0 0 auto}
+.approved-divider{width:70%;height:1px;background:#e6e6e6;margin:0 auto 30px}
+.approved-badges{width:230px;height:80px;margin:0 auto 9px;display:flex;justify-content:center;align-items:center;overflow:hidden}
+.approved-badges img{display:block;width:190px;height:auto;mix-blend-mode:multiply}
+.approved-phone{display:flex;gap:14px;align-items:center;justify-content:center;text-decoration:none;font:800 26px Arial,sans-serif;color:#151515;margin:1px auto 0;letter-spacing:.5px}
+.approved-phone svg{stroke:#151515;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;width:27px;height:27px}
+.approved-demo-note{display:block;margin-top:25px;color:#b8b8b8;font-size:10px;line-height:1.7}
+#wizard{font-family:"Yekan Bakh",Tahoma,Arial,sans-serif}
+@media(max-width:600px){
+.approved-header{height:85px;padding:16px 19px 0}
+.approved-logo{width:46px;height:46px;border-radius:11px;font-size:35px;letter-spacing:-4px}
+.approved-brand{gap:8px}
+.approved-brand-copy strong{font-size:22px;letter-spacing:-.6px}
+.approved-brand-copy small{font-size:11px;line-height:1.4}
+.approved-menu{width:47px;height:47px}
+.approved-menu svg{width:26px;height:26px}
+.approved-links{top:70px;left:18px}
+.approved-main{padding:10px 16px 0;align-items:center}
+.approved-hero{padding:28px 0 0}
+.approved-title{font-size:clamp(24px,6.7vw,35px);letter-spacing:-.8px;gap:5px;min-height:62px}
+.approved-caret{height:37px;width:4px;flex-basis:4px}
+.approved-subtitle{font-size:clamp(13px,3.3vw,17px);margin:9px 0 38px}
+.approved-cta{height:50px;width:53%;max-width:300px;min-width:160px;border-radius:4px;font-size:22px}
+.approved-lawyers{margin-top:37px;width:100%;max-width:400px}
+.approved-status{margin-top:15px;padding:8px 16px;font-size:13px}
+.approved-dot{width:9px;height:9px}
+.approved-footer{padding:30px 14px 25px}
+.approved-divider{width:72%;margin-bottom:18px}
+.approved-badges{height:51px;width:160px;margin-bottom:5px}
+.approved-badges img{width:130px}
+.approved-phone{font-size:18px;gap:8px}
+.approved-phone svg{width:20px;height:20px}
+.approved-demo-note{font-size:9px;margin-top:19px}
+}
+@media(max-width:350px){.approved-title{font-size:22px}.approved-logo{width:42px;height:42px}.approved-brand-copy strong{font-size:20px}.approved-menu{width:42px;height:42px}.approved-hero{padding-top:8px}}
+@media(prefers-reduced-motion:reduce){.approved-caret{animation:none}}
