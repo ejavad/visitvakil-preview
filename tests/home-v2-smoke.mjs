@@ -20,7 +20,8 @@ try{
  const portrait=await page.locator(".approved-lawyers img").evaluate(el=>({src:el.currentSrc,width:el.naturalWidth,height:el.naturalHeight}));
  if(!portrait.src.includes("approved-lawyers-original.webp")||portrait.width!==832||portrait.height!==201)throw Error("HQ_WEBP_NOT_LOADED:"+JSON.stringify(portrait));
  if(!(await page.locator(".approved-cta").evaluate(el=>getComputedStyle(el).backgroundColor)))throw Error("CTA_MISSING");
- if((await page.locator(".approved-logo").innerText())!=="V")throw Error("LOGO_MISSING");
+ const logo=await page.locator(".approved-logo img").evaluate(el=>({loaded:el.complete&&el.naturalWidth>0,src:el.currentSrc}));
+ if(!logo.loaded||!logo.src.includes("visitvakil-logo-yellow.svg"))throw Error("NEW_LOGO_NOT_LOADED");
  if((await page.locator(".approved-cta").innerText()).includes("←"))throw Error("UNWANTED_ARROW");
  await page.locator("#start-wizard").click();
  if(!await page.locator("#wizard").evaluate(x=>x.open))throw Error("WIZARD_NOT_OPEN");
