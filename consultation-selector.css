@@ -231,3 +231,65 @@
 #wizard.vv-start-dialog[data-step="5"] .wizard-actions{padding-bottom:20px}
 @media(max-width:380px){.vv-otp-cells{gap:5px}.vv-otp-cell{height:48px;border-radius:11px}.vv-otp-intro{font-size:12px}}
 @media(max-height:660px){#wizard.vv-start-dialog[data-step="5"] .wizard-content h2{margin:4px 0 8px}#wizard.vv-start-dialog[data-step="5"] #wizard-body{gap:8px}.vv-otp-control{margin:2px 0}.vv-otp-cell{height:48px}}
+
+/* Mobile edge-to-edge consultation sheet: uniform across ALL wizard steps.
+   Keep desktop dialog centered and preserve native keyboard / accessibility behavior. */
+@media (max-width: 700px) {
+  #wizard.vv-start-dialog,
+  #wizard.vv-start-dialog[data-step="2"],
+  #wizard.vv-start-dialog[data-step="3"] {
+    position: fixed;
+    inset: auto 0 0 0;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 23px 23px 0 0;
+    max-height: 100dvh;
+    box-shadow: 0 -12px 44px #0000001c;
+  }
+  #wizard.vv-start-dialog .wizard-shell,
+  #wizard.vv-start-dialog[data-step="3"] .wizard-shell {
+    width: 100%;
+    max-height: 100dvh;
+    border-radius: inherit;
+    overflow: hidden;
+  }
+  #wizard.vv-start-dialog .wizard-head {
+    padding-inline: 17px;
+  }
+  #wizard.vv-start-dialog .wizard-progress {
+    padding-inline: 17px;
+  }
+  #wizard.vv-start-dialog .wizard-content,
+  #wizard.vv-start-dialog[data-step="3"] .wizard-content,
+  #wizard.vv-start-dialog[data-step="4"] .wizard-content,
+  #wizard.vv-start-dialog[data-step="5"] .wizard-content,
+  #wizard.vv-start-dialog[data-step="6"] .wizard-content,
+  #wizard.vv-start-dialog[data-step="7"] .wizard-content {
+    padding-inline: 17px;
+    min-width: 0;
+  }
+  #wizard.vv-start-dialog .wizard-actions,
+  #wizard.vv-start-dialog[data-step="3"] .wizard-actions,
+  #wizard.vv-start-dialog[data-step="4"] .wizard-actions,
+  #wizard.vv-start-dialog[data-step="5"] .wizard-actions,
+  #wizard.vv-start-dialog[data-step="6"] .wizard-actions,
+  #wizard.vv-start-dialog[data-step="7"] .wizard-actions {
+    padding-inline: 17px;
+    padding-bottom: max(13px, env(safe-area-inset-bottom));
+  }
+  #wizard.vv-start-dialog .vv-topic-grid,
+  #wizard.vv-start-dialog .vv-otp-cells {
+    min-width: 0;
+    width: 100%;
+  }
+  #wizard.vv-start-dialog .vv-topic-card,
+  #wizard.vv-start-dialog .vv-consult-card,
+  #wizard.vv-start-dialog .vv-duration-card {
+    min-width: 0;
+  }
+}
