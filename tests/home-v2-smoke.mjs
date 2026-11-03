@@ -55,7 +55,14 @@ try{
  }
  await thirty.click();
  await page.locator("#wizard-next").click();
- await page.locator("#wizard-body .wizard-choice").filter({hasText:"ملکی و ثبتی"}).click();
+ const topicCards=page.locator("#wizard-body .vv-topic-card");
+ if(await topicCards.count()!==6)throw Error("TOPIC_GRID_MUST_HAVE_6_CARDS");
+ const gridColumns=await page.locator(".vv-topic-grid").evaluate(el=>getComputedStyle(el).gridTemplateColumns.split(" ").length);
+ if(gridColumns!==2)throw Error("TOPIC_GRID_MUST_HAVE_2_COLUMNS:"+gridColumns);
+ const propertyCard=topicCards.filter({hasText:"ملکی و املاک"});
+ await propertyCard.click();
+ if(await propertyCard.getAttribute("aria-pressed")!=="true")throw Error("TOPIC_SELECTION_NOT_APPLIED");
+ if(!(await page.locator("#wizard-next").innerText()).includes("تأیید و ادامه"))throw Error("TOPIC_NEXT_LABEL_MISSING");
  await page.locator("#wizard-next").click();
  await page.locator("#wizard-description").fill("درخواست بررسی اختلاف قرارداد ملکی در منطقه");
  await page.locator("#wizard-next").click();
