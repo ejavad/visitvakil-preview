@@ -3,7 +3,15 @@ const $=id=>document.getElementById(id);
 const state={step:0,service:"text",duration:null,topic:"",description:""};
 const phoneDurations=[20,30,45];
 const names={text:"مشاوره آنلاین",phone:"مشاوره تلفنی"};
-const topics=["ملکی و ثبتی","خانواده","کیفری","چک و مطالبات","قراردادها","شرکت و کسب‌وکار"];
+const legalTopics=[
+ {id:"family",name:"خانواده",desc:"طلاق، مهریه، نفقه و حضانت",icon:'<circle cx="11" cy="10" r="4"/><circle cx="25" cy="10" r="4"/><path d="M3 29v-4c0-5 3-8 8-8s8 3 8 8v4M20 17c5 0 9 3 9 8v4"/>'},
+ {id:"property",name:"ملکی و املاک",desc:"خرید و فروش، سند، اجاره و تخلیه",icon:'<path d="m4 16 12-10 12 10v13H4V16Z"/><path d="M12 29V19h8v10M2 17l14-12 14 12"/>'},
+ {id:"crime",name:"کیفری و جرایم",desc:"کلاهبرداری، تهدید و شکایت",icon:'<path d="M16 5v25M8 9h16M8 9l-5 9h10L8 9ZM24 9l-5 9h10l-5-9ZM11 30h10"/>'},
+ {id:"contracts",name:"قراردادها و تعهدات",desc:"قرارداد، چک و ضمانت",icon:'<path d="M7 3h13l7 7v19H7zM20 3v8h7M12 17h10M12 22h10M12 27h7"/>'},
+ {id:"business",name:"شرکت و کسب‌وکار",desc:"شرکت و امور کسب‌وکار",icon:'<path d="M4 29V10h13v19M17 15h11v14M8 15h4M8 20h4M8 25h4M21 20h3M21 25h3M2 29h28"/>'},
+ {id:"other",name:"حقوقی و سایر",desc:"موضوعات دیگر",icon:'<rect x="4" y="4" width="8" height="8" rx="1"/><rect x="20" y="4" width="8" height="8" rx="1"/><rect x="4" y="20" width="8" height="8" rx="1"/><path d="M24 19v10M19 24h10"/>'}
+];
+const topics=legalTopics.map(item=>item.name);
 function node(tag,className,value){const n=document.createElement(tag);if(className)n.className=className;n.textContent=value;return n}
 function setService(value){if(!names[value])return;state.service=value;for(const b of document.querySelectorAll("[data-service]")){b.classList.toggle("selected",b.dataset.service===value);b.setAttribute("aria-pressed",String(b.dataset.service===value))}}
 
@@ -22,15 +30,15 @@ $("wizard-back").onclick=()=>{state.step=state.step===2&&state.service==="text"?
 function choice(value,label,subtitle,selected,click){const b=node("button","wizard-choice"+(selected?" chosen":""),"");b.type="button";b.append(node("strong","",label));if(subtitle)b.append(node("small","",subtitle));b.setAttribute("aria-pressed",String(selected));b.onclick=click;return b}
 function draw(){
  const body=$("wizard-body");body.replaceChildren();$("wizard-error").textContent="";
- const heading=["مشاوره را چطور می‌خواهید بگیرید؟","مشاوره تلفنی چند دقیقه باشد؟","موضوع مشاوره شما چیست؟","شرح درخواست شما"];
+ const heading=["مشاوره را چطور می‌خواهید بگیرید؟","مشاوره تلفنی چند دقیقه باشد؟","موضوع مشاوره را انتخاب کنید","شرح درخواست شما"];
  const lead=["روش ارتباط با وکیل را انتخاب کنید.","مدت زمان موردنظر خود را انتخاب کنید.","موضوع نزدیک‌تر به مسئله خود را انتخاب کنید.","مسئله خود را کوتاه و روشن توضیح دهید."];
  $("wizard-title").textContent=heading[state.step];$("wizard-lead").textContent=lead[state.step];
  $("wizard").dataset.step=String(state.step);
- $("wizard-lead").hidden=state.step===0;
+ $("wizard-lead").hidden=state.step===0||state.step===2;
  $("wizard-step-label").textContent=["نوع مشاوره","مدت مشاوره","موضوع حقوقی","شرح درخواست"][state.step];
  document.querySelectorAll(".wizard-progress span").forEach((x,i)=>{const sequence=state.service==="phone"?state.step:state.step===0?0:state.step-1;x.hidden=i>=(state.service==="phone"?4:3);x.classList.toggle("on",i<=sequence)});
  $("wizard-back").disabled=state.step===0;
- $("wizard-next").lastChild.textContent=state.step===3?"مشاهده پیش‌نمایش":"←";
+ $("wizard-next").lastChild.textContent=state.step===3?"مشاهده پیش‌نمایش":state.step===2?"تأیید و ادامه":"←";
  if(state.step===0){
   const cards=[
    {id:"phone",name:"مشاوره تلفنی",desc:"گفتگوی مستقیم و خصوصی با وکیل",kind:"تماس تلفنی",symbol:'<path d="M9.1 5.8c-.7-.9-2.1-1.1-3-.3L4.3 7.1c-.8.7-1.1 1.8-.7 2.8 3.2 8.1 9.8 14.6 17.9 17.4 1 .3 2.1 0 2.7-.8l1.6-1.9c.8-.9.6-2.3-.3-3l-3.5-2.6c-.9-.7-2.1-.6-2.9.2l-1.8 1.8a20 20 0 0 1-7.2-7.2l1.8-1.8c.8-.8.9-2 .2-2.9L9.1 5.8Z" transform="translate(0 1) scale(.91)"/><path d="M19 5.4a7.6 7.6 0 0 1 7.6 7.6M19 9.3a3.7 3.7 0 0 1 3.7 3.7"/>'},
@@ -66,7 +74,25 @@ function draw(){
   }
   body.append(node("p","vv-duration-note","مبالغ نمونه و برای تصمیم‌گیری هستند؛ تعرفه نهایی هنوز تأیید نشده است."));
  }
- if(state.step===2){for(const topic of topics)body.append(choice(topic,topic,"",state.topic===topic,()=>{state.topic=topic;draw()}))}
+ if(state.step===2){
+  const summary=node("div","vv-topic-summary","");
+  summary.append(node("span","vv-topic-pill",names[state.service]));
+  if(state.service==="phone"&&phoneDurations.includes(state.duration))
+    summary.append(node("span","vv-topic-pill",state.duration+" دقیقه"));
+  body.append(summary);
+  const grid=node("div","vv-topic-grid","");
+  for(const topic of legalTopics){
+    const selected=state.topic===topic.name;
+    const button=node("button","vv-topic-card"+(selected?" selected":""),"");
+    button.type="button";button.setAttribute("aria-pressed",String(selected));button.dataset.topic=topic.id;
+    const glyph=node("span","vv-topic-icon","");
+    glyph.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+topic.icon+'</svg>';
+    button.append(glyph,node("strong","vv-topic-title",topic.name),node("small","vv-topic-desc",topic.desc));
+    button.onclick=()=>{state.topic=topic.name;draw()};
+    grid.append(button);
+  }
+  body.append(grid);
+}
  if(state.step===3){
   const div=node("div","review","");
   for(const [label,value] of [["نوع مشاوره",names[state.service]],...(state.service==="phone"?[["مدت تماس",state.duration+" دقیقه"]]:[]),["موضوع حقوقی",state.topic]]){const row=document.createElement("div");row.append(node("span","",label),node("b","",value));div.append(row)}
