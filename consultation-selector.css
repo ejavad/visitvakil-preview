@@ -212,3 +212,22 @@
  .vv-auth-field input{min-height:52px}
  .vv-payment-summary{padding:14px 10px;gap:8px}
 }
+
+/* Six-cell OTP selector. A single accessible input handles paste and mobile autofill. */
+#wizard.vv-start-dialog[data-step="5"] .wizard-content h2{font-size:clamp(19px,5.6vw,27px);margin:10px 0 18px}
+#wizard.vv-start-dialog[data-step="5"] #wizard-body{gap:13px;align-items:center}
+.vv-otp-intro{font-size:clamp(13px,3.6vw,16px);line-height:1.9;font-weight:850;text-align:center;color:#262626;margin:3px 0 0}
+.vv-otp-phone{white-space:nowrap;font-weight:950;color:#171717}
+.vv-otp-edit{border:0;background:transparent;color:#4a4a4a;text-decoration:underline;text-underline-offset:5px;padding:3px 9px;font-size:13px;font-weight:700;cursor:pointer}
+.vv-otp-control{position:relative;width:100%;direction:ltr;cursor:text;isolation:isolate;margin:11px 0 4px}
+.vv-otp-cells{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:clamp(5px,1.7vw,10px);direction:ltr;pointer-events:none}
+.vv-otp-cell{display:grid;place-items:center;min-width:0;height:clamp(49px,13vw,66px);border:1.5px solid #e1e1e1;border-radius:14px;background:#fff;color:#202020;font-size:clamp(19px,5.4vw,28px);font-weight:900;box-shadow:0 2px 4px #00000007}
+.vv-otp-cell.active{border-color:#303030;box-shadow:0 0 0 4px #f0efed}
+.vv-otp-cell.filled{border-color:#999}
+.vv-otp-control #vv-otp{position:absolute;inset:0;width:100%;height:100%;opacity:.015;z-index:1;cursor:text;direction:ltr;font-size:24px;letter-spacing:0;background:transparent;color:transparent;caret-color:transparent;padding:0;border:0;outline:0}
+.vv-otp-resend{border:0;background:transparent;color:#777;padding:10px;font-size:12px;font-weight:700;cursor:pointer;text-align:center}
+.vv-otp-resend:focus-visible,.vv-otp-edit:focus-visible{outline:2px solid #d9b638;border-radius:8px}
+#wizard.vv-start-dialog[data-step="5"] #wizard-body .vv-demo-otp{font-size:11px;background:#fff5d5;color:#675528;text-align:center;padding:8px 12px}
+#wizard.vv-start-dialog[data-step="5"] .wizard-actions{padding-bottom:20px}
+@media(max-width:380px){.vv-otp-cells{gap:5px}.vv-otp-cell{height:48px;border-radius:11px}.vv-otp-intro{font-size:12px}}
+@media(max-height:660px){#wizard.vv-start-dialog[data-step="5"] .wizard-content h2{margin:4px 0 8px}#wizard.vv-start-dialog[data-step="5"] #wizard-body{gap:8px}.vv-otp-control{margin:2px 0}.vv-otp-cell{height:48px}}
