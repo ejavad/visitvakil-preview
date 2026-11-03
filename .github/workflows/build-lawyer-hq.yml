@@ -1,0 +1,33 @@
+name: Build high-density lawyer portraits
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/build-lawyer-hq.py'
+      - '.github/workflows/build-lawyer-hq.yml'
+permissions:
+  contents: write
+jobs:
+  enhance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Build and validate 2x WebP image
+        run: |
+          python3 -m pip install --quiet Pillow
+          python3 scripts/build-lawyer-hq.py
+      - name: Commit generated optimized image
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/approved-lawyers-hq.webp
+          if git diff --cached --quiet; then
+            echo "HQ image unchanged"
+          else
+            git commit -m "Generate optimized high-density WebP portraits for homepage"
+            git push
+          fi
