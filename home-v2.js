@@ -24,6 +24,8 @@ function draw(){
  const heading=["مشاوره را چطور می‌خواهید بگیرید؟","موضوع مشاوره شما چیست؟","شرح درخواست شما"];
  const lead=["روش ارتباط با وکیل را انتخاب کنید.","موضوع نزدیک‌تر به مسئله خود را انتخاب کنید.","مسئله خود را کوتاه و روشن توضیح دهید."];
  $("wizard-title").textContent=heading[state.step];$("wizard-lead").textContent=lead[state.step];
+ $("wizard").dataset.step=String(state.step);
+ $("wizard-lead").hidden=state.step===0;
  $("wizard-step-label").textContent=["نوع مشاوره","موضوع حقوقی","شرح درخواست"][state.step];
  document.querySelectorAll(".wizard-progress span").forEach((x,i)=>x.classList.toggle("on",i<=state.step));
  $("wizard-back").disabled=state.step===0;
