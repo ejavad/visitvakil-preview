@@ -1,0 +1,47 @@
+/* VisitVakil's own consultation selector — preview-only, no free questions */
+#wizard.vv-start-dialog{width:min(540px,calc(100% - 24px));border:0;border-radius:30px 30px 24px 24px;box-shadow:0 24px 100px #0b0b0b40;background:#fff;color:#181818;overflow:hidden}
+#wizard.vv-start-dialog::backdrop{background:rgba(19,20,25,.52);backdrop-filter:blur(5px)}
+.vv-start-dialog .wizard-shell{max-height:min(89dvh,780px);background:linear-gradient(163deg,#fff5cf 0,#fffdf7 28%,#fff 57%);overflow:hidden}
+.vv-start-dialog .wizard-head{border:0;padding:19px 23px 4px;min-height:62px;background:none}
+.vv-start-dialog .wizard-head .brand{display:none}
+.vv-start-dialog .wizard-head>button{width:39px;height:39px;border-radius:50%;background:#f4f2ed;color:#777;order:2;align-self:start}
+.vv-start-dialog .wizard-progress{padding:0 23px;gap:6px;direction:rtl;order:0;display:flex;justify-content:flex-start}
+.vv-start-dialog .wizard-progress span{flex:0 0 20px;background:#e4dfd4;height:5px;border-radius:9px}
+.vv-start-dialog .wizard-progress span.on{background:#191919;width:31px;flex-basis:31px}
+.vv-start-dialog .wizard-content{padding:16px 23px 8px;min-height:0;overflow-y:auto;scrollbar-width:thin}
+.vv-start-dialog .wizard-step-text{display:block;color:#898479;font-size:11px;font-weight:800}
+.vv-start-dialog .wizard-content h2{margin:14px 0 6px;font-weight:950;font-size:clamp(20px,5.4vw,27px);line-height:1.65;color:#171717}
+.vv-start-dialog .wizard-content>p:not(#wizard-error){font-size:12px;margin:0 0 23px;color:#807f7b}
+.vv-start-dialog #wizard-body{display:flex;flex-direction:column;gap:12px;padding-bottom:6px}
+.vv-consult-card{position:relative;isolation:isolate;display:flex;align-items:center;text-align:right;gap:15px;width:100%;min-height:120px;padding:16px 16px;border:1.5px solid #e4e4e1;border-radius:21px;background:#fff;box-shadow:0 6px 14px #00000006;transition:border-color .18s,box-shadow .18s,transform .18s;color:#222;cursor:pointer}
+.vv-consult-card.selected{border:2px solid #1d1d1d;box-shadow:0 7px 20px #00000012}
+.vv-consult-card:focus-visible{outline:3px solid #f2c943;outline-offset:2px}
+.vv-consult-illustration{flex:0 0 71px;width:71px;height:75px;border-radius:17px;background:linear-gradient(145deg,#fff7db,#f7e7ac);display:grid;place-items:center;color:#242424}
+.vv-consult-card:nth-child(2) .vv-consult-illustration{background:linear-gradient(145deg,#f4f4f4,#e4e4e4)}
+.vv-consult-illustration svg{width:46px;height:46px}
+.vv-consult-copy{display:flex;flex:1;min-width:0;flex-direction:column;gap:5px}
+.vv-consult-copy strong{font-size:clamp(16px,4.3vw,20px);font-weight:950;line-height:1.45}
+.vv-consult-copy small{font-size:clamp(11px,3vw,13px);color:#777;line-height:1.75}
+.vv-consult-copy em{font-size:10px;color:#676256;font-style:normal;font-weight:800;margin-top:5px}
+.vv-consult-check{position:absolute;left:14px;top:15px;width:22px;height:22px;border-radius:50%;border:1.5px solid #ddd;background:#fff;display:grid;place-items:center;color:#fff;font:900 13px Arial}
+.vv-consult-card.selected .vv-consult-check{border-color:#151515;background:#151515}
+.vv-start-dialog .wizard-actions{border:0;background:transparent;padding:16px 23px 24px;gap:12px;align-items:center}
+.vv-start-dialog .wizard-actions .back{width:52px;height:52px;flex:none;border:0;border-radius:50%;background:#f2f2f2;color:#333;font-size:13px}
+.vv-start-dialog .wizard-actions .next{height:53px;flex:1;border-radius:17px;background:#191919;color:#fff;font-size:17px;font-weight:900}
+.vv-start-dialog .wizard-actions .next:focus-visible{outline:3px solid #ecc73d;outline-offset:2px}
+.vv-start-dialog .wizard-actions .back:disabled{opacity:.55}
+.vv-start-dialog .wizard-choice{margin:0;border-radius:14px}
+.vv-start-dialog .wizard-choice.chosen{border:2px solid #202020;background:#fff9e8}
+.vv-start-dialog .preview-notice{background:#fff6d8}
+@media(max-width:600px){
+ #wizard.vv-start-dialog{width:calc(100% - 20px);max-height:calc(100dvh - 18px);margin:auto auto 9px;border-radius:30px 30px 26px 26px}
+ .vv-start-dialog .wizard-shell{max-height:calc(100dvh - 28px)}
+ .vv-start-dialog .wizard-content{padding:16px 21px 8px}
+ .vv-start-dialog .wizard-head{padding:18px 20px 2px}
+ .vv-start-dialog .wizard-progress{padding:0 21px}
+ .vv-start-dialog .wizard-actions{padding:16px 20px 24px}
+ .vv-consult-card{min-height:124px;padding:13px;gap:11px}
+ .vv-consult-illustration{width:66px;flex-basis:66px;height:74px}
+}
+@media(max-height:690px){.vv-start-dialog .wizard-content{padding-top:8px}.vv-start-dialog .wizard-content h2{margin:9px 0 3px}.vv-start-dialog .wizard-content>p:not(#wizard-error){margin-bottom:13px}.vv-consult-card{min-height:100px}.vv-consult-illustration{height:64px}.vv-start-dialog .wizard-actions{padding-top:8px;padding-bottom:16px}}
+@media(prefers-reduced-motion:reduce){.vv-consult-card{transition:none}}
