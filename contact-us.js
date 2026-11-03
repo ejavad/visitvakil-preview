@@ -1,10 +1,4 @@
 "use strict";
-const menuButton=document.getElementById("menu-button");
-const menu=document.getElementById("main-menu");
-function setMenu(open){menu.hidden=!open;menuButton.setAttribute("aria-expanded",String(open))}
-menuButton.addEventListener("click",()=>setMenu(menu.hidden));
-document.addEventListener("click",event=>{if(!menu.hidden&&!menu.contains(event.target)&&!menuButton.contains(event.target))setMenu(false)});
-document.addEventListener("keydown",event=>{if(event.key==="Escape")setMenu(false)});
 const form=document.getElementById("contact-form");
 form.addEventListener("submit",event=>{
  event.preventDefault();
