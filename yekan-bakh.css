@@ -4,3 +4,10 @@
 @font-face{font-family:"Yekan Bakh";src:url("https://cdn.jsdelivr.net/gh/AmirAbbasVafaee/persian-fonts-cdn@f60854f435e782b706b028246d10f6b1478fede6/fonts/yekan-bakh/YekanBakhFaNum-Bold.woff2") format("woff2");font-style:normal;font-weight:700;font-display:swap}
 @font-face{font-family:"Yekan Bakh";src:url("https://cdn.jsdelivr.net/gh/AmirAbbasVafaee/persian-fonts-cdn@f60854f435e782b706b028246d10f6b1478fede6/fonts/yekan-bakh/YekanBakhFaNum-ExtraBold.woff2") format("woff2");font-style:normal;font-weight:800 900;font-display:swap}
 html,body,button,input,textarea,select{font-family:"Yekan Bakh",Tahoma,Arial,sans-serif}
+
+/* Explicitly retain Yekan Bakh for UI controls and all text inside the consultation sheet. */
+body, body button, body input, body textarea, body select, body summary,
+#wizard.vv-start-dialog, #wizard.vv-start-dialog *,
+.approved-page, .approved-page button, .vv-drawer, .vv-drawer button{
+  font-family:"Yekan Bakh",Tahoma,Arial,sans-serif;
+}
