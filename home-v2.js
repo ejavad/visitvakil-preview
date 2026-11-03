@@ -19,7 +19,9 @@ function openWizard(topic){if(topic&&topics.includes(topic))state.topic=topic;st
 function closeWizard(){$("wizard").close()}
 $("start-wizard").onclick=()=>openWizard();
 // Preview deep link supported for design testing only.
-if(new URLSearchParams(location.search).get("show")==="consultation"){openWizard();}
+const previewStep=new URLSearchParams(location.search).get("show");
+if(previewStep==="consultation"){openWizard();}
+if(previewStep==="topics"){state.service="phone";state.duration=30;state.step=2;draw();$("wizard").showModal();}
 
 
 
