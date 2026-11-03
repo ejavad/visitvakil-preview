@@ -27,17 +27,18 @@ function draw(){
  $("wizard-next").lastChild.textContent=state.step===2?"مشاهده پیش‌نمایش":"←";
  if(state.step===0){
   const cards=[
-   {id:"phone",name:"مشاوره تلفنی",desc:"گفتگوی مستقیم و خصوصی با وکیل",kind:"تماس تلفنی",symbol:'<path d="M9.2 4.8c.5-1.2 1.7-1.9 3-1.8l2.4.2c1.1.1 1.9.9 2.1 2l.5 3c.2 1-.3 2-1.2 2.5l-1.7.9a16 16 0 0 0 6.1 6.1l.9-1.7c.5-.9 1.5-1.4 2.5-1.2l3 .5c1.1.2 1.9 1 2 2.1l.2 2.4c.1 1.3-.6 2.5-1.8 3a5 5 0 0 1-2.7.3C12.8 25.5 6.5 19.2 4.3 10.5A5 5 0 0 1 4.6 7.8Z" transform="translate(0 -2) scale(.85)"/>'},
+   {id:"phone",name:"مشاوره تلفنی",desc:"گفتگوی مستقیم و خصوصی با وکیل",kind:"تماس تلفنی",symbol:'<path d="M9.1 5.8c-.7-.9-2.1-1.1-3-.3L4.3 7.1c-.8.7-1.1 1.8-.7 2.8 3.2 8.1 9.8 14.6 17.9 17.4 1 .3 2.1 0 2.7-.8l1.6-1.9c.8-.9.6-2.3-.3-3l-3.5-2.6c-.9-.7-2.1-.6-2.9.2l-1.8 1.8a20 20 0 0 1-7.2-7.2l1.8-1.8c.8-.8.9-2 .2-2.9L9.1 5.8Z" transform="translate(0 1) scale(.91)"/><path d="M19 5.4a7.6 7.6 0 0 1 7.6 7.6M19 9.3a3.7 3.7 0 0 1 3.7 3.7"/>'},
    {id:"text",name:"مشاوره آنلاین",desc:"گفتگوی متنی با وکیل در مسنجر",kind:"گفتگوی اینترنتی",symbol:'<rect x="3.5" y="5" width="25" height="19" rx="4"/><path d="M10 11h12M10 16h8M10 24l-5 5v-5"/>'}
   ];
   for(const item of cards){
     const selected=state.service===item.id;
-    const button=node("button","vv-consult-card"+(selected?" selected":""),"");
+    const button=node("button","vv-consult-card"+(item.id==="phone"?" recommended":"")+(selected?" selected":""),"");
     button.type="button";button.dataset.service=item.id;button.setAttribute("aria-pressed",String(selected));
     const icon=document.createElement("span");icon.className="vv-consult-illustration";icon.innerHTML='<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+item.symbol+'</svg>';
     const copy=node("span","vv-consult-copy","");
     copy.append(node("strong","",item.name),node("small","",item.desc),node("em","",item.kind));
     const check=node("span","vv-consult-check",selected?"✓":"");check.setAttribute("aria-hidden","true");
+    if(item.id==="phone"){const badge=node("span","vv-recommend-badge","پیشنهاد ویزیت وکیل");button.append(badge);}
     button.append(icon,copy,check);
     button.onclick=()=>{state.service=item.id;draw()};
     body.append(button);
