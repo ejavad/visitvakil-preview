@@ -114,3 +114,9 @@ body{color:var(--vv-black);font-family:"Yekan Bakh",Tahoma,Arial,sans-serif}
  .approved-phone{font-size:11px;gap:2px}
  .approved-phone svg{width:11px;height:11px}
 }
+
+
+/* Compact final footer: no divider, handset snug against digits. */
+.approved-divider{display:none!important}
+.approved-phone{justify-content:center!important;gap:2px!important}
+.approved-badges{margin-bottom:0}
