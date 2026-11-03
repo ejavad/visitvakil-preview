@@ -45,3 +45,11 @@
 }
 @media(max-height:690px){.vv-start-dialog .wizard-content{padding-top:8px}.vv-start-dialog .wizard-content h2{margin:9px 0 3px}.vv-start-dialog .wizard-content>p:not(#wizard-error){margin-bottom:13px}.vv-consult-card{min-height:100px}.vv-consult-illustration{height:64px}.vv-start-dialog .wizard-actions{padding-top:8px;padding-bottom:16px}}
 @media(prefers-reduced-motion:reduce){.vv-consult-card{transition:none}}
+
+/* Recommended phone consultation: restrained black ribbon and refined handset artwork. */
+.vv-consult-card.recommended{margin-top:12px;border-color:#262626;box-shadow:0 7px 21px #0000000c;padding-top:22px}
+.vv-consult-card.recommended.selected{border-width:2px}
+.vv-recommend-badge{position:absolute;top:-15px;right:15px;background:#212121;color:#fff;border:2px solid #fff;border-radius:40px;padding:6px 14px;font-size:11px;font-weight:900;line-height:1.5;white-space:nowrap;box-shadow:0 3px 10px #00000016;pointer-events:none}
+.vv-consult-card.recommended .vv-consult-illustration{background:linear-gradient(145deg,#fff5d8 0%,#ffe5a0 100%);border:1px solid #f9e1a2;color:#222;box-shadow:inset 0 1px 0 #ffffffbc}
+.vv-consult-card.recommended .vv-consult-illustration svg{width:44px;height:44px;stroke-width:1.65}
+@media(max-height:690px){.vv-consult-card.recommended{margin-top:10px;padding-top:17px}.vv-recommend-badge{top:-12px;padding:4px 12px}}
