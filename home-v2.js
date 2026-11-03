@@ -209,7 +209,7 @@ $("wizard-next").onclick=()=>{
  }
  if(state.step===4){
    const clean=state.mobile.replace(/[۰-۹]/g,c=>String("۰۱۲۳۴۵۶۷۸۹".indexOf(c))).replace(/[٠-٩]/g,c=>String("٠١٢٣٤٥٦٧٨٩".indexOf(c)));
-   if(!/^09\\d{9}$/.test(clean)){$("wizard-error").textContent="شماره موبایل ۱۱ رقمی معتبر وارد کنید.";return;}
+   if(!/^09\d{9}$/.test(clean)){$("wizard-error").textContent="شماره موبایل ۱۱ رقمی معتبر وارد کنید.";return;}
    state.mobile=clean;state.step=5;draw();return;
  }
  if(state.step===5){
