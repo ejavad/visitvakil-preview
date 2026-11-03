@@ -64,3 +64,20 @@ body{color:var(--vv-black);font-family:"Yekan Bakh",Tahoma,Arial,sans-serif}
 }
 @media(max-width:350px){.approved-title{font-size:22px}.approved-logo{width:42px;height:42px}.approved-brand-copy strong{font-size:20px}.approved-menu{width:42px;height:42px}.approved-hero{padding-top:8px}}
 @media(prefers-reduced-motion:reduce){.approved-caret{animation:none}}
+
+
+/* Footer refinement: 20% smaller trust artwork and icons, anchored to bottom edge. */
+.approved-footer{margin-top:auto;padding-top:12px;padding-bottom:6px}
+.approved-divider{margin-bottom:10px}
+.approved-badges{width:184px;height:64px;margin-bottom:4px}
+.approved-badges img{width:152px}
+.approved-phone svg{width:22px;height:22px}
+.approved-demo-note{margin-top:8px}
+@media(max-width:600px){
+ .approved-footer{padding:8px 12px 4px}
+ .approved-divider{margin-bottom:7px}
+ .approved-badges{width:128px;height:41px;margin-bottom:2px}
+ .approved-badges img{width:104px}
+ .approved-phone svg{width:16px;height:16px}
+ .approved-demo-note{margin-top:5px;font-size:8px}
+}
