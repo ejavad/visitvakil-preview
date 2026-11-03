@@ -56,3 +56,24 @@ if(menuButton&&menuLinks){
  document.addEventListener("click",event=>{if(!menuLinks.hidden&&!menuLinks.contains(event.target)&&!menuButton.contains(event.target)){menuLinks.hidden=true;menuButton.setAttribute("aria-expanded","false")}});
  menuLinks.querySelectorAll("a").forEach(link=>link.addEventListener("click",()=>{menuLinks.hidden=true;menuButton.setAttribute("aria-expanded","false")}));
 }
+
+
+/* Rotating phrase is decorative only: content is already present without JS. */
+(function startHomepageTyping(){
+ const span=document.getElementById("rotating-phrase");
+ if(!span || window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+ const phrases=["آغاز یک تصمیم درست","آغاز یک انتخاب درست","آغاز یک مسیر درست"];
+ let phrase=0,index=phrases[0].length,removing=true;
+ function tick(){
+  const current=phrases[phrase];
+  if(removing){
+   index=Math.max(0,index-1);span.textContent=current.slice(0,index);
+   if(index===0){phrase=(phrase+1)%phrases.length;removing=false;setTimeout(tick,380);return}
+   setTimeout(tick,45);return;
+  }
+  const next=phrases[phrase];index=Math.min(next.length,index+1);span.textContent=next.slice(0,index);
+  if(index===next.length){removing=true;setTimeout(tick,2300);return}
+  setTimeout(tick,95);
+ }
+ setTimeout(tick,2500);
+})();
