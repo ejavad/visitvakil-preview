@@ -25,6 +25,9 @@ try{
  if((await page.locator(".approved-cta").innerText()).includes("←"))throw Error("UNWANTED_ARROW");
  await page.locator("#start-wizard").click();
  if(!await page.locator("#wizard").evaluate(x=>x.open))throw Error("WIZARD_NOT_OPEN");
+ const modalLogo=await page.locator("#wizard .brandmark img").evaluate(el=>({loaded:el.complete&&el.naturalWidth>0,src:el.currentSrc}));
+ if(!modalLogo.loaded||!modalLogo.src.includes("visitvakil-logo-yellow.svg"))throw Error("WIZARD_BRAND_LOGO_NOT_UNIFIED");
+
  await page.locator("#wizard-body .wizard-choice").filter({hasText:"مشاوره تلفنی"}).click();
  await page.locator("#wizard-next").click();
  await page.locator("#wizard-body .wizard-choice").filter({hasText:"ملکی و ثبتی"}).click();
@@ -48,6 +51,11 @@ try{
  if(iconGap>3)throw Error("PHONE_ICON_TOO_FAR:"+iconGap);
  const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1);
  if(overflow)throw Error("MOBILE_HORIZONTAL_OVERFLOW");
+ for(const path of ["index.html","lawyer.html","admin.html","showcase.html"]){
+   await page.goto("http://127.0.0.1:8765/"+path,{waitUntil:"load"});
+   const logos=await page.locator(".mark img,.admin-mark img,.v img").evaluateAll(els=>els.map(el=>({loaded:el.complete&&el.naturalWidth>0,src:el.currentSrc})));
+   if(!logos.length||logos.some(l=>!l.loaded||!l.src.includes("visitvakil-logo-yellow.svg")))throw Error("OTHER_LOGO_MISMATCH:"+path+":"+JSON.stringify(logos));
+ }
  if(errors.length)throw Error("JS_ERRORS:"+errors.join(";"));
  console.log("PASS: minimal single-CTA homepage, hidden wizard, full three-step consultation flow, mobile width");
 }finally{await browser.close()}
