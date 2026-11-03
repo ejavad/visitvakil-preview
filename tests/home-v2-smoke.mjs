@@ -46,6 +46,15 @@ try{
  if(!await recommended.locator("svg").count())throw Error("PHONE_ICON_MISSING");
  await recommended.click();
  await page.locator("#wizard-next").click();
+ const durationCards=page.locator("#wizard-body .vv-duration-card");
+ if(await durationCards.count()!==3)throw Error("PHONE_DURATION_CARDS_MISSING");
+ const thirty=durationCards.filter({hasText:"۳۰ دقیقه"});
+ if(!await thirty.isVisible())throw Error("RECOMMENDED_30_MIN_MISSING");
+ for(const price of ["۳۴۹٬۰۰۰","۴۴۹٬۰۰۰","۵۹۹٬۰۰۰"]){
+   if(!(await page.locator("#wizard-body").innerText()).includes(price))throw Error("PREVIEW_PRICE_MISSING:"+price);
+ }
+ await thirty.click();
+ await page.locator("#wizard-next").click();
  await page.locator("#wizard-body .wizard-choice").filter({hasText:"ملکی و ثبتی"}).click();
  await page.locator("#wizard-next").click();
  await page.locator("#wizard-description").fill("درخواست بررسی اختلاف قرارداد ملکی در منطقه");
