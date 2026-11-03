@@ -70,7 +70,7 @@ function draw(){
     const info=node("span","vv-duration-info","");
     info.append(node("small","vv-duration-price-label","قیمت پیشنهادی"));
     info.append(node("strong","vv-duration-price",prices[minutes].toLocaleString("fa-IR")+" تومان"));
-    button.append(node("strong","vv-duration-name",String(minutes)+" دقیقه"),info);
+    button.append(node("strong","vv-duration-name",new Intl.NumberFormat("fa-IR").format(minutes)+" دقیقه"),info);
     button.append(node("span","vv-duration-radio",selected?"✓":""));
     button.onclick=()=>{state.duration=minutes;draw()};body.append(button);
   }
@@ -80,7 +80,7 @@ function draw(){
   const summary=node("div","vv-topic-summary","");
   summary.append(node("span","vv-topic-pill",names[state.service]));
   if(state.service==="phone"&&phoneDurations.includes(state.duration))
-    summary.append(node("span","vv-topic-pill",state.duration+" دقیقه"));
+    summary.append(node("span","vv-topic-pill",new Intl.NumberFormat("fa-IR").format(state.duration)+" دقیقه"));
   body.append(summary);
   const grid=node("div","vv-topic-grid","");
   for(const topic of legalTopics){
