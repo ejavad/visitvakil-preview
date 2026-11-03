@@ -64,6 +64,21 @@ try{
  if(await propertyCard.getAttribute("aria-pressed")!=="true")throw Error("TOPIC_SELECTION_NOT_APPLIED");
  if(!(await page.locator("#wizard-next").innerText()).includes("تأیید و ادامه"))throw Error("TOPIC_NEXT_LABEL_MISSING");
  await page.locator("#wizard-next").click();
+ const summary=page.locator("#wizard .vv-request-summary");
+ if(!await summary.isVisible())throw Error("COMPACT_SUMMARY_MISSING");
+ const summaryText=await summary.innerText();
+ if(!summaryText.includes("مشاوره تلفنی")||!summaryText.includes("ملکی و املاک")||!summaryText.includes("۴۴۹٬۰۰۰"))
+  throw Error("SUMMARY_VALUES_MISSING:"+summaryText);
+ const bounds=await page.evaluate(()=>{
+   const dialog=document.querySelector("#wizard").getBoundingClientRect();
+   const head=document.querySelector("#wizard .wizard-head").getBoundingClientRect();
+   const actions=document.querySelector("#wizard .wizard-actions").getBoundingClientRect();
+   const shell=document.querySelector("#wizard .wizard-shell");
+   const content=document.querySelector("#wizard .wizard-content");
+   return {top:dialog.top,bottom:dialog.bottom,actionBottom:actions.bottom,viewport:innerHeight,scrollable:content.scrollHeight>content.clientHeight+3};
+ });
+ if(bounds.top<0||bounds.bottom>bounds.viewport+2||bounds.actionBottom>bounds.viewport+2||bounds.scrollable)
+  throw Error("COMPACT_REVIEW_NEEDS_SCROLL:"+JSON.stringify(bounds));
  await page.locator("#wizard-description").fill("درخواست بررسی اختلاف قرارداد ملکی در منطقه");
  await page.locator("#wizard-next").click();
  await page.getByText("پیش‌نمایش تکمیل شد").waitFor();
