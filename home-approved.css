@@ -146,3 +146,20 @@ body{color:var(--vv-black);font-family:"Yekan Bakh",Tahoma,Arial,sans-serif}
  .approved-unverified-copy{font-size:11px}
 }
 @media(prefers-reduced-motion:reduce){.approved-plus-sign{transition:none}}
+
+
+/* Long-form legal guide inside the optional expandable + section. */
+.approved-expanded-copy h3{font-size:17px;font-weight:850;color:#1d1d1d;line-height:1.8;margin:23px 0 8px}
+.approved-expanded-copy strong{font-weight:850;color:#202020}
+.approved-expanded-copy a{color:#4b400d;text-decoration:underline;text-decoration-color:#d5bc57;text-underline-offset:4px}
+.approved-expanded-copy a:hover{color:#151515;text-decoration-color:#151515}
+.approved-guide-conclusion{padding:12px 0;margin-bottom:10px}
+.approved-guide-links{display:flex;flex-wrap:wrap;align-items:center;gap:9px 15px;padding:12px 0 6px;border-top:1px solid #eee}
+.approved-guide-links a{font-weight:750;font-size:13px}
+@media(max-width:600px){
+ .approved-expanded-copy h2{font-size:18px;line-height:1.85}
+ .approved-expanded-copy h3{font-size:15px;margin:18px 0 6px}
+ .approved-expanded-copy p{margin-bottom:12px;line-height:2.1}
+ .approved-guide-links{gap:9px 13px}
+ .approved-guide-links a{font-size:12px}
+}
