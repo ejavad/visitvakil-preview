@@ -1,5 +1,6 @@
 "use strict";
 const $=id=>document.getElementById(id);
+// Consultation preview UI uses English consistently; core service IDs are unchanged.
 const state={step:0,service:"text",duration:null,topic:"",description:"",demoSignedIn:false,mobile:"",otp:"",paymentDone:false};
 const phoneDurations=[20,30,45];
 const names={text:"Online Consultation",phone:"Phone Consultation"};
@@ -47,11 +48,15 @@ $("wizard-back").onclick=()=>{
 function choice(value,label,subtitle,selected,click){const b=node("button","wizard-choice"+(selected?" chosen":""),"");b.type="button";b.append(node("strong","",label));if(subtitle)b.append(node("small","",subtitle));b.setAttribute("aria-pressed",String(selected));b.onclick=click;return b}
 function draw(){
  const body=$("wizard-body");body.replaceChildren();$("wizard-error").textContent="";
- const heading=["How would you like to consult?","Phone Consultation چند min باشد؟","Choose your legal topic","Request Summary"];
+ const heading=["How would you like to consult?","How many minutes do you need?","Choose your legal topic","Request Summary"];
  const lead=["Choose how to connect with a lawyer.","Choose your preferred call duration.","Choose the topic closest to your case.","Review your choices."];
  const postTitles={4:"Enter your mobile number",5:"Enter your verification code",6:"Review & Payment",7:"Your Conversations"};
- const postLabels={4:"Mobile Sign-in",5:"Verify Mobile",6:"پرداخت",7:"My Conversations"};
+ const postLabels={4:"Mobile Sign-in",5:"Verify Mobile",6:"Payment",7:"My Conversations"};
  $("wizard-title").textContent=heading[state.step]||postTitles[state.step];
+ $("wizard").dir="ltr";
+ $("wizard").lang="en";
+ $("wizard-back").textContent="Back";
+ $("close-wizard").setAttribute("aria-label","Close");
  $("wizard-lead").textContent=lead[state.step]||"";
  $("wizard").dataset.step=String(state.step);
  $("wizard-lead").hidden=state.step!==1;
@@ -166,7 +171,7 @@ function draw(){
    const label=node("label","vv-auth-field","");
    label.append(node("span","","Mobile number"));
    const input=document.createElement("input");input.id="vv-mobile";input.type="tel";input.inputMode="numeric";
-   input.autocomplete="tel";input.dir="ltr";input.maxLength=11;input.placeholder="۰۹۱۲۳۴۵۶۷۸۹";
+   input.autocomplete="tel";input.dir="ltr";input.maxLength=11;input.placeholder="09123456789";
    input.value=state.mobile;input.addEventListener("input",()=>state.mobile=input.value);
    label.append(input);body.append(label);
    body.append(node("p","vv-auth-hint","A verification code would be sent to this number. No SMS is sent in this demo."));
@@ -194,7 +199,7 @@ function draw(){
    const update=()=>{
      const digits=normalize(input.value);input.value=digits;state.otp=digits;
      [...cells.children].forEach((cell,i)=>{
-       cell.textContent=digits[i]?"۰۱۲۳۴۵۶۷۸۹"[Number(digits[i])]:"";
+       cell.textContent=digits[i]||"";
        cell.classList.toggle("filled",i<digits.length);
        cell.classList.toggle("active",i===Math.min(digits.length,5));
      });
@@ -220,7 +225,7 @@ function draw(){
    const price=state.service==="phone"?new Intl.NumberFormat("en-US").format(previewPrices[state.duration]||0)+" Toman":"Price pending";
    summary.append(node("div","vv-payment-price",price));
    body.append(summary);
-   body.append(node("p","vv-auth-hint",state.demoSignedIn?"You're signed in and went directly to payment.":"Mobile number تأیید شد و اکنون مرحله پرداخت نمایش داده می‌شود."));
+   body.append(node("p","vv-auth-hint",state.demoSignedIn?"You're signed in and went directly to payment.":"Mobile verified. You can now proceed to payment."));
    body.append(node("p","vv-demo-warning","Demo payment only. No transaction takes place."));
  }
  if(state.step===7){
@@ -234,14 +239,14 @@ function draw(){
 $("wizard-next").onclick=()=>{
  if(state.step===0){state.step=state.service==="phone"?1:2;draw();return}
  if(state.step===1){if(!phoneDurations.includes(state.duration)){$("wizard-error").textContent="Choose a call duration.";return}state.step=2;draw();return}
- if(state.step===2){if(!state.topic){$("wizard-error").textContent="Legal Topic را انتخاب کنید.";return}state.step=3;draw();return}
+ if(state.step===2){if(!state.topic){$("wizard-error").textContent="Choose a legal topic.";return}state.step=3;draw();return}
  if(state.step===3){
    state.description=$("wizard-description")?.value.trim()||"";
    state.step=state.demoSignedIn?6:4;draw();return;
  }
  if(state.step===4){
    const clean=state.mobile.replace(/[۰-۹]/g,c=>String("۰۱۲۳۴۵۶۷۸۹".indexOf(c))).replace(/[٠-٩]/g,c=>String("٠١٢٣٤٥٦٧٨٩".indexOf(c)));
-   if(!/^09\d{9}$/.test(clean)){$("wizard-error").textContent="Mobile number ۱۱ رقمی معتبر وارد کنید.";return;}
+   if(!/^09\d{9}$/.test(clean)){$("wizard-error").textContent="Enter a valid 11-digit mobile number.";return;}
    state.mobile=clean;state.step=5;draw();return;
  }
  if(state.step===5){
