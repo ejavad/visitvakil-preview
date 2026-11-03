@@ -40,7 +40,11 @@ try{
  const modalLogo=await page.locator("#wizard .brandmark img").evaluate(el=>({loaded:el.complete&&el.naturalWidth>0,src:el.currentSrc}));
  if(!modalLogo.loaded||!modalLogo.src.includes("visitvakil-logo-yellow.svg"))throw Error("WIZARD_BRAND_LOGO_NOT_UNIFIED");
 
- await page.locator("#wizard-body .wizard-choice").filter({hasText:"مشاوره تلفنی"}).click();
+ const recommended=page.locator("#wizard-body .vv-consult-card.recommended");
+ if(!await recommended.isVisible())throw Error("RECOMMENDED_PHONE_CARD_MISSING");
+ if(!await recommended.getByText("پیشنهاد ویزیت وکیل").isVisible())throw Error("RECOMMENDATION_BADGE_MISSING");
+ if(!await recommended.locator("svg").count())throw Error("PHONE_ICON_MISSING");
+ await recommended.click();
  await page.locator("#wizard-next").click();
  await page.locator("#wizard-body .wizard-choice").filter({hasText:"ملکی و ثبتی"}).click();
  await page.locator("#wizard-next").click();
