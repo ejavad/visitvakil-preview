@@ -35,6 +35,14 @@ try{
  if(!await page.getByRole("link",{name:/مشاهده مسنجر کاربر/}).isVisible())throw Error("MESSENGER_LINK_MISSING");
  await page.locator("#close-wizard").click();
  if(await page.locator("#wizard").evaluate(x=>x.open))throw Error("CLOSE_FAILED");
+ const aligned=await page.evaluate(()=>{
+ const badge=document.querySelector(".approved-badges img").getBoundingClientRect();
+ const phone=document.querySelector(".approved-phone").getBoundingClientRect();
+ const digits=document.querySelector(".approved-phone span").getBoundingClientRect();
+ const icon=document.querySelector(".approved-phone svg").getBoundingClientRect();
+ return {badgeWidth:badge.width,phoneWidth:phone.width,centerDelta:Math.abs(badge.x+badge.width/2-phone.x-phone.width/2),contentsFit:digits.right<=phone.right+0.5&&icon.left>=phone.left-0.5};
+ });
+ if(Math.abs(aligned.badgeWidth-aligned.phoneWidth)>1||aligned.centerDelta>1||!aligned.contentsFit)throw Error("FOOTER_PHONE_NOT_ALIGNED:"+JSON.stringify(aligned));
  const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1);
  if(overflow)throw Error("MOBILE_HORIZONTAL_OVERFLOW");
  if(errors.length)throw Error("JS_ERRORS:"+errors.join(";"));
