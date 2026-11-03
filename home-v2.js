@@ -48,15 +48,39 @@ $("wizard-next").onclick=()=>{
 };
 $("wizard").addEventListener("close",()=>{$("wizard-next").hidden=false;$("wizard-back").hidden=false;state.step=0});
 
-/* Minimal homepage navigation: does not touch consultation backend. */
+/* Sliding homepage services drawer; consultation wizard behavior remains unchanged. */
 const menuButton=document.getElementById("site-menu");
 const menuLinks=document.getElementById("site-links");
-if(menuButton&&menuLinks){
- menuButton.addEventListener("click",()=>{const open=menuLinks.hidden;menuLinks.hidden=!open;menuButton.setAttribute("aria-expanded",String(open))});
- document.addEventListener("click",event=>{if(!menuLinks.hidden&&!menuLinks.contains(event.target)&&!menuButton.contains(event.target)){menuLinks.hidden=true;menuButton.setAttribute("aria-expanded","false")}});
- menuLinks.querySelectorAll("a").forEach(link=>link.addEventListener("click",()=>{menuLinks.hidden=true;menuButton.setAttribute("aria-expanded","false")}));
+const menuScrim=document.getElementById("menu-scrim");
+const menuClose=document.getElementById("menu-close");
+const menuConsult=document.getElementById("menu-consult");
+let menuReturnFocus=null;
+function setMenuOpen(open){
+ if(!menuButton||!menuLinks||!menuScrim)return;
+ if(open)menuReturnFocus=document.activeElement;
+ menuLinks.hidden=!open;
+ menuScrim.hidden=!open;
+ document.body.classList.toggle("vv-menu-open",open);
+ menuButton.setAttribute("aria-expanded",String(open));
+ if(open){menuClose.focus();}else if(menuReturnFocus&&typeof menuReturnFocus.focus==="function"){menuReturnFocus.focus();menuReturnFocus=null;}
 }
-
+if(menuButton&&menuLinks&&menuScrim){
+ menuButton.addEventListener("click",()=>setMenuOpen(menuLinks.hidden));
+ menuClose.addEventListener("click",()=>setMenuOpen(false));
+ menuScrim.addEventListener("click",()=>setMenuOpen(false));
+ document.addEventListener("keydown",event=>{
+  if(menuLinks.hidden)return;
+  if(event.key==="Escape"){setMenuOpen(false);return;}
+  if(event.key==="Tab"){
+    const focusable=[...menuLinks.querySelectorAll('button:not([disabled]),a[href],summary')].filter(el=>el.getClientRects().length);
+    const first=focusable[0],last=focusable[focusable.length-1];
+    if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}
+    else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
+  }
+ });
+ menuLinks.querySelectorAll("a").forEach(link=>link.addEventListener("click",()=>setMenuOpen(false)));
+ if(menuConsult)menuConsult.addEventListener("click",()=>{setMenuOpen(false);document.getElementById("start-wizard")?.click();});
+}
 
 /* Rotating phrase is decorative only: content is already present without JS. */
 (function startHomepageTyping(){
