@@ -9,6 +9,9 @@ function setService(value){if(!names[value])return;state.service=value;for(const
 function openWizard(topic){if(topic&&topics.includes(topic))state.topic=topic;state.step=topic?1:0;draw();$("wizard").showModal()}
 function closeWizard(){$("wizard").close()}
 $("start-wizard").onclick=()=>openWizard();
+// Preview deep link: show the latest consultation design immediately.
+if(new URLSearchParams(location.search).get("show")==="consultation"){openWizard();}
+
 
 
 
