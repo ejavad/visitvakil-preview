@@ -7,7 +7,7 @@
 <meta name="description" content="ویزیت وکیل؛ مشاوره وکیل، آنلاین، تلفنی و متنی">
 <title>ویزیت وکیل | مشاوره حقوقی آنلاین</title>
 <link rel="stylesheet" href="home-v2.css?v=approved-1">
-<link rel="stylesheet" href="home-approved.css?v=legal-guide-1">
+<link rel="stylesheet" href="home-approved.css?v=drawer-menu-1">
 <link rel="stylesheet" href="brand-logo.css?v=unified-1"></head>
 <body>
 <div class="approved-page">
@@ -19,10 +19,29 @@
     <button type="button" id="site-menu" class="approved-menu" aria-controls="site-links" aria-expanded="false" aria-label="فهرست">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
     </button>
-    <nav id="site-links" class="approved-links" hidden aria-label="منوی سایت">
-      <a href="./showcase.html">درباره ویزیت وکیل</a>
-      <a href="./index.html">ورود به مسنجر</a>
-      <a href="#contact">تماس با ما</a>
+    <div class="menu-scrim" id="menu-scrim" hidden></div>
+    <nav id="site-links" class="vv-drawer" hidden aria-label="فهرست خدمات ویزیت وکیل" tabindex="-1">
+      <div class="vv-drawer-head">
+        <div class="vv-drawer-brand"><img src="assets/visitvakil-logo-yellow.svg?v=black-v2" alt="" width="48" height="48"><span><strong>ویزیت وکیل</strong><small>مشاوره حقوقی آنلاین</small></span></div>
+        <button type="button" id="menu-close" class="vv-drawer-close" aria-label="بستن فهرست">×</button>
+      </div>
+      <div class="vv-drawer-content">
+        <p class="vv-drawer-caption">چطور می‌توانیم کمک کنیم؟</p>
+        <button type="button" id="menu-consult" class="vv-nav-primary"><span class="vv-nav-glyph" aria-hidden="true">✳</span><span><strong>مشاوره حقوقی</strong><small>متنی و تلفنی، با وکیل</small></span><span class="vv-nav-chevron" aria-hidden="true">‹</span></button>
+        <a class="vv-nav-primary vv-nav-secondary" href="https://visitvakil.ir/questions/"><span class="vv-nav-glyph" aria-hidden="true">؟</span><span><strong>پرسش‌های حقوقی</strong><small>راهنمایی‌ها و پاسخ‌های حقوقی</small></span><span class="vv-nav-chevron" aria-hidden="true">‹</span></a>
+        <details class="vv-nav-expand"><summary><span class="vv-nav-glyph" aria-hidden="true">≡</span><strong>راهنمای خدمات حقوقی</strong><span class="vv-nav-expand-icon" aria-hidden="true">+</span></summary><div><a href="https://visitvakil.ir/online-lawyer/">مشاوره آنلاین با وکیل</a><a href="https://visitvakil.ir/legal-topics/">موضوعات و راهنماهای حقوقی</a></div></details>
+        <details class="vv-nav-expand"><summary><span class="vv-nav-glyph" aria-hidden="true">▤</span><strong>موضوعات حقوقی</strong><span class="vv-nav-expand-icon" aria-hidden="true">+</span></summary><div><a href="https://visitvakil.ir/legal-topics/">ملکی و ثبتی، خانواده، کیفری و سایر موضوعات</a></div></details>
+        <p class="vv-drawer-caption vv-drawer-caption-small">ویزیت وکیل</p>
+        <div class="vv-drawer-grid">
+          <a href="./showcase.html">درباره ما</a>
+          <a href="https://visitvakil.ir/">تماس با ما</a>
+          <a href="https://visitvakil.ir/">همکاری وکلا</a>
+          <a href="https://visitvakil.ir/">جستجوی وکلا</a>
+          <a href="https://visitvakil.ir/">حریم خصوصی</a>
+          <a href="https://visitvakil.ir/">قوانین استفاده</a>
+        </div>
+      </div>
+      <div class="vv-drawer-bottom"><a href="./index.html">ورود / ثبت‌نام <span aria-hidden="true">←</span></a><small>پیش‌نمایش رابط کاربری ویزیت وکیل</small></div>
     </nav>
   </header>
   <main class="approved-main">
@@ -75,5 +94,5 @@
     <small class="approved-demo-note">پیش‌نمایش طراحی — تصاویر و شمار وضعیت واقعی نیستند؛ درخواست آزمایشی ثبت نمی‌شود.</small>
   </footer>
 </div>
-<dialog id="wizard" aria-labelledby="wizard-title"><div class="wizard-shell"><header class="wizard-head"><div class="brand small"><span class="brandmark"><img src="assets/visitvakil-logo-yellow.svg?v=black-v2" alt="" aria-hidden="true" width="56" height="56"></span><span>ویزیت وکیل<small>شروع مشاوره حقوقی</small></span></div><button type="button" id="close-wizard" aria-label="بستن">×</button></header><div class="wizard-progress"><span class="on"></span><span></span><span></span></div><div class="wizard-content"><span class="wizard-step-text" id="wizard-step-label">مرحله ۱ از ۳</span><h2 id="wizard-title">نوع مشاوره</h2><p id="wizard-lead">نوع خدمت موردنظر خود را مشخص کنید.</p><div id="wizard-body"></div><p id="wizard-error" role="alert"></p></div><footer class="wizard-actions"><button type="button" class="back" id="wizard-back">قبلی</button><button type="button" class="next" id="wizard-next">ادامه <span>←</span></button></footer></div></dialog><script src="home-v2.js?v=approved-1" defer></script></body></html>
+<dialog id="wizard" aria-labelledby="wizard-title"><div class="wizard-shell"><header class="wizard-head"><div class="brand small"><span class="brandmark"><img src="assets/visitvakil-logo-yellow.svg?v=black-v2" alt="" aria-hidden="true" width="56" height="56"></span><span>ویزیت وکیل<small>شروع مشاوره حقوقی</small></span></div><button type="button" id="close-wizard" aria-label="بستن">×</button></header><div class="wizard-progress"><span class="on"></span><span></span><span></span></div><div class="wizard-content"><span class="wizard-step-text" id="wizard-step-label">مرحله ۱ از ۳</span><h2 id="wizard-title">نوع مشاوره</h2><p id="wizard-lead">نوع خدمت موردنظر خود را مشخص کنید.</p><div id="wizard-body"></div><p id="wizard-error" role="alert"></p></div><footer class="wizard-actions"><button type="button" class="back" id="wizard-back">قبلی</button><button type="button" class="next" id="wizard-next">ادامه <span>←</span></button></footer></div></dialog><script src="home-v2.js?v=drawer-menu-1" defer></script></body></html>
 </body></html>
