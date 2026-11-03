@@ -30,3 +30,7 @@ body.vv-shared-open{overflow:hidden}
 @keyframes vv-shared-slide{from{transform:translateX(-100%)}to{transform:translateX(0)}}
 @media(max-width:390px){.vv-s-head{padding:19px 15px 15px}.vv-s-body{padding:12px}.vv-s-grid a{min-height:58px;font-size:12px}}
 @media(prefers-reduced-motion:reduce){.vv-shared-drawer{animation:none}}
+
+/* Keep the showcase content layout untouched; float only its menu trigger. */
+.vv-shared-showcase.vv-shared-host{display:block!important;position:relative!important}
+.vv-shared-showcase .vv-shared-trigger{position:absolute;top:19px;left:17px;z-index:2}
