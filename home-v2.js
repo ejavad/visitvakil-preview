@@ -172,13 +172,45 @@ function draw(){
    body.append(node("p","vv-auth-hint","کد تأیید به همین شماره پیامک می‌شود. (در این پیش‌نمایش هیچ پیامکی ارسال نمی‌شود.)"));
  }
  if(state.step===5){
-   body.append(node("p","vv-auth-hint","کد شش‌رقمی ارسال‌شده به "+state.mobile+" را وارد کنید."));
-   const label=node("label","vv-auth-field","");
-   const input=document.createElement("input");input.id="vv-otp";input.type="text";input.inputMode="numeric";
-   input.dir="ltr";input.maxLength=6;input.autocomplete="one-time-code";input.placeholder="••••••";
-   input.value=state.otp;input.addEventListener("input",()=>state.otp=input.value);
-   label.append(input);body.append(label);
-   body.append(node("div","vv-demo-otp","کد نمایشی برای تست: ۱۲۳۴۵۶"));
+   const caption=node("p","vv-otp-intro","");
+   caption.append("کد ۶ رقمی برای شماره ");
+   const number=node("b","vv-otp-phone",state.mobile.replace(/\\d/g,d=>"۰۱۲۳۴۵۶۷۸۹"[Number(d)]));
+   number.dir="ltr";caption.append(number," آماده ورود است.");
+   body.append(caption);
+   const edit=node("button","vv-otp-edit","ویرایش شماره");edit.type="button";
+   edit.onclick=()=>{state.otp="";state.step=4;draw()};body.append(edit);
+   const form=node("div","vv-otp-control","");
+   const cells=node("div","vv-otp-cells","");
+   for(let i=0;i<6;i++){
+     const cell=node("span","vv-otp-cell","");
+     cell.setAttribute("aria-hidden","true");
+     cells.append(cell);
+   }
+   const input=document.createElement("input");
+   input.id="vv-otp";input.type="text";input.inputMode="numeric";input.autocomplete="one-time-code";
+   input.maxLength=6;input.dir="ltr";input.setAttribute("aria-label","کد تأیید شش رقمی");
+   const normalize=value=>value.replace(/[۰-۹]/g,c=>String("۰۱۲۳۴۵۶۷۸۹".indexOf(c))).replace(/[٠-٩]/g,c=>String("٠١٢٣٤٥٦٧٨٩".indexOf(c))).replace(/[^0-9]/g,"").slice(0,6);
+   input.value=normalize(state.otp);
+   const update=()=>{
+     const digits=normalize(input.value);input.value=digits;state.otp=digits;
+     [...cells.children].forEach((cell,i)=>{
+       cell.textContent=digits[i]?"۰۱۲۳۴۵۶۷۸۹"[Number(digits[i])]:"";
+       cell.classList.toggle("filled",i<digits.length);
+       cell.classList.toggle("active",i===Math.min(digits.length,5));
+     });
+   };
+   input.addEventListener("input",update);
+   input.addEventListener("focus",()=>form.classList.add("focused"));
+   input.addEventListener("blur",()=>form.classList.remove("focused"));
+   form.onclick=()=>input.focus();
+   form.append(cells,input);body.append(form);update();
+   const resend=node("button","vv-otp-resend","ارسال دوباره کد (نمایشی)");
+   resend.type="button";resend.onclick=()=>{
+     state.otp="";input.value="";update();input.focus();
+     $("wizard-error").textContent="در پیش‌نمایش پیامکی ارسال نمی‌شود؛ کد آزمایشی ۱۲۳۴۵۶ است.";
+   };
+   body.append(resend);
+   body.append(node("div","vv-demo-otp","کد آزمایشی: ۱۲۳۴۵۶ — پیامک واقعی ارسال نمی‌شود."));
  }
  if(state.step===6){
    const summary=node("section","vv-payment-summary","");
