@@ -42,7 +42,7 @@ try{
 
  const recommended=page.locator("#wizard-body .vv-consult-card.recommended");
  if(!await recommended.isVisible())throw Error("RECOMMENDED_PHONE_CARD_MISSING");
- if(!await recommended.getByText("پیشنهاد ویزیت وکیل").isVisible())throw Error("RECOMMENDATION_BADGE_MISSING");
+ if(!await recommended.getByText("VisitVakil Recommends").isVisible())throw Error("RECOMMENDATION_BADGE_MISSING");
  if(!await recommended.locator("svg").count())throw Error("PHONE_ICON_MISSING");
  await recommended.click();
  await page.locator("#wizard-next").click();
@@ -50,7 +50,7 @@ try{
  if(await durationCards.count()!==3)throw Error("PHONE_DURATION_CARDS_MISSING");
  const thirty=page.locator("#wizard-body .vv-duration-card[data-duration=\"30\"]");
  if(!await thirty.isVisible())throw Error("RECOMMENDED_30_MIN_MISSING");
- for(const price of ["۳۴۹٬۰۰۰","۴۴۹٬۰۰۰","۵۹۹٬۰۰۰"]){
+ for(const price of ["349,000","449,000","599,000"]){
    if(!(await page.locator("#wizard-body").innerText()).includes(price))throw Error("PREVIEW_PRICE_MISSING:"+price);
  }
  await thirty.click();
@@ -59,15 +59,15 @@ try{
  if(await topicCards.count()!==6)throw Error("TOPIC_GRID_MUST_HAVE_6_CARDS");
  const gridColumns=await page.locator(".vv-topic-grid").evaluate(el=>getComputedStyle(el).gridTemplateColumns.split(" ").length);
  if(gridColumns!==2)throw Error("TOPIC_GRID_MUST_HAVE_2_COLUMNS:"+gridColumns);
- const propertyCard=topicCards.filter({hasText:"ملکی و املاک"});
+ const propertyCard=topicCards.filter({hasText:"Property & Real Estate"});
  await propertyCard.click();
  if(await propertyCard.getAttribute("aria-pressed")!=="true")throw Error("TOPIC_SELECTION_NOT_APPLIED");
- if(!(await page.locator("#wizard-next").innerText()).includes("تأیید و ادامه"))throw Error("TOPIC_NEXT_LABEL_MISSING");
+ if(!(await page.locator("#wizard-next").innerText()).includes("Confirm & Continue"))throw Error("TOPIC_NEXT_LABEL_MISSING");
  await page.locator("#wizard-next").click();
  const summary=page.locator("#wizard .vv-request-summary");
  if(!await summary.isVisible())throw Error("COMPACT_SUMMARY_MISSING");
  const summaryText=await summary.innerText();
- if(!summaryText.includes("مشاوره تلفنی")||!summaryText.includes("ملکی و املاک")||!summaryText.includes("۴۴۹٬۰۰۰"))
+ if(!summaryText.includes("Phone Consultation")||!summaryText.includes("Property & Real Estate")||!summaryText.includes("449,000"))
   throw Error("SUMMARY_VALUES_MISSING:"+summaryText);
  const bounds=await page.evaluate(()=>{
    const dialog=document.querySelector("#wizard").getBoundingClientRect();
@@ -79,32 +79,32 @@ try{
  });
  if(bounds.top<0||bounds.bottom>bounds.viewport+2||bounds.actionBottom>bounds.viewport+2||bounds.scrollable)
   throw Error("COMPACT_REVIEW_NEEDS_SCROLL:"+JSON.stringify(bounds));
- await page.locator("#wizard-description").fill("درخواست بررسی اختلاف قرارداد ملکی در منطقه");
+ await page.locator("#wizard-description").fill("Request legal review for a property contract dispute.");
  await page.locator("#wizard-next").click();
- if(!await page.getByText("شماره موبایل خود را وارد کنید").isVisible())throw Error("GUEST_MOBILE_SCREEN_MISSING");
+ if(!await page.getByText("Enter your mobile number").isVisible())throw Error("GUEST_MOBILE_SCREEN_MISSING");
  await page.locator("#vv-mobile").fill("09123456789");
  await page.locator("#wizard-next").click();
- if(!await page.getByText("کد تأیید را وارد کنید").isVisible())throw Error("OTP_SCREEN_MISSING");
+ if(!await page.getByText("Enter your verification code").isVisible())throw Error("OTP_SCREEN_MISSING");
  if(await page.locator(".vv-otp-cell").count()!==6)throw Error("OTP_SIX_CELLS_MISSING");
  if(!await page.locator(".vv-otp-edit").isVisible())throw Error("OTP_EDIT_PHONE_MISSING");
  if(!await page.locator(".vv-otp-resend").isVisible())throw Error("OTP_RESEND_MISSING");
  await page.locator("#vv-otp").fill("123456");
  await page.locator("#wizard-next").click();
- if(!await page.getByText("بررسی و پرداخت").isVisible())throw Error("PAYMENT_SCREEN_MISSING");
- if(!(await page.locator("#wizard-body").innerText()).includes("۴۴۹٬۰۰۰"))throw Error("PAYMENT_PREVIEW_PRICE_MISSING");
+ if(!await page.getByText("Review & Payment").isVisible())throw Error("PAYMENT_SCREEN_MISSING");
+ if(!(await page.locator("#wizard-body").innerText()).includes("449,000"))throw Error("PAYMENT_PREVIEW_PRICE_MISSING");
  await page.locator("#wizard-next").click();
- if(!await page.getByText("مسنجر گفتگوها").isVisible())throw Error("MESSENGER_SCREEN_MISSING");
- if(!await page.getByText("پرداخت نمایشی موفق بود").isVisible())throw Error("PAYMENT_SUCCESS_DEMO_MISSING");
+ if(!await page.getByText("Your Conversations").isVisible())throw Error("MESSENGER_SCREEN_MISSING");
+ if(!await page.getByText("Demo Payment Complete").isVisible())throw Error("PAYMENT_SUCCESS_DEMO_MISSING");
  await page.locator("#close-wizard").click();
  if(await page.locator("#wizard").evaluate(x=>x.open))throw Error("CLOSE_FAILED");
  
 // Logged-in route skips mobile and OTP, and does not submit real transactions.
 const signedIn=await browser.newPage({viewport:{width:390,height:844}});
 await signedIn.goto("http://127.0.0.1:8765/home-v2.html?show=payment",{waitUntil:"load"});
-if(!await signedIn.getByText("بررسی و پرداخت").isVisible())throw Error("SIGNED_IN_SHOULD_GO_TO_PAYMENT");
+if(!await signedIn.getByText("Review & Payment").isVisible())throw Error("SIGNED_IN_SHOULD_GO_TO_PAYMENT");
 if(await signedIn.locator("#vv-mobile").count())throw Error("SIGNED_IN_SHOULD_SKIP_MOBILE");
 await signedIn.locator("#wizard-next").click();
-if(!await signedIn.getByText("مسنجر گفتگوها").isVisible())throw Error("SIGNED_IN_MESSENGER_SCREEN_MISSING");
+if(!await signedIn.getByText("Your Conversations").isVisible())throw Error("SIGNED_IN_MESSENGER_SCREEN_MISSING");
 await signedIn.close();
 const aligned=await page.evaluate(()=>{
  const badge=document.querySelector(".approved-badges img").getBoundingClientRect();
