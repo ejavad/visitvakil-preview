@@ -1,7 +1,7 @@
 "use strict";
 const $=id=>document.getElementById(id);
 const state={step:0,service:"text",topic:"",description:""};
-const names={text:"مشاوره متنی",phone:"مشاوره تلفنی",free:"پرسش رایگان"};
+const names={text:"مشاوره آنلاین",phone:"مشاوره تلفنی"};
 const topics=["ملکی و ثبتی","خانواده","کیفری","چک و مطالبات","قراردادها","شرکت و کسب‌وکار"];
 function node(tag,className,value){const n=document.createElement(tag);if(className)n.className=className;n.textContent=value;return n}
 function setService(value){if(!names[value])return;state.service=value;for(const b of document.querySelectorAll("[data-service]")){b.classList.toggle("selected",b.dataset.service===value);b.setAttribute("aria-pressed",String(b.dataset.service===value))}}
@@ -18,14 +18,31 @@ $("wizard-back").onclick=()=>{state.step=Math.max(0,state.step-1);draw()};
 function choice(value,label,subtitle,selected,click){const b=node("button","wizard-choice"+(selected?" chosen":""),"");b.type="button";b.append(node("strong","",label));if(subtitle)b.append(node("small","",subtitle));b.setAttribute("aria-pressed",String(selected));b.onclick=click;return b}
 function draw(){
  const body=$("wizard-body");body.replaceChildren();$("wizard-error").textContent="";
- const heading=["انتخاب نوع مشاوره","انتخاب موضوع حقوقی","شرح و مرور درخواست"];
- const lead=["نوع خدمتی را که می‌خواهید انتخاب کنید.","کدام موضوع به مسئله شما نزدیک‌تر است؟","جزئیات مسئله را بنویسید و پیش‌نمایش مسیر را ببینید."];
+ const heading=["مشاوره را چطور می‌خواهید بگیرید؟","موضوع مشاوره شما چیست؟","شرح درخواست شما"];
+ const lead=["روش ارتباط با وکیل را انتخاب کنید.","موضوع نزدیک‌تر به مسئله خود را انتخاب کنید.","مسئله خود را کوتاه و روشن توضیح دهید."];
  $("wizard-title").textContent=heading[state.step];$("wizard-lead").textContent=lead[state.step];
- $("wizard-step-label").textContent="مرحله "+String(state.step+1)+" از ۳";
+ $("wizard-step-label").textContent=["نوع مشاوره","موضوع حقوقی","شرح درخواست"][state.step];
  document.querySelectorAll(".wizard-progress span").forEach((x,i)=>x.classList.toggle("on",i<=state.step));
  $("wizard-back").disabled=state.step===0;
  $("wizard-next").lastChild.textContent=state.step===2?"مشاهده پیش‌نمایش":"←";
- if(state.step===0){for(const [id,label,sub] of [["text","مشاوره متنی","گفتگوی آنلاین با وکیل"],["phone","مشاوره تلفنی","مشاوره با تماس تلفنی"],["free","پرسش رایگان","ثبت سؤال حقوقی"]])body.append(choice(id,label,sub,state.service===id,()=>{state.service=id;setService(id);draw()}))}
+ if(state.step===0){
+  const cards=[
+   {id:"phone",name:"مشاوره تلفنی",desc:"گفتگوی مستقیم و خصوصی با وکیل",kind:"تماس تلفنی",symbol:'<path d="M9.2 4.8c.5-1.2 1.7-1.9 3-1.8l2.4.2c1.1.1 1.9.9 2.1 2l.5 3c.2 1-.3 2-1.2 2.5l-1.7.9a16 16 0 0 0 6.1 6.1l.9-1.7c.5-.9 1.5-1.4 2.5-1.2l3 .5c1.1.2 1.9 1 2 2.1l.2 2.4c.1 1.3-.6 2.5-1.8 3a5 5 0 0 1-2.7.3C12.8 25.5 6.5 19.2 4.3 10.5A5 5 0 0 1 4.6 7.8Z" transform="translate(0 -2) scale(.85)"/>'},
+   {id:"text",name:"مشاوره آنلاین",desc:"گفتگوی متنی با وکیل در مسنجر",kind:"گفتگوی اینترنتی",symbol:'<rect x="3.5" y="5" width="25" height="19" rx="4"/><path d="M10 11h12M10 16h8M10 24l-5 5v-5"/>'}
+  ];
+  for(const item of cards){
+    const selected=state.service===item.id;
+    const button=node("button","vv-consult-card"+(selected?" selected":""),"");
+    button.type="button";button.dataset.service=item.id;button.setAttribute("aria-pressed",String(selected));
+    const icon=document.createElement("span");icon.className="vv-consult-illustration";icon.innerHTML='<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+item.symbol+'</svg>';
+    const copy=node("span","vv-consult-copy","");
+    copy.append(node("strong","",item.name),node("small","",item.desc),node("em","",item.kind));
+    const check=node("span","vv-consult-check",selected?"✓":"");check.setAttribute("aria-hidden","true");
+    button.append(icon,copy,check);
+    button.onclick=()=>{state.service=item.id;draw()};
+    body.append(button);
+  }
+}
  if(state.step===1){for(const topic of topics)body.append(choice(topic,topic,"",state.topic===topic,()=>{state.topic=topic;draw()}))}
  if(state.step===2){
   const div=node("div","review","");
