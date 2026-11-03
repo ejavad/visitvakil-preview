@@ -1,15 +1,16 @@
 "use strict";
 const $=id=>document.getElementById(id);
-const state={step:0,service:"text",topic:"",description:""};
+const state={step:0,service:"text",duration:null,topic:"",description:""};
+const phoneDurations=[20,30,45];
 const names={text:"مشاوره آنلاین",phone:"مشاوره تلفنی"};
 const topics=["ملکی و ثبتی","خانواده","کیفری","چک و مطالبات","قراردادها","شرکت و کسب‌وکار"];
 function node(tag,className,value){const n=document.createElement(tag);if(className)n.className=className;n.textContent=value;return n}
 function setService(value){if(!names[value])return;state.service=value;for(const b of document.querySelectorAll("[data-service]")){b.classList.toggle("selected",b.dataset.service===value);b.setAttribute("aria-pressed",String(b.dataset.service===value))}}
 
-function openWizard(topic){if(topic&&topics.includes(topic))state.topic=topic;state.step=topic?1:0;draw();$("wizard").showModal()}
+function openWizard(topic){if(topic&&topics.includes(topic))state.topic=topic;state.step=topic?2:0;draw();$("wizard").showModal()}
 function closeWizard(){$("wizard").close()}
 $("start-wizard").onclick=()=>openWizard();
-// Preview deep link: show the latest consultation design immediately.
+// Preview deep link supported for design testing only.
 if(new URLSearchParams(location.search).get("show")==="consultation"){openWizard();}
 
 
@@ -17,19 +18,19 @@ if(new URLSearchParams(location.search).get("show")==="consultation"){openWizard
 
 $("close-wizard").onclick=closeWizard;
 $("wizard").addEventListener("click",e=>{if(e.target===$("wizard"))closeWizard()});
-$("wizard-back").onclick=()=>{state.step=Math.max(0,state.step-1);draw()};
+$("wizard-back").onclick=()=>{state.step=state.step===2&&state.service==="text"?0:Math.max(0,state.step-1);draw()};
 function choice(value,label,subtitle,selected,click){const b=node("button","wizard-choice"+(selected?" chosen":""),"");b.type="button";b.append(node("strong","",label));if(subtitle)b.append(node("small","",subtitle));b.setAttribute("aria-pressed",String(selected));b.onclick=click;return b}
 function draw(){
  const body=$("wizard-body");body.replaceChildren();$("wizard-error").textContent="";
- const heading=["مشاوره را چطور می‌خواهید بگیرید؟","موضوع مشاوره شما چیست؟","شرح درخواست شما"];
- const lead=["روش ارتباط با وکیل را انتخاب کنید.","موضوع نزدیک‌تر به مسئله خود را انتخاب کنید.","مسئله خود را کوتاه و روشن توضیح دهید."];
+ const heading=["مشاوره را چطور می‌خواهید بگیرید؟","مشاوره تلفنی چند دقیقه باشد؟","موضوع مشاوره شما چیست؟","شرح درخواست شما"];
+ const lead=["روش ارتباط با وکیل را انتخاب کنید.","مدت زمان موردنظر خود را انتخاب کنید.","موضوع نزدیک‌تر به مسئله خود را انتخاب کنید.","مسئله خود را کوتاه و روشن توضیح دهید."];
  $("wizard-title").textContent=heading[state.step];$("wizard-lead").textContent=lead[state.step];
  $("wizard").dataset.step=String(state.step);
  $("wizard-lead").hidden=state.step===0;
- $("wizard-step-label").textContent=["نوع مشاوره","موضوع حقوقی","شرح درخواست"][state.step];
- document.querySelectorAll(".wizard-progress span").forEach((x,i)=>x.classList.toggle("on",i<=state.step));
+ $("wizard-step-label").textContent=["نوع مشاوره","مدت مشاوره","موضوع حقوقی","شرح درخواست"][state.step];
+ document.querySelectorAll(".wizard-progress span").forEach((x,i)=>{const sequence=state.service==="phone"?state.step:state.step===0?0:state.step-1;x.hidden=i>=(state.service==="phone"?4:3);x.classList.toggle("on",i<=sequence)});
  $("wizard-back").disabled=state.step===0;
- $("wizard-next").lastChild.textContent=state.step===2?"مشاهده پیش‌نمایش":"←";
+ $("wizard-next").lastChild.textContent=state.step===3?"مشاهده پیش‌نمایش":"←";
  if(state.step===0){
   const cards=[
    {id:"phone",name:"مشاوره تلفنی",desc:"گفتگوی مستقیم و خصوصی با وکیل",kind:"تماس تلفنی",symbol:'<path d="M9.1 5.8c-.7-.9-2.1-1.1-3-.3L4.3 7.1c-.8.7-1.1 1.8-.7 2.8 3.2 8.1 9.8 14.6 17.9 17.4 1 .3 2.1 0 2.7-.8l1.6-1.9c.8-.9.6-2.3-.3-3l-3.5-2.6c-.9-.7-2.1-.6-2.9.2l-1.8 1.8a20 20 0 0 1-7.2-7.2l1.8-1.8c.8-.8.9-2 .2-2.9L9.1 5.8Z" transform="translate(0 1) scale(.91)"/><path d="M19 5.4a7.6 7.6 0 0 1 7.6 7.6M19 9.3a3.7 3.7 0 0 1 3.7 3.7"/>'},
@@ -49,22 +50,39 @@ function draw(){
     body.append(button);
   }
 }
- if(state.step===1){for(const topic of topics)body.append(choice(topic,topic,"",state.topic===topic,()=>{state.topic=topic;draw()}))}
- if(state.step===2){
+ if(state.step===1){
+  for(const minutes of phoneDurations){
+    const selected=state.duration===minutes;
+    const button=node("button","vv-duration-card"+(selected?" selected":"")+(minutes===30?" recommended":""),"");
+    button.type="button";button.dataset.duration=String(minutes);button.setAttribute("aria-pressed",String(selected));
+    if(minutes===30)button.append(node("span","vv-duration-badge","پیشنهاد ویزیت وکیل"));
+    const prices={20:349000,30:449000,45:599000};
+    const info=node("span","vv-duration-info","");
+    info.append(node("small","vv-duration-price-label","قیمت پیشنهادی"));
+    info.append(node("strong","vv-duration-price",prices[minutes].toLocaleString("fa-IR")+" تومان"));
+    button.append(node("strong","vv-duration-name",String(minutes)+" دقیقه"),info);
+    button.append(node("span","vv-duration-radio",selected?"✓":""));
+    button.onclick=()=>{state.duration=minutes;draw()};body.append(button);
+  }
+  body.append(node("p","vv-duration-note","مبالغ نمونه و برای تصمیم‌گیری هستند؛ تعرفه نهایی هنوز تأیید نشده است."));
+ }
+ if(state.step===2){for(const topic of topics)body.append(choice(topic,topic,"",state.topic===topic,()=>{state.topic=topic;draw()}))}
+ if(state.step===3){
   const div=node("div","review","");
-  for(const [label,value] of [["نوع مشاوره",names[state.service]],["موضوع حقوقی",state.topic]]){const row=document.createElement("div");row.append(node("span","",label),node("b","",value));div.append(row)}
+  for(const [label,value] of [["نوع مشاوره",names[state.service]],...(state.service==="phone"?[["مدت تماس",state.duration+" دقیقه"]]:[]),["موضوع حقوقی",state.topic]]){const row=document.createElement("div");row.append(node("span","",label),node("b","",value));div.append(row)}
   body.append(div);const label=node("label","wizard-field","شرح مسئله حقوقی");const textarea=document.createElement("textarea");textarea.id="wizard-description";textarea.maxLength=10000;textarea.placeholder="مثلاً درباره سند ملک، قرارداد، خانواده یا موضوع دیگری توضیح دهید...";textarea.value=state.description;textarea.addEventListener("input",()=>state.description=textarea.value);label.append(textarea);body.append(label);
   body.append(node("div","preview-notice","این نسخه فقط پیش‌نمایش طراحی است؛ هنوز شماره موبایل، پرداخت یا درخواست واقعی ثبت نمی‌شود."));
  }
 }
 $("wizard-next").onclick=()=>{
- if(state.step===0){state.step=1;draw();return}
- if(state.step===1){if(!state.topic){$("wizard-error").textContent="موضوع حقوقی را انتخاب کنید.";return}state.step=2;draw();return}
+ if(state.step===0){state.step=state.service==="phone"?1:2;draw();return}
+ if(state.step===1){if(!phoneDurations.includes(state.duration)){$("wizard-error").textContent="مدت تماس را انتخاب کنید.";return}state.step=2;draw();return}
+ if(state.step===2){if(!state.topic){$("wizard-error").textContent="موضوع حقوقی را انتخاب کنید.";return}state.step=3;draw();return}
  const v=$("wizard-description")?.value.trim()||"";if(v.length<10){$("wizard-error").textContent="برای بررسی فرم، شرحی با حداقل ۱۰ نویسه وارد کنید.";return}
  state.description=v;
  const body=$("wizard-body");body.replaceChildren();$("wizard-title").textContent="پیش‌نمایش تکمیل شد";$("wizard-lead").textContent="در نسخه نهایی این مرحله به ورود امن و ثبت درخواست متصل می‌شود.";
  const review=node("div","review","");
- for(const [label,val] of [["خدمت",names[state.service]],["موضوع",state.topic],["شرح",state.description]]){const row=document.createElement("div");row.append(node("span","",label),node("b","",val));review.append(row)}body.append(review);
+ for(const [label,val] of [["خدمت",names[state.service]],...(state.service==="phone"?[["مدت تماس",state.duration+" دقیقه"]]:[]),["موضوع",state.topic],["شرح",state.description]]){const row=document.createElement("div");row.append(node("span","",label),node("b","",val));review.append(row)}body.append(review);
  body.append(node("div","preview-notice","این درخواست ثبت نشده و پیام یا پرداختی ارسال نشده است. برای دیدن محیط گفتگو، می‌توانید پیش‌نمایش مسنجر کاربر را باز کنید."));
  const link=node("a","cta","مشاهده مسنجر کاربر ←");link.href="./index.html";body.append(link);
  $("wizard-next").hidden=true;$("wizard-back").hidden=true;
@@ -112,6 +130,7 @@ if(menuButton&&menuLinks&&menuScrim){
  const phrases=["آغاز یک تصمیم درست","آغاز یک انتخاب درست","آغاز یک مسیر درست"];
  let phrase=0,index=phrases[0].length,removing=true;
  function tick(){
+  if(span.dataset.cmsManaged === 'true')return;
   const current=phrases[phrase];
   if(removing){
    index=Math.max(0,index-1);span.textContent=current.slice(0,index);
