@@ -23,6 +23,7 @@ const previewStep=new URLSearchParams(location.search).get("show");
 if(previewStep==="consultation"){openWizard();}
 if(previewStep==="topics"){state.service="phone";state.duration=30;state.step=2;draw();$("wizard").showModal();}
 if(previewStep==="review"){state.service="phone";state.duration=30;state.topic="قراردادها و تعهدات";state.step=3;draw();$("wizard").showModal();}
+if(previewStep==="review"){state.service="phone";state.duration=30;state.topic="قراردادها و تعهدات";state.step=3;draw();$("wizard").showModal();}
 
 
 
