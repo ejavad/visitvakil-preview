@@ -7,6 +7,7 @@ on:
       - 'home-approved.css'
       - 'assets/approved-lawyers.jpg'
       - 'assets/approved-lawyers-hq.webp'
+      - 'assets/approved-lawyers-original.webp'
       - 'assets/approved-marks.jpg'
       - 'home-v2.js'
       - 'tests/home-v2-smoke.mjs'
