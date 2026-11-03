@@ -123,6 +123,10 @@ const marks=await page.evaluate(()=>{
 });
 if(marks.count!==3||marks.logos!==2||!marks.security||!marks.centered)
  throw Error("TRUST_MARKS_ALIGNMENT:"+JSON.stringify(marks));
+ await page.waitForTimeout(1200);
+ const markLoad=await page.locator(".vv-mark img").evaluateAll(imgs=>imgs.map(x=>({src:x.currentSrc,loaded:x.complete&&x.naturalWidth>0,width:x.naturalWidth})));
+ if(markLoad.some(x=>!x.loaded))console.warn("WARNING: External logo image not loaded in runner:"+JSON.stringify(markLoad));
+
  const more=page.locator("#about-toggle");
  if(await more.evaluate(el=>el.open))throw Error("PLUS_SHOULD_START_CLOSED");
  await more.locator("summary").click();
