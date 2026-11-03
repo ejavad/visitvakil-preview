@@ -190,3 +190,43 @@ body{color:var(--vv-black);font-family:"Yekan Bakh",Tahoma,Arial,sans-serif}
 body.vv-menu-open{overflow:hidden}
 @media(max-width:390px){.vv-drawer-head{padding:15px 14px}.vv-drawer-content{padding:8px 13px 15px}.vv-nav-primary{min-height:67px;padding:10px}.vv-drawer-bottom{padding:9px 13px max(8px,env(safe-area-inset-bottom))}.vv-drawer-grid a{min-height:52px}}
 @media(prefers-reduced-motion:reduce){.vv-drawer{animation:none}}
+
+
+/* Modern left-side mobile drawer — VisitVakil brand. */
+body.vv-menu-open{overflow:hidden}
+.menu-scrim{position:fixed;inset:0;background:rgba(20,20,20,.34);z-index:98;backdrop-filter:blur(2px)}
+.menu-scrim[hidden],.vv-drawer[hidden]{display:none!important}
+.vv-drawer{position:fixed;top:0;bottom:0;left:0;width:min(390px,94vw);max-height:100dvh;z-index:99;background:#fdfdfd;color:#181818;box-shadow:18px 0 75px #0002;display:flex;flex-direction:column;text-align:right;direction:rtl;border-radius:0 20px 20px 0;overflow:hidden}
+.vv-drawer-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:24px 20px 19px;background:#fff;border-bottom:1px solid #f0f0f0;flex-shrink:0}
+.vv-drawer-brand{display:flex;align-items:center;gap:11px;min-width:0}
+.vv-drawer-brand img{width:47px;height:47px;object-fit:contain;flex-shrink:0}
+.vv-drawer-brand strong{display:block;font-size:21px;font-weight:900;line-height:1.4}
+.vv-drawer-brand small{display:block;font-size:10px;font-weight:600;color:#6c6c6c;margin-top:1px}
+.vv-drawer-close{border:0;background:#f6f6f6;border-radius:50%;width:40px;height:40px;flex-shrink:0;font:300 31px/1 Arial;color:#252525;cursor:pointer}
+.vv-drawer-content{padding:17px 15px 25px;overflow-y:auto;overscroll-behavior:contain;flex:1;scrollbar-width:thin}
+.vv-drawer-caption{margin:1px 6px 14px;font-size:12px;color:#888;font-weight:750}
+.vv-drawer-caption-small{margin-top:24px}
+.vv-nav-primary{display:flex;width:100%;align-items:center;gap:12px;padding:16px 13px;text-align:right;border:1px solid #ededed;background:#fff;border-radius:18px;margin-bottom:10px;color:#191919;box-shadow:0 3px 14px #00000005;cursor:pointer;text-decoration:none;font-family:inherit}
+.vv-nav-primary strong{display:block;font-size:16px;font-weight:900;line-height:1.65}
+.vv-nav-primary small{display:block;font-size:11px;font-weight:550;color:#777;margin-top:2px}
+.vv-nav-glyph{display:grid;place-items:center;width:42px;height:42px;flex:0 0 42px;background:#fff5d6;border-radius:13px;color:#282828;font-size:22px}
+.vv-nav-chevron{margin-right:auto;color:#777;font-size:28px}
+.vv-nav-secondary .vv-nav-glyph{background:#f2f2f2}
+.vv-nav-expand{background:#fff;border:1px solid #ededed;border-radius:17px;margin:10px 0;overflow:hidden}
+.vv-nav-expand summary{display:flex;align-items:center;gap:12px;padding:14px 13px;cursor:pointer;list-style:none;min-height:68px}
+.vv-nav-expand summary::-webkit-details-marker{display:none}
+.vv-nav-expand summary::marker{content:""}
+.vv-nav-expand strong{font-size:15px;font-weight:850}
+.vv-nav-expand .vv-nav-glyph{width:40px;height:40px;flex-basis:40px;background:#f6f6f6;font-size:20px}
+.vv-nav-expand-icon{margin-right:auto;font:300 26px Arial;transition:transform .18s}
+.vv-nav-expand[open] .vv-nav-expand-icon{transform:rotate(45deg)}
+.vv-nav-expand>div{border-top:1px solid #f0f0f0;padding:5px 16px 12px 10px}
+.vv-nav-expand>div a{display:block;padding:11px 5px;color:#454545;font-size:12px;font-weight:650;text-decoration:none}
+.vv-drawer-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.vv-drawer-grid a{min-height:62px;display:flex;align-items:center;justify-content:center;text-align:center;background:#fff;border:1px solid #ededed;border-radius:15px;text-decoration:none;color:#2b2b2b;font-weight:800;font-size:13px;padding:8px}
+.vv-drawer a:focus-visible,.vv-drawer button:focus-visible,.vv-drawer summary:focus-visible{outline:3px solid #ffcc28;outline-offset:2px}
+.vv-drawer-bottom{padding:13px 15px 17px;border-top:1px solid #eee;background:#fff;flex-shrink:0}
+.vv-drawer-bottom>a{display:flex;justify-content:center;align-items:center;gap:10px;padding:13px 18px;background:#ffcd23;color:#161616;border-radius:14px;text-align:center;text-decoration:none;font-size:17px;font-weight:900}
+.vv-drawer-bottom small{display:block;color:#999;text-align:center;font-size:9px;margin-top:8px}
+@media(max-width:380px){.vv-drawer{width:min(360px,95vw)}.vv-drawer-head{padding:19px 15px 15px}.vv-drawer-brand strong{font-size:19px}.vv-nav-primary strong{font-size:14px}.vv-drawer-content{padding:12px}.vv-drawer-grid a{min-height:58px;font-size:12px}}
+@media(prefers-reduced-motion:reduce){.vv-nav-expand-icon{transition:none}}
