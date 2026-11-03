@@ -28,7 +28,7 @@
   <div class="vv-s-body">
     <p class="vv-s-label">چطور می‌توانیم کمک کنیم؟</p>
     <a class="vv-s-main" href="./home-v2.html"><span class="vv-s-icon">✳</span><span><strong>مشاوره حقوقی</strong><small>متنی و تلفنی، با وکیل</small></span><span class="vv-s-chevron">‹</span></a>
-    <a class="vv-s-main vv-s-secondary" href="https://visitvakil.ir/questions/"><span class="vv-s-icon">؟</span><span><strong>پرسش‌های حقوقی</strong><small>راهنمایی‌ها و پاسخ‌های حقوقی</small></span><span class="vv-s-chevron">‹</span></a>
+    <a class="vv-s-main vv-s-secondary" href="./questions.html"><span class="vv-s-icon">؟</span><span><strong>پرسش‌های حقوقی</strong><small>راهنمایی‌ها و پاسخ‌های حقوقی</small></span><span class="vv-s-chevron">‹</span></a>
     <details class="vv-s-expand"><summary><span class="vv-s-icon">≡</span><strong>راهنمای خدمات حقوقی</strong><span>+</span></summary><div><a href="https://visitvakil.ir/online-lawyer/">مشاوره آنلاین با وکیل</a><a href="https://visitvakil.ir/legal-topics/">موضوعات و راهنماهای حقوقی</a></div></details>
     <details class="vv-s-expand"><summary><span class="vv-s-icon">▤</span><strong>موضوعات حقوقی</strong><span>+</span></summary><div><a href="https://visitvakil.ir/legal-topics/">ملکی و ثبتی، خانواده، کیفری و سایر موضوعات</a></div></details>
     <p class="vv-s-label vv-s-label-gap">ویزیت وکیل</p>
@@ -36,7 +36,7 @@
       <a href="./about-us.html">درباره ما</a>
       <a href="./contact-us.html">تماس با ما</a>
       <a href="https://visitvakil.ir/">همکاری وکلا</a>
-      <a href="https://visitvakil.ir/">جستجوی وکلا</a>
+      <a href="./lawyers.html">لیست وکلا</a>
       <a href="https://visitvakil.ir/">حریم خصوصی</a>
       <a href="https://visitvakil.ir/">قوانین استفاده</a>
     </div>
