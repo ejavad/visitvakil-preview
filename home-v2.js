@@ -179,7 +179,7 @@ function draw(){
  if(state.step===5){
    const caption=node("p","vv-otp-intro","");
    caption.append("Your 6-digit code for ");
-   const number=node("b","vv-otp-phone",state.mobile.replace(/\\d/g,d=>"۰۱۲۳۴۵۶۷۸۹"[Number(d)]));
+   const number=node("b","vv-otp-phone",state.mobile);
    number.dir="ltr";caption.append(number," is ready to enter.");
    body.append(caption);
    const edit=node("button","vv-otp-edit","Edit number");edit.type="button";
