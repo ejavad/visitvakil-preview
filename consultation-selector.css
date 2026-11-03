@@ -293,3 +293,79 @@
     min-width: 0;
   }
 }
+
+/* First consultation screen: eliminate the small internal scroll on mobile. */
+@media(max-width:700px){
+ #wizard.vv-start-dialog[data-step="0"] .wizard-shell{
+   display:flex;
+   flex-direction:column;
+   max-height:100dvh;
+ }
+ #wizard.vv-start-dialog[data-step="0"] .wizard-head{
+   min-height:43px;
+   padding-top:8px;
+   padding-bottom:0;
+ }
+ #wizard.vv-start-dialog[data-step="0"] .wizard-head>button{
+   width:33px;height:33px;
+ }
+ #wizard.vv-start-dialog[data-step="0"] .wizard-progress{
+   flex-shrink:0;
+   padding-top:0;padding-bottom:0;
+ }
+ #wizard.vv-start-dialog[data-step="0"] .wizard-content{
+   padding-top:6px;
+   padding-bottom:0;
+   overflow-y:hidden;
+ }
+ #wizard.vv-start-dialog[data-step="0"] .wizard-content h2{
+   margin:5px 0 11px;
+   line-height:1.5;
+ }
+ #wizard.vv-start-dialog[data-step="0"] #wizard-body{
+   gap:8px;
+   padding-bottom:0;
+ }
+ #wizard.vv-start-dialog[data-step="0"] .vv-consult-card{
+   min-height:100px;
+   padding:10px 12px;
+   gap:11px;
+   border-radius:17px;
+ }
+ #wizard.vv-start-dialog[data-step="0"] .vv-consult-card.recommended{
+   margin-top:11px;
+   padding-top:17px;
+ }
+ #wizard.vv-start-dialog[data-step="0"] .vv-consult-illustration{
+   width:59px;flex-basis:59px;height:61px;border-radius:13px;
+ }
+ #wizard.vv-start-dialog[data-step="0"] .vv-consult-illustration svg{
+   width:37px;height:37px;
+ }
+ #wizard.vv-start-dialog[data-step="0"] .vv-consult-copy{
+   gap:3px;
+ }
+ #wizard.vv-start-dialog[data-step="0"] .vv-consult-copy em{
+   margin-top:1px;
+ }
+ #wizard.vv-start-dialog[data-step="0"] .wizard-actions{
+   padding-top:9px;
+   padding-bottom:max(10px,env(safe-area-inset-bottom));
+   gap:9px;
+ }
+ #wizard.vv-start-dialog[data-step="0"] .wizard-actions .next,
+ #wizard.vv-start-dialog[data-step="0"] .wizard-actions .back{
+   height:46px;
+ }
+ #wizard.vv-start-dialog[data-step="0"] .wizard-actions .back{
+   width:46px;
+ }
+}
+@media(max-width:700px) and (max-height:650px){
+ #wizard.vv-start-dialog[data-step="0"] .wizard-head{min-height:36px;padding-top:3px}
+ #wizard.vv-start-dialog[data-step="0"] .wizard-content h2{margin:3px 0 8px}
+ #wizard.vv-start-dialog[data-step="0"] .vv-consult-card{min-height:85px;padding:7px 10px}
+ #wizard.vv-start-dialog[data-step="0"] .vv-consult-card.recommended{padding-top:13px;margin-top:9px}
+ #wizard.vv-start-dialog[data-step="0"] .vv-consult-illustration{width:50px;flex-basis:50px;height:52px}
+ #wizard.vv-start-dialog[data-step="0"] .vv-consult-illustration svg{width:32px;height:32px}
+}
