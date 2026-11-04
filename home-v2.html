@@ -8,7 +8,26 @@
 <title>ویزیت وکیل | مشاوره حقوقی آنلاین</title>
 <link rel="stylesheet" href="home-v2.css?v=approved-1">
 <link rel="stylesheet" href="home-approved.css?v=hero-layout-20261104">
-<link rel="stylesheet" href="brand-logo.css?v=unified-1"><link rel="stylesheet" href="consultation-selector.css?v=first-step-compact-1"><link rel="stylesheet" href="yekan-bakh.css?v=font-fixed-3"></head>
+<link rel="stylesheet" href="brand-logo.css?v=unified-1"><link rel="stylesheet" href="consultation-selector.css?v=first-step-compact-1"><link rel="stylesheet" href="yekan-bakh.css?v=font-fixed-3"><style>
+/* Mobile home hero: anchor the content below the header, not at the viewport center. */
+@media (max-width:600px){
+  .approved-page > .approved-main{
+    flex:1 0 auto!important;
+    display:flex!important;
+    align-items:flex-start!important;
+    justify-content:center!important;
+    padding:48px 16px 0!important;
+    box-sizing:border-box!important;
+  }
+  .approved-main > .approved-hero{margin:0 auto!important;padding:0!important;}
+  .approved-hero > .approved-title{min-height:58px!important;}
+  .approved-hero > .approved-subtitle{margin:7px 0 24px!important;}
+  .approved-hero > .approved-lawyers{margin-top:26px!important;}
+  .approved-hero > .approved-status{margin-top:12px!important;}
+}
+@media(max-width:360px){.approved-page > .approved-main{padding-top:38px!important;}}
+</style>
+</head>
 <body>
 <div class="approved-page">
   <header class="approved-header">
