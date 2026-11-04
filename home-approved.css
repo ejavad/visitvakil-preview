@@ -264,3 +264,13 @@ body.vv-menu-open{overflow:hidden}
  .approved-expand-area .approved-expand[open]{position:relative!important;top:auto!important;left:auto!important;right:auto!important;direction:rtl!important}
  .approved-expand-area .approved-expand[open] .approved-plus{margin-right:auto!important;margin-left:0!important}
 }
+
+/* Lawyer avatar strip: refined framing and clearer rendering, preserving current image assets. */
+.approved-lawyers{box-sizing:border-box;overflow:visible;isolation:isolate}
+.approved-lawyers picture{display:block;width:100%;overflow:visible}
+.approved-lawyers picture img{display:block;width:100%;max-width:100%;height:auto;object-fit:contain;object-position:center;filter:brightness(1.045) contrast(1.045) saturate(1.12);image-rendering:auto}
+@media(max-width:600px){
+ .approved-lawyers{width:min(100%,430px);max-width:430px;padding-inline:12px;box-sizing:border-box;overflow:visible}
+ .approved-lawyers picture{overflow:visible}
+ .approved-lawyers picture img{width:100%;max-width:100%;height:auto;object-fit:contain;object-position:center}
+}
