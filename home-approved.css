@@ -232,9 +232,10 @@ body.vv-menu-open{overflow:hidden}
 @media(prefers-reduced-motion:reduce){.vv-nav-expand-icon{transition:none}}
 
 /* Crisp, consistent trust artwork; licensing icons are illustrative until verified domain-specific seal embeds are installed. */
-.approved-badges.vv-trust-marks{width:min(100%,280px);height:92px;display:grid;grid-template-columns:repeat(3,1fr);align-items:center;justify-items:center;gap:5px;margin:0 auto 8px;overflow:visible}
-.vv-trust-marks .vv-mark{width:82px;height:82px;display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:10px;background:#fff}
-.vv-trust-marks .vv-mark img{display:block;width:80px;height:80px;max-height:none;max-width:none;object-fit:contain;mix-blend-mode:normal;filter:grayscale(1) contrast(1.07);opacity:.82}
-.vv-trust-marks .vv-mark svg{display:block;width:60px;height:60px}
-.vv-trust-marks .vv-mark-union img{width:77px;height:77px}
-@media(max-width:600px){.approved-badges.vv-trust-marks{width:250px;height:81px;gap:4px}.vv-trust-marks .vv-mark{width:75px;height:75px}.vv-trust-marks .vv-mark img{width:73px;height:73px}.vv-trust-marks .vv-mark svg{width:57px;height:57px}.vv-trust-marks .vv-mark-union img{width:72px;height:72px}}
+/* Trust strip matches the existing phone row width at all responsive sizes. */
+.approved-badges.vv-trust-marks{width:var(--trust-strip-width);height:auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:center;justify-items:center;gap:3px;margin:0 auto 4px;overflow:hidden}
+.vv-trust-marks .vv-mark{width:100%;aspect-ratio:1;height:auto;display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:5px;background:#fff}
+.vv-trust-marks .vv-mark img{display:block;width:94%;height:94%;max-height:100%;max-width:100%;object-fit:contain;mix-blend-mode:normal;filter:grayscale(1) contrast(1.07);opacity:.82}
+.vv-trust-marks .vv-mark svg{display:block;width:78%;height:78%}
+.vv-trust-marks .vv-mark-union img{width:92%;height:92%}
+@media(max-width:600px){.approved-badges.vv-trust-marks{gap:2px;margin-bottom:2px}}
