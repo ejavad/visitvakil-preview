@@ -239,3 +239,17 @@ body.vv-menu-open{overflow:hidden}
 .vv-trust-marks .vv-mark svg{display:block;width:78%;height:78%}
 .vv-trust-marks .vv-mark-union img{width:92%;height:92%}
 @media(max-width:600px){.approved-badges.vv-trust-marks{gap:2px;margin-bottom:2px}}
+
+/* Mobile hero spacing aligned with the earlier VisitVakil homepage reference (visual-only). */
+@media(max-width:600px){
+ .approved-main{align-items:flex-start;justify-content:center;padding:clamp(60px,10.5dvh,105px) 16px 0}
+ .approved-hero{padding:0;width:100%}
+ .approved-title{min-height:58px}
+ .approved-subtitle{margin:8px 0 22px}
+ .approved-cta{height:52px}
+ .approved-lawyers{margin-top:28px}
+ .approved-status{margin-top:12px}
+}
+@media(max-width:350px){
+ .approved-main{padding-top:clamp(48px,9dvh,80px)}
+}
