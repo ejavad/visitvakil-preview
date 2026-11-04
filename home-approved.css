@@ -274,3 +274,24 @@ body.vv-menu-open{overflow:hidden}
  .approved-lawyers picture{overflow:visible}
  .approved-lawyers picture img{width:100%;max-width:100%;height:auto;object-fit:contain;object-position:center}
 }
+
+/* Keep both end avatars comfortably inside the mobile viewport. */
+@media(max-width:600px){
+ .approved-hero > .approved-lawyers{
+  width:min(100%,430px)!important;
+  max-width:430px!important;
+  padding-inline:24px!important;
+  margin-inline:auto!important;
+  box-sizing:border-box!important;
+  overflow:visible!important;
+ }
+ .approved-lawyers picture,.approved-lawyers picture img{
+  display:block!important;
+  width:100%!important;
+  height:auto!important;
+  max-width:100%!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  overflow:visible!important;
+ }
+}
